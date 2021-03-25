@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('head') -%>
+</head>
+<body>
+    <header>
+        <%- include('navbar') -%>
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Register Form</h4>
+                </div>
+                <div class="card-body">
+                  <form action="/auth/register" method="POST">
+                      <div class="form-group">
+                          <label for="fname">Firstname</label>
+                          <input type="text" class="form-control mt-2" id="fname" placeholder="Firstname" name="fname">
+                      </div>
+                      <div class="form-group mt-2">
+                        <label for="lname">Lastname</label>
+                        <input type="text" class="form-control mt-2" id="lname" placeholder="Lastname" name="lname">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control mt-2" id="username" placeholder="Username" name="username" required>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="pass">Password</label>
+                        <input type="password" class="form-control mt-2" id="pass" placeholder="Password" name="pass">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="passConfirm">Confirm Password</label>
+                        <input type="password" class="form-control mt-2" id="passConfirm" placeholder="Confirm Password" name="passConfirm">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="faculty">Faculty</label>
+                        <input type="text" class="form-control mt-2" id="faculty" placeholder="Faculty" name="faculty">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="contact">Contact</label>
+                        <input type="text" class="form-control mt-2" id="contact" placeholder="Contact" name="contact">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control mt-2" id="email" placeholder="Email" name="email">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+</html>
