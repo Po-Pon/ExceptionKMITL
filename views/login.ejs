@@ -9,18 +9,10 @@
         <div class="container mt-4">
             <div class="card">
                 <div class="card-header">
-                    <h4>Register Form</h4>
+                    <h4>Login</h4>
                 </div>
                 <div class="card-body">
-                  <form action="/auth/register" method="POST">
-                      <div class="form-group">
-                          <label for="fname">Firstname</label>
-                          <input type="text" class="form-control mt-2" id="fname" placeholder="Firstname" name="fname">
-                      </div>
-                      <div class="form-group mt-2">
-                        <label for="lname">Lastname</label>
-                        <input type="text" class="form-control mt-2" id="lname" placeholder="Lastname" name="lname">
-                    </div>
+                  <form action="/auth/login" method="POST">
                     <div class="form-group mt-2">
                         <label for="username">Username</label>
                         <input type="text" class="form-control mt-2" id="username" placeholder="Username" name="username" required>
@@ -29,23 +21,7 @@
                         <label for="pass">Password</label>
                         <input type="password" class="form-control mt-2" id="password" placeholder="Password" name="password">
                     </div>
-                    <div class="form-group mt-2">
-                        <label for="passConfirm">Confirm Password</label>
-                        <input type="password" class="form-control mt-2" id="passConfirm" placeholder="Confirm Password" name="passConfirm">
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="faculty">Faculty</label>
-                        <input type="text" class="form-control mt-2" id="faculty" placeholder="Faculty" name="faculty">
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="contact">Contact</label>
-                        <input type="text" class="form-control mt-2" id="contact" placeholder="Contact" name="contact">
-                    </div>
-                    <div class="form-group mt-2">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control mt-2" id="email" placeholder="Email" name="email">
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                    <button type="submit" class="btn btn-primary mt-4">Login</button>
                   </form>
                 </div>
             </div>

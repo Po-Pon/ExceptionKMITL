@@ -2,6 +2,9 @@ const express = require('express');
 const mysql = require('mysql');
 const dotenv = require('dotenv');
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
 dotenv.config({ path: './.env'});
 
@@ -16,6 +19,9 @@ app.use(express.static(path.join(__dirname,'./static')));
 app.use(express.urlencoded({ extended: false}));
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
+// Cookie!!!
+app.use(cookieParser());
+
 
 const dbConnection = mysql.createConnection({
     host: process.env.DATABASE_HOST,

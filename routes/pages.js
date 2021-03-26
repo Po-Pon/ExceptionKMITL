@@ -7,7 +7,16 @@ router.get('/', (req, res) => {
 });
 
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.render('register',{message:''});
 });
+
+router.get('/login', (req, res) => {
+    res.render('login',{message:''});
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('jwt');
+    res.redirect('/');
+})
 
 module.exports = router;
