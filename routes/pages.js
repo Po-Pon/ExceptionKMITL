@@ -2,9 +2,21 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.render('home');
+var sessionChecker = (req, res, next) => {
+    if (req.session.user && req.cookies.user_sid) {
+      res.redirect("/dashboard");
+    } else {
+      next();
+    }
+};
+
+router.get("/", sessionChecker, (req, res) => {
+    res.redirect("/login");
 });
+
+// router.get('/', (req, res) => {
+//     res.render('home');
+// });
 
 router.get('/register', (req, res) => {
     res.render('register',{message:''});

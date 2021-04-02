@@ -21,6 +21,20 @@ app.use(express.urlencoded({ extended: false}));
 app.use(express.json());
 // Cookie!!!
 app.use(cookieParser());
+// initialize body-parser to parse incoming parameters requests to req.body
+app.use(bodyParser.urlencoded({ extended: true }));
+// initialize express-session to allow us track the logged-in user across sessions.
+app.use(
+    session({
+      key: "user_sid",
+      secret: "somerandonstuffs",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        expires: 600000,
+      },
+    })
+  );
 
 
 const dbConnection = mysql.createConnection({
@@ -40,6 +54,13 @@ dbConnection.connect((error) =>{
 //Define Routes
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
+
+app.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.user) {
+      res.clearCookie("user_sid");
+    }
+    next();
+});
 
 app.listen(3000,() => {
     console.log("Server is running in port 3000....");
