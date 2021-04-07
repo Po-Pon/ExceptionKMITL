@@ -1,24 +1,24 @@
-# myfrontend
-
-## Project setup
+### เปิด terminal แล้ว cd ไปที่ frontend
 ```
-npm install
+cd frontend
 ```
-
-### Compiles and hot-reloads for development
+### install npm ก่อน
+```
+npm i
+```
+### run frontend
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### ไปที่ port 8080/home คือหน้าแรก
+http://localhost:8080/home
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### login
+http://localhost:8080/login
+
+
+### register
+http://localhost:8080/register
+
