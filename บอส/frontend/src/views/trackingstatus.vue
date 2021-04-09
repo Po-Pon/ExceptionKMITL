@@ -15,11 +15,11 @@
                     <p id="select_title">เลือกหมวดหมู่ร้องเรียน</p>
                     <select id="type_select" class="form-control" v-model="type_select">
                         <option value="" disabled selected>โปรดเลือกหมวดหมู่</option>
-                        <option value="สภาพสังคม">สภาพสังคม</option>
-                        <option value="การศึกษา">การศึกษา</option>
-                        <option value="ทุนการศึกษา">ทุนการศึกษา</option>
-                        <option value="การลงทะเบียนเรียน">การลงทะเบียนเรียน</option>
-                        <option value="สภาพแวดล้อม">สภาพแวดล้อม</option>
+                        <option value="sociality">สภาพสังคม</option>
+                        <option value="studying">การศึกษา</option>
+                        <option value="scholarship">ทุนการศึกษา</option>
+                        <option value="register">การลงทะเบียนเรียน</option>
+                        <option value="environment">สภาพแวดล้อม</option>
                     </select>
                     <button id="select_button" class='btn' @click="type_report()">ตรวจสอบ</button>
                     <p id="error_massage">{{errortype}}</p>
@@ -51,7 +51,7 @@
                             <i :style="{'font-weight': statusfont(reportform.status, 1)}">ระบบกำลังตรวจสอบ</i>
                         </div>
                         <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 2)}">{{extrastatusfont}}</i>
+                            <i :style="{'font-weight': statusfont(reportform.status, 2)}">ระบบกำลังดำเนินการ</i>
                         </div>
                         <div class="col-3" style="text-align: cenetr:">
                             <i :style="{'font-weight': statusfont(reportform.status, 3)}">ระบบดำเนินการสำเร็จ</i>
@@ -72,7 +72,7 @@
                             <i :style="{'font-weight': statusfont(reportform.status, 1)}">ระบบกำลังตรวจสอบ</i>
                         </div>
                         <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 2)}">{{extrastatusfont}}</i>
+                            <i :style="{'font-weight': statusfont(reportform.status, 2)}">ระบบกำลังดำเนินการ</i>
                         </div>
                         <div class="col-3" style="text-align: cenetr:">
                             <i :style="{'font-weight': statusfont(reportform.status, 3)}">ระบบดำเนินการสำเร็จ</i>
@@ -97,7 +97,7 @@ export default {
                 title: "",
                 errortype: "",
                 errorid: "",
-                extrastatusfont: ""
+                extrastatusfont: "ระบบกำลังดำเนินการ"
             }
         },
         methods:{
@@ -109,53 +109,19 @@ export default {
             }
             else{
                 this.reportform = this.getreportform(this.type_select);
-                this.id_screen = false;
-                this.typescreen = true;
-                this.errortype = "";
-                this.title = "สถานะเรื่องร้องเรียน หมวดหมู่" + this.type_select;
             }
            },
            getreportform: function(type){
-                if(type == "สภาพสังคม"){
-                   axios.get("http://localhost:3000/getreportform/sociality")
+                   axios.get("http://localhost:3000/getreportform/type/" + type)
                    .then((response) => {
-                       this.reportforms = response.data;
+                       this.reportforms = response.data.data;
+                       this.id_screen = !response.data.status;
+                       this.typescreen = response.data.status;
+                       this.errortype = response.data.error;
+                       this.title = "สถานะเรื่องร้องเรียน หมวดหมู่" + response.data.title;
                    }).catch((err) => {
                        console.log(err);
                    })
-                }
-                else if(type == "การศึกษา"){
-                    axios.get("http://localhost:3000/getreportform/studying")
-                   .then((response) => {
-                       this.reportforms = response.data;
-                   }).catch((err) => {
-                       console.log(err);
-                   })
-                }
-                else if(type == "ทุนการศึกษา"){
-                    axios.get("http://localhost:3000/getreportform/scholarship")
-                   .then((response) => {
-                       this.reportforms = response.data;
-                   }).catch((err) => {
-                       console.log(err);
-                   })
-                }
-                else if(type == "การลงทะเบียนเรียน"){
-                    axios.get("http://localhost:3000/getreportform/register")
-                   .then((response) => {
-                       this.reportforms = response.data;
-                   }).catch((err) => {
-                       console.log(err);
-                   })
-                }
-                else if(type == "สภาพแวดล้อม"){
-                    axios.get("http://localhost:3000/getreportform/environment")
-                   .then((response) => {
-                       this.reportforms = response.data;
-                   }).catch((err) => {
-                       console.log(err);
-                   })
-                }
             },
           id_report: function(){
                if(this.id_select == ""){
@@ -165,17 +131,16 @@ export default {
                }
                else{
                     this.reportforms = this.getreportform_id(this.id_select);
-                    this.id_screen = true;
-                    this.typescreen = false;
-                    this.errortype = "";
-                    this.title = "สถานะเรื่องร้องเรียนของหมายเลข " + this.id_select;
-                    this.errorid = "";
                }
            },
            getreportform_id: function(id){
                axios.get("http://localhost:3000/getreportform/searchbyid/" + id)
                     .then((response) => {
-                    this.reportforms = response.data;
+                    this.reportforms = response.data.data;
+                    this.id_screen = response.data.status;
+                    this.typescreen = false;
+                    this.errorid = response.data.error;
+                    this.title = "สถานะเรื่องร้องเรียนของหมายเลข " + this.id_select;
                 }).catch((err) => {
                     console.log(err);
                 })
@@ -188,7 +153,6 @@ export default {
                     return '500';
                 }
                 else if(status == 2 && index == 2){
-                    this.extrastatusfont = "ระบบกำลังดำเนินการ"
                     return '500';
                 }
                 else if(status == 4 && index == 2){

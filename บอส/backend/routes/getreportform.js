@@ -2,107 +2,67 @@ const express = require('express');
 const pool = require('../config')
 const router = express.Router();
 
-router.get('/sociality', async function(req, res, next){
+router.get('/type/:type', async function(req, res, next){
     const conn = await pool.getConnection();
     await conn.beginTransaction()
 
     try{
-        let [rows, fields] = await conn.query(
-            "SELECT report_form_topic, problem_description, status, type" + 
-            " FROM sociality_report_form, report_form" + 
-            " WHERE sociality_report_form.report_form_id=report_form.report_form_id"
-        )
+        let [rows, fields] = [[], []];
+        let errormassege = "";
+        let status = false;
+        let title = "";
+        if(req.params.type == "sociality"){
+            [rows, fields] = await conn.query(
+                "SELECT report_form_topic, problem_description, status, type" + 
+                " FROM sociality_report_form, report_form" + 
+                " WHERE sociality_report_form.report_form_id=report_form.report_form_id"
+            )
+            title = "สภาพสังคม"
+        }
+        else if(req.params.type == "studying"){
+            [rows, fields] = await conn.query(
+                "SELECT report_form_topic, problem_description, status, type" + 
+                " FROM studying_report_form, report_form" + 
+                " WHERE studying_report_form.report_form_id=report_form.report_form_id"
+            )
+            title = "การศึกษา"
+        }
+        else if(req.params.type == "scholarship"){
+            let [rows, fields] = await conn.query(
+                "SELECT report_form_topic, problem_description, status, type" + 
+                " FROM scholarship_report_form, report_form" + 
+                " WHERE scholarship_report_form.report_form_id=report_form.report_form_id"
+            )
+            title = "ทุนการศึกษา"
+        }
+        else if(req.params.type == "register"){
+            let [rows, fields] = await conn.query(
+                "SELECT report_form_topic, problem_description, status, type" + 
+                " FROM register_system_report_form, report_form" + 
+                " WHERE register_system_report_form.report_form_id=report_form.report_form_id"
+            )
+            title = "การลงทะเบียนเรียน"
+        }
+        else if(req.params.type == "environment"){
+            let [rows, fields] = await conn.query(
+                "SELECT report_form_topic, problem_description, status, type" + 
+                " FROM environment_report_form, report_form" + 
+                " WHERE environment_report_form.report_form_id=report_form.report_form_id"
+            )
+            title = "สภาพแวดล้อม"
+        }
+        if(rows == []){
+            errormassege = "ไม่มีข้อมูลที่สามารถแสดงได้";
+            status = false;
+            title = "";
+        }
+        else{
+            errormassege = "";
+            status = true;
+        }
         conn.commit();
         console.log(rows);
-        return res.json(rows);
-    }catch(err){
-        await conn.rollback();
-        console.log(err);
-    }finally{
-        console.log('finally')
-        conn.release();
-    }
-});
-
-router.get('/studying', async function(req, res, next){
-    const conn = await pool.getConnection();
-    await conn.beginTransaction()
-
-    try{
-        let [rows, fields] = await conn.query(
-            "SELECT report_form_topic, problem_description, status, type" + 
-            " FROM studying_report_form, report_form" + 
-            " WHERE studying_report_form.report_form_id=report_form.report_form_id"
-        )
-        conn.commit();
-        console.log(rows);
-        return res.json(rows);
-    }catch(err){
-        await conn.rollback();
-        console.log(err);
-    }finally{
-        console.log('finally')
-        conn.release();
-    }
-});
-
-router.get('/scholarship', async function(req, res, next){
-    const conn = await pool.getConnection();
-    await conn.beginTransaction()
-
-    try{
-        let [rows, fields] = await conn.query(
-            "SELECT report_form_topic, problem_description, status, type" + 
-            " FROM scholarship_report_form, report_form" + 
-            " WHERE scholarship_report_form.report_form_id=report_form.report_form_id"
-        )
-        conn.commit();
-        console.log(rows);
-        return res.json(rows);
-    }catch(err){
-        await conn.rollback();
-        console.log(err);
-    }finally{
-        console.log('finally')
-        conn.release();
-    }
-});
-
-router.get('/register', async function(req, res, next){
-    const conn = await pool.getConnection();
-    await conn.beginTransaction()
-
-    try{
-        let [rows, fields] = await conn.query(
-            "SELECT report_form_topic, problem_description, status, type" + 
-            " FROM register_system_report_form, report_form" + 
-            " WHERE register_system_report_form.report_form_id=report_form.report_form_id"
-        )
-        conn.commit();
-        console.log(rows);
-        return res.json(rows);
-    }catch(err){
-        await conn.rollback();
-        console.log(err);
-    }finally{
-        console.log('finally')
-        conn.release();
-    }
-});
-
-router.get('/environment', async function(req, res, next){
-    const conn = await pool.getConnection();
-    await conn.beginTransaction()
-
-    try{
-        let [rows, fields] = await conn.query(
-            "SELECT report_form_topic, problem_description, status, type" + 
-            " FROM environment_report_form, report_form" + 
-            " WHERE environment_report_form.report_form_id=report_form.report_form_id"
-        )
-        conn.commit();
-        console.log(rows);
-        return res.json(rows);
+        return res.json({data: rows, status: status, error: errormassege, title: title});
     }catch(err){
         await conn.rollback();
         console.log(err);
@@ -126,7 +86,7 @@ router.get('/searchbyid/:id', async function(req, res, next){
         let [rows2, fields2] = [[],[]];
         if(type == "สภาพสังคม"){
             [rows2, fields2] = await conn.query(
-                "SELECT problem_description, status, type" + 
+                "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM sociality_report_form, report_form" + 
                 " WHERE sociality_report_form.report_form_id=report_form.report_form_id"
                 + " AND report_form.report_form_id=?",
@@ -135,7 +95,7 @@ router.get('/searchbyid/:id', async function(req, res, next){
         }
         else if(type == "การศึกษา"){
             [rows2, fields2] = await conn.query(
-                "SELECT problem_description, status, type" + 
+                "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM studying_report_form, report_form" + 
                 " WHERE studying_report_form.report_form_id=report_form.report_form_id"
                 + " AND report_form.report_form_id=?",
@@ -144,7 +104,7 @@ router.get('/searchbyid/:id', async function(req, res, next){
         }
         else if(type == "ทุนการศึกษา"){
             [rows2, fields2] = await conn.query(
-                "SELECT problem_description, status, type" + 
+                "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM scholarship_report_form, report_form" + 
                 " WHERE scholarship_report_form.report_form_id=report_form.report_form_id"
                 + " AND report_form.report_form_id=?",
@@ -153,7 +113,7 @@ router.get('/searchbyid/:id', async function(req, res, next){
         }
         else if(type == "การลงทะเบียนเรียน"){
             [rows2, fields2] = await conn.query(
-            "SELECT problem_description, status, type" + 
+            "SELECT report_form_topic, problem_description, status, type" + 
             " FROM register_system_report_form, report_form" + 
             " WHERE register_system_report_form.report_form_id=report_form.report_form_id"
             + " AND report_form.report_form_id=?",
@@ -162,19 +122,20 @@ router.get('/searchbyid/:id', async function(req, res, next){
         }
         else if(type == "สภาพแวดล้อม"){
             [rows2, fields2] = await conn.query(
-                "SELECT problem_description, status, type" + 
+                "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM environment_report_form, report_form" + 
-                " WHERE environment_report_form.report_form_id=report_form.report_form_id" 
+                " WHERE environment_report_form.report_form_id=report_form.report_form_id"
                 + " AND report_form.report_form_id=?",
                 [req.params.id]
             )
         }
         conn.commit();
         console.log(rows2);
-        return res.json(rows2);
+        return res.json({data: rows2, status: true, error: ""});
     }catch(err){
         await conn.rollback();
         console.log(err);
+        return res.json({data: [], status: false, error: "ไม่พบข้อมูล กรุณาลองใหม่อีกครั้ง"});
     }finally{
         console.log('finally')
         conn.release();
