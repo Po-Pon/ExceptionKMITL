@@ -28,7 +28,7 @@ router.get('/type/:type', async function(req, res, next){
             title = "การศึกษา"
         }
         else if(req.params.type == "scholarship"){
-            let [rows, fields] = await conn.query(
+            [rows, fields] = await conn.query(
                 "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM scholarship_report_form, report_form" + 
                 " WHERE scholarship_report_form.report_form_id=report_form.report_form_id"
@@ -36,7 +36,7 @@ router.get('/type/:type', async function(req, res, next){
             title = "ทุนการศึกษา"
         }
         else if(req.params.type == "register"){
-            let [rows, fields] = await conn.query(
+            [rows, fields] = await conn.query(
                 "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM register_system_report_form, report_form" + 
                 " WHERE register_system_report_form.report_form_id=report_form.report_form_id"
@@ -44,7 +44,7 @@ router.get('/type/:type', async function(req, res, next){
             title = "การลงทะเบียนเรียน"
         }
         else if(req.params.type == "environment"){
-            let [rows, fields] = await conn.query(
+            [rows, fields] = await conn.query(
                 "SELECT report_form_topic, problem_description, status, type" + 
                 " FROM environment_report_form, report_form" + 
                 " WHERE environment_report_form.report_form_id=report_form.report_form_id"
@@ -82,7 +82,13 @@ router.get('/searchbyid/:id', async function(req, res, next){
             " FROM report_form" + 
             " WHERE report_form_id=?",[req.params.id]
         )
-        let type = rows[0].type;
+        type = "";
+        if(rows.length == 0){
+            throw "ไม่พบข้อมูล กรุณาลองใหม่อีกครั้ง";
+        }
+        else{
+            type = rows[0].type;
+        }
         let [rows2, fields2] = [[],[]];
         if(type == "สภาพสังคม"){
             [rows2, fields2] = await conn.query(
@@ -135,7 +141,7 @@ router.get('/searchbyid/:id', async function(req, res, next){
     }catch(err){
         await conn.rollback();
         console.log(err);
-        return res.json({data: [], status: false, error: "ไม่พบข้อมูล กรุณาลองใหม่อีกครั้ง"});
+        return res.json({data: [], status: false, error: err});
     }finally{
         console.log('finally')
         conn.release();

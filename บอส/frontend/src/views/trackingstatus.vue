@@ -44,17 +44,22 @@
                 </div>
                 <div class="col-7" id="reportform_bar">
                     <div class="row">
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 0)}">ระบบได้รับเรื่องแล้ว</i>
+                        <div class="col-12" style="margin-bottom : 3%;">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" :style="tubestatus(reportform.status)" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                         </div>
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 1)}">ระบบกำลังตรวจสอบ</i>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'font-weight': statusfont(reportform.status, 0).weight}">ระบบได้รับเรื่องแล้ว</i>
                         </div>
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 2)}">ระบบกำลังดำเนินการ</i>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'font-weight': statusfont(reportform.status, 1).weight}">ระบบกำลังตรวจสอบ</i>
                         </div>
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 3)}">ระบบดำเนินการสำเร็จ</i>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'font-weight': statusfont(reportform.status, 2).weight}">{{extrafontstatus(reportform.status)}}</i>
+                        </div>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'font-weight': statusfont(reportform.status, 3).weight}">ระบบดำเนินการสำเร็จ</i>
                         </div>
                     </div>
                 </div>
@@ -65,22 +70,41 @@
                 </div>
                 <div class="col-12">
                     <div class="row" style="color: #ffffff">
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 0)}">ระบบได้รับเรื่องแล้ว</i>
+                        <div class="col-12" style="margin-bottom : 3%;">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" :style="tubestatus(reportform.status)" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                         </div>
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 1)}">ระบบกำลังตรวจสอบ</i>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'opacity': statusfont(reportform.status, 0).opa}">ระบบได้รับเรื่องแล้ว</i>
                         </div>
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 2)}">ระบบกำลังดำเนินการ</i>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'opacity': statusfont(reportform.status, 1).opa}">ระบบกำลังตรวจสอบ</i>
                         </div>
-                        <div class="col-3" style="text-align: cenetr:">
-                            <i :style="{'font-weight': statusfont(reportform.status, 3)}">ระบบดำเนินการสำเร็จ</i>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'opacity': statusfont(reportform.status, 2).opa}">{{extrafontstatus(reportform.status)}}</i>
+                        </div>
+                        <div class="col-3" style="text-align: center">
+                            <i :style="{'opacity': statusfont(reportform.status, 3).opa}">ระบบดำเนินการสำเร็จ</i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p id="tracking_big_title" style="font-size : 24px; color : #ffffff;">หมวดหมู่ {{reportform.type}}</p>
+                        <div class="col-12">
+                            <p id="reportform_description_id">{{reportform.problem_description}}</p>
                         </div>
                     </div>
                 </div>
             </div></section>
         </div>
+        <footer>
+        <div id="footer_homepage">
+            <a id="footer_button" class="btn" href="#">HELP</a>
+            <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
+            <p id="address">1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520</p>
+            <p id="address">02 723 4900</p>
+        </div>
+    </footer>
     </body>
 </template>
 
@@ -96,8 +120,7 @@ export default {
                 id_screen: false,
                 title: "",
                 errortype: "",
-                errorid: "",
-                extrastatusfont: "ระบบกำลังดำเนินการ"
+                errorid: ""
             }
         },
         methods:{
@@ -145,26 +168,48 @@ export default {
                     console.log(err);
                 })
            },
+           tubestatus: function(status){
+               var backgroundcolor = "#ffffff";
+               var width = "37.5%";
+               if(status == 0){
+                   width = "0%";
+               }
+               else if(status == 1){
+                   backgroundcolor = ""
+                   width = "37.5%";
+               }
+               else if(status == 2){
+                   backgroundcolor = "#FFCC00"
+                   width = "62.5%";
+               }
+               else if(status == 3){
+                   backgroundcolor = "#6cc070"
+                   width = "100%";
+               }
+               else if(status == 4){
+                   backgroundcolor = "#df4759"
+                   width = "62.5%";
+               }
+               return {"background-color" : backgroundcolor, "width" : width, "border-radius" : "4px"};
+           },
             statusfont: function(status, index){
-                if(status == 0 && index == 0){
-                    return '500';
-                }
-                else if(status == 1 && index == 1){
-                    return '500';
-                }
-                else if(status == 2 && index == 2){
-                    return '500';
+                var weight = "";
+                var opacity = "1";
+                if(status == index){
+                    weight = "500";
                 }
                 else if(status == 4 && index == 2){
-                    this.extrastatusfont = "ระบบไม่สามารถดำเนินการได้"
-                    return '500';
-                }
-                else if(status == 3 && index == 3){
-                    return '500';
+                    weight = "500";
                 }
                 else{
-                    return '100';
+                    weight = "100";
+                    opacity = "0.6";
                 }
+                return {weight : weight, opa: opacity}
+            },
+            extrafontstatus: function(status){
+                if(status == 4){return "ระบบไม่สามารถดำเนินการได้"}
+                else{return "ระบบกำลังดำเนินการ"}
             }
            }
         }
@@ -295,11 +340,46 @@ export default {
     padding-right: 5%;
     word-wrap: break-word;
 }
+#reportform_description_id{
+    color: #ffffff;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    padding-top: 5%;
+}
 #reportform_bar{
     color: #ffffff;
     font-family: 'Kanit', sans-serif;
     font-size: 13px;
     padding-bottom: 1%;
     padding-left: 5%;
+}
+#footer_homepage{
+    width: 100%;
+    height: 78px;
+    background-color: #E35205;
+}
+
+#address{
+    font-family: 'Kanit', sans-serif;
+    font-size: 15px;
+    font-weight: 200;
+    color : #ffffff;
+    margin-left: 30px;
+    margin-bottom: 0em;
+}
+
+#footer_button{
+    width: 119px;
+    height: 46px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    font-family: 'Kanit', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    float: right;
+    text-align: center;
+    margin-top: 16px;
+    margin-right: 30px;
+    color:  #1a1819;
 }
 </style>
