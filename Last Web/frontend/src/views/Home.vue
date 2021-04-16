@@ -3,11 +3,8 @@
         <!-- navbar -->
         <div class="banner" >
             <div class="topnav">
-                <a href="/home"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+                <a href="/user"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
-                    <li id="comp1"><a href="/">Manage User</a></li>
-                    <li id="comp1"><a href="/">Manage Forum</a></li>
-                    <li id="comp1"><a href="/">Manage Problem</a></li>
                     <template v-if="id == ''">
                         <li id="comp2"><a href="/login">Log In</a></li>
                         <div class="line"></div>
@@ -281,6 +278,7 @@ export default {
             this.datauser = ''
             localStorage.removeItem('formLogin')
             console.log('Log out!')
+            this.$router.push({ name: "Home" });
         }
     },
     

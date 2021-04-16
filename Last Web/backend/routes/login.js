@@ -18,8 +18,9 @@ router.post("/checkingLogin", async function(req, res, next){
         {
             const match = await bcrypt.compare(password, rows[0].acc_password);
             if(match){
-                let [userid, _] = await conn.query("SELECT user_studentid FROM account a join user b ON a.acc_id=b.acc_id WHERE acc_email = ?", [email])
-                res.json({message: 'log in success!', user_id: userid[0].user_studentid})
+                let [userid, _] = await conn.query("SELECT a.acc_id,user_studentid FROM account a join user b ON a.acc_id=b.acc_id WHERE acc_email = ?", [email])
+                let [role, _2] = await conn.query("SELECT rule_manage_acc, rule_standand_admin FROM admin WHERE acc_id = ?", [userid[0].acc_id])
+                res.json({message: 'log in success!', user_id: userid[0].user_studentid, acc_id: userid[0].acc_id, rule_manage_acc: role[0].rule_manage_acc, rule_standand_admin: role[0].rule_standand_admin})
                 console.log('studentid', userid[0].user_studentid)
                 var d = new Date();
                 var n = d.toString();

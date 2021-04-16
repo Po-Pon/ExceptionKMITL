@@ -243,7 +243,7 @@ export default {
     },
     password: {
       required,
-      minLength: minLength(16),
+      minLength: minLength(8),
       maxLength: maxLength(255),
     },
   },
@@ -287,7 +287,12 @@ export default {
           if (data.message == "log in success!") {
             let myJSON = JSON.stringify(data);
             localStorage.setItem("formLogin", myJSON);
-            this.$router.push({ name: "Home" });
+            if (data.rule_manage_acc == 1 || data.rule_standand_admin == 1){
+              this.$router.push({ name: "Admin" });
+            }
+            else{
+              this.$router.push({ name: "User" });
+            }
           }
         })
         .catch((error) => {

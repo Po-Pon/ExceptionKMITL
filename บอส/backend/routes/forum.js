@@ -20,7 +20,6 @@ router.get('/', async function(req, res, next){
         await conn.rollback();
         console.log(err);
     }finally{
-        console.log('finally')
         conn.release();
     }
 });

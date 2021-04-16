@@ -464,7 +464,7 @@ export default {
     },
     passWord: {
       required,
-      minLength: minLength(16),
+      minLength: minLength(8),
       maxLength: maxLength(255),
     },
     repeatPassword: {
