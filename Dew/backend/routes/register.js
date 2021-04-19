@@ -19,6 +19,7 @@ router.post("/register/submit", async function (req, res, next){
     // bcrypt password
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(Password, salt)
+    // conn db
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -29,11 +30,11 @@ router.post("/register/submit", async function (req, res, next){
             console.log('Error', 'Email และ StudentID ซ้ำ')
         }
         else if(rows1.length > 0){
-            res.json({message : "Email นี้ถูกใช้แล้ว", errorEmail : 'error'})
+            res.json({message : "Email นี้ถูกใช้แล้ว", errorEmail : 'error', errorStudentid : ''})
             console.log('Error','Email ซ้ำ')
         }
         else if(rows2.length > 0){
-            res.json({message : "StudentID นี้ถูกใช้แล้ว", errorStudentid : 'error'})
+            res.json({message : "StudentID นี้ถูกใช้แล้ว", errorEmail : '', errorStudentid : 'error'})
             console.log('Error', 'StudentID ซ้ำ')
         }
         else{
@@ -48,15 +49,15 @@ router.post("/register/submit", async function (req, res, next){
             await conn.query(
                 "INSERT INTO admin(rule_manage_acc, rule_standand_admin, access_key) VALUES(false, false, null);"
             ) //  insert data in table_admin
-            await conn.commit()
             var d = new Date();
             var n = d.toString();
             console.log('register success!', 'Time:', n.substring(16,21))
             res.json({message : "register success Let's Login!"});
         }
+        await conn.commit()
     } catch (error) {
         await conn.rollback();
-        next(error);
+        return next(error)
     }
 })
 

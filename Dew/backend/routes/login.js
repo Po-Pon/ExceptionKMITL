@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path")
 const pool = require("../config");
-const bcrypt = require ('bcrypt');
+const bcrypt = require('bcrypt');
 
 router = express.Router();
 
@@ -10,6 +10,7 @@ router.post("/checkingLogin", async function(req, res, next){
     const email = req.body.form.email
     const password = req.body.form.password
     console.log('email', email, 'password', password)
+    // conn db
     const conn = await pool.getConnection()
     await conn.beginTransaction();
     try {
@@ -36,7 +37,7 @@ router.post("/checkingLogin", async function(req, res, next){
         await conn.commit()
     } catch (error) {
         await conn.rollback();
-        next(error);
+        return next(error)
     }
 })
 

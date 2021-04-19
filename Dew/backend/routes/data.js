@@ -14,9 +14,11 @@ router.get("/", async function (req, res, next) {
       join admin c
       on c.acc_id=b.acc_id`
     );
+    await conn.commit()
     return res.json(rows);
   } catch (err) {
-    return next(err)
+    await conn.rollback();
+    return next(error)
   }
 });
 
