@@ -282,11 +282,94 @@ export default {
             localStorage.removeItem('formLogin')
             console.log('Log out!')
         }
-    },
-    
+    },    
 }
 </script>
 
 <style scoped>
+
+/* card Home */
+
+.container{
+    margin-top: 30px;
+}
+#article a{
+    color:red;
+    font-size: 25px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#article a:hover{
+    color: orange;
+    text-decoration: none;
+}
+
+#news a{
+    color:red;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+#news a:hover{
+    color: orange;
+    text-decoration: none;
+}
+.card{
+    width: 100%;
+    height: 100%;
+    border-color: #302323;
+}
+.card-image{
+    overflow: hidden;
+}
+
+.card-image img{
+    transition: all 1.5s ease;
+}
+
+.card-image img:hover{
+    transform: scale(1.5);
+}
+
+.card-header{
+    font-weight: 600;
+}
+.card-text{
+    color: #000000;
+}
+
+#card-row-2{
+    padding-top: 20px;
+}
+
+#card-row-1 a{
+    text-decoration: none;
+}
+
+#card-row-2 a{
+    text-decoration: none;
+}
+
+#problem a{
+    color:red;
+    font-size: 25px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#problem a:hover{
+    color: orange;
+    text-decoration: none;
+}
+.col-md-4{
+    padding-left: 40px;
+}
+.col-md-4 a span{
+    color:white;
+    font-size: 30px;
+    font-weight: 900;
+    opacity: 0.64;
+}
 
 </style>

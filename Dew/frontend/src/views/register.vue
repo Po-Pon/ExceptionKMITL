@@ -1,9 +1,30 @@
 <template>
+<div>
+    <div class="banner">
+        <div class="topnav">
+            <a href="/home"
+            ><img
+                src="/image/navbar/newlogo.png"
+                width="110px"
+                height="auto"
+                style="padding-left: 20px"
+                alt=""
+            /></a>
+            <ul>
+            <li id="comp1"><a href="/">Manage User</a></li>
+            <li id="comp1"><a href="/">Manage Forum</a></li>
+            <li id="comp1"><a href="/">Manage Problem</a></li>
+            <li id="comp2"><a href="/login">Log In</a></li>
+            <div class="line"></div>
+            <li id="comp2"><a href="/register">Register</a></li>
+            </ul>
+        </div>
+    </div>
     <div class="container p-6 mt-4">
         <div class="row">
             <div class="col-sm-4" id="registerLeft">
-                <div class="p-6" style="background-color:red;">
-                    <img src="/image/navbar/newlogo.png" width="100%" height="auto" alt="">
+                <div class="p-6">
+                    <img src="/image/navbar/newlogo.png" width="100%" height="auto" alt="" id="logo2">
                 </div>
                 <img src="/image/login/cloud.png" alt="" id="cloud2" style="margin-top:200px">
             </div>
@@ -87,20 +108,21 @@
                         </div>
                         <div class="form-group">
                             <label for="InputPasswordReg" style="font-size:18px; font-weight:500; color:white;">Password</label>
-                            <input type="password" class="form-control" v-model.trim.lazy="$v.passWord.$model" :class="{'is-invalid': validationStatusError($v.passWord), 'is-valid': !$v.passWord.$invalid }" id="InputPasswordReg">
+                            <input type="password" class="form-control" v-model.trim.lazy="$v.passWord.$model" :class="{'is-invalid': validationStatusError($v.passWord), 'is-valid': !$v.passWord.$invalid }" aria-describedby="passwordHelp" id="InputPasswordReg">
                             <a @click="togglePassReg()"><span class="fa fa-fw fa-eye field-icon toggle-password"></span></a>
+                            <div id="passwordlHelp" class="form-text"><span class="text-warning">Warning :</span> ไม่ควรใช้ Password เดียวกันกับ Password Email!</div>
                             <div class="invalid-feedback">
                                 <span v-if="!$v.passWord.required">กรุณากรอกรหัสผ่าน</span>
-                                <span v-if="!$v.passWord.minLength">Password ต้องไม่ต่ำกว่า 16 ตัว</span>
+                                <span v-if="!$v.passWord.minLength">Password ต้องไม่ต่ำกว่า 8 ตัว</span>
                                 <span v-if="!$v.passWord.maxLength">Password ต้องไม่เกิน 255 ตัว</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="InputPasswordRegCheck" style="font-size:18px; font-weight:500; color:white;">Repeat Password</label>
-                            <input type="password" class="form-control" v-model.trim.lazy="$v.repeatPassword.$model" :class="{'is-invalid': validationStatusError($v.repeatPassword), 'is-valid': (passWord != '') ? !$v.repeatPassword.$invalid : '' }" id="InputPasswordRegCheck" name="InputPasswordRegCheck">
+                            <input type="password" class="form-control" v-model.trim.lazy="$v.repeatPassword.$model" :class="{'is-invalid': validationStatusError($v.repeatPassword), 'is-valid': (passWord != '') ? !$v.repeatPassword.$invalid : '' }" id="InputPasswordRegCheck">
                             <a @click="togglePassRegCheck()"><span class="fa fa-fw fa-eye field-icon toggle-password"></span></a>
                             <div class="invalid-feedback">
-                                <span v-if="!$v.repeatPassword.required">กรุณากรอกรหัสผ่านอีกครั้ง</span>
+                                <span v-if="!$v.repeatPassword.required">กรุณากรอกรหัสผ่านอีกครั้ง&nbsp;</span>
                                 <span v-if="!$v.repeatPassword.sameAspassword">Password ไม่ตรงกัน</span>
                             </div>
                         </div>
@@ -127,7 +149,26 @@
             </div>
         </div>
     </div>
-    
+    <footer>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="copyright text-white" style="font-weight: 200;"> 
+                    King Mongkut's Institute of technology Ladkrabang<br>
+                    1Chalong Krung 1 Alley, Lat Krabang Bangkok 10520<br>
+                    02 723 4900
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="copyright" style="padding-top: 20px; color: #aaa;">
+                    Copyright &copy; 2021 ExptionKMITL
+                </div>
+            </div>
+            <div class="col-md-2" id="help">
+                <a href="/">HELP</a>
+            </div>
+        </div>
+    </footer>
+</div>
 </template>
 
 <script>
@@ -151,22 +192,17 @@ export default {
             messageRegOK: '',
             // backend error
             studentidError: '',
-            emailError: ''
+            emailError: '',
         }
     },
     created(){
         axios.get("http://localhost:5000/")
         .then((response) => {
             this.dataReg = response.data
-            for(let i = 0; i < this.dataReg.length ; i++ ){
-                this.repeatEmail[i] = this.dataReg[i].acc_email
-            }
-            console.log('dataReg', this.dataReg)
-            console.log('repeatEmailAll', this.repeatEmail)
         })
         .catch((err) => {
             console.log(err);
-        });
+        })
     },
     validations: {
         firstname: {
@@ -196,7 +232,7 @@ export default {
         },
         passWord: {
             required,
-            minLength: minLength(16),
+            minLength: minLength(8),
             maxLength: maxLength(255)
         },
         repeatPassword: {
@@ -281,6 +317,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>
