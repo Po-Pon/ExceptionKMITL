@@ -228,7 +228,8 @@ export default {
     background-color: rgb(150, 54, 3);
     height: 12%;
     width: 100%;
-    position: absolute;
+    position: fixed;
+    z-index: 1;
     top: 0;
     left: 0;
 }

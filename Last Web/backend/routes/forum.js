@@ -2,20 +2,17 @@ const express = require('express');
 const pool = require('../config')
 router = express.Router();
 
-router.get('/', async function(req, res, next){
+router.get('/forum', async function(req, res, next){
     const conn = await pool.getConnection();
     await conn.beginTransaction();
 
     try{
         let [rows, fields] = await conn.query(
-            'SELECT forum_id, forum_topic, forum_type FROM forum'
+            'SELECT forum_id, forum_topic, forum_type, image_address FROM forum, forum_image WHERE forum.forum_id = forum_image.id'
         );
-        let [rows2, fields2] = await conn.query(
-            'SELECT * FROM forum_image'
-        )
         conn.commit()
         console.log(rows);
-        return res.json({rows, rows2});
+        return res.json(rows);
     }catch(err){
         await conn.rollback();
         console.log(err);
