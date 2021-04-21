@@ -14,7 +14,7 @@
         <div id="all_favorite_arc" class="row">
             <div class="col-3" style="margin-bottom: 32px;" v-for="forum in forums">
                 <div id="favorite_arc_card" class="card">
-                    <img id="favorite_arc_card_image" class="card-img-top" :src="searchimage(forum.forum_id)">
+                    <img id="favorite_arc_card_image" class="card-img-top" :src="forum.image_address">
                     <div id="favorite_arc_card_body" :style="{'border-top-color' : forumcolor(forum.forum_type)}" class="card-body">
                       <div id="favorite_arc_card_type_box" :style="{'background-color': forumcolor(forum.forum_type)}">{{forum.forum_type}}</div>
                       <p id="favorite_arc_card_text" class="card-text">{{forum.forum_topic}}</p>
@@ -42,8 +42,6 @@ export default {
   data() {
     return {
       forums: null,
-      forum_image: null,
-      searchphoto: "../assets/picture/forum/forum_1.jpg",
       typecolor: {
         education: "#E35205",
         parttimejob: "#6BDCA8",
@@ -61,7 +59,6 @@ export default {
       .get("http://localhost:5000/forum")
       .then((response) => {
         this.forums = response.data.rows;
-        this.forum_image = response.data.rows2;
       })
       .catch((err) => {
         console.log(err);
@@ -80,15 +77,6 @@ export default {
       } else if (type == "ทุนการศึกษา") {
         return this.typecolor.scholarship;
       }
-    },
-    searchimage: function (id) {
-      let image = "";
-      this.forum_image.map((x) => {
-        if (x.id == id) {
-          image = x.image_address;
-        }
-      });
-      return image;
     },
   },
 };
