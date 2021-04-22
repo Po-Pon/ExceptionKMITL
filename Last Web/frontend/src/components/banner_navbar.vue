@@ -38,10 +38,11 @@ export default {
 
 <style scoped>
     .banner{
-        position: fixed;
-        right: 0;
-        top: 0;
-        z-index: 1;
+        height: 7.5%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     }
 </style>
 

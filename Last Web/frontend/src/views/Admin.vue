@@ -3,11 +3,11 @@
         <!-- navbar -->
         <div class="banner" >
             <div class="topnav">
-                <a href="/"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+                <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
-                    <li id="comp1"><a href="/">Manage User</a></li>
-                    <li id="comp1"><a href="/">Manage Forum</a></li>
-                    <li id="comp1"><a href="/">Manage Problem</a></li>
+                    <li id="comp1" v-if="manage_acc == 1"><a href="/manageuser">Manage User</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="">Manage Forum</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageproblem">Manage Problem</a></li>
                     <template v-if="id == ''">
                         <li id="comp2"><a href="/login">Log In</a></li>
                         <div class="line"></div>
@@ -261,12 +261,14 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 export default {
     data(){
         return{
             datauser: null,
             id: '',
+            manage_acc: null,
+            manage_standand: null,
         }
     },
     beforecreate(){
@@ -283,6 +285,8 @@ export default {
         this.datauser = JSON.parse(localStorage.getItem('formLogin'))
         if(this.datauser != null){
             this.id = this.datauser.user_id
+            this.manage_acc = this.datauser.rule_manage_acc
+            this.manage_standand = this.datauser.rule_standand_admin
         }
     },
     methods:{
@@ -292,6 +296,17 @@ export default {
             localStorage.removeItem('formLogin')
             console.log('Log out!')
             this.$router.push({ name: "Home" });
+        },
+        checkadmin(){
+            axios.post('/http://localhost:5000/checkadmin', {
+                id:this.id
+            })
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((err) =>{
+                if(err) throw err
+            })
         }
     }
 }

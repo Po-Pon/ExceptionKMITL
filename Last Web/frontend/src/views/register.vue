@@ -2,7 +2,7 @@
   <div>
       <div class="banner">
       <div class="topnav">
-        <a href="/home"
+        <a href="/"
           ><img
             src="/image/navbar/newlogo.png"
             width="110px"
@@ -11,9 +11,6 @@
             alt=""
         /></a>
         <ul>
-          <li id="comp1"><a href="/">Manage User</a></li>
-          <li id="comp1"><a href="/">Manage Forum</a></li>
-          <li id="comp1"><a href="/">Manage Problem</a></li>
           <li id="comp2"><a href="/login">Log In</a></li>
           <div class="line"></div>
           <li id="comp2"><a href="/register">Register</a></li>

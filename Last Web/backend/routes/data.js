@@ -6,14 +6,7 @@ router = express.Router();
 
 router.get("/", async function (req, res, next) {
   try {
-    const [rows, fields] = await pool.query(
-      `select a.* , b.user_studentid, b.user_status, c.rule_manage_acc, c.rule_standand_admin
-      from account a
-      join user b
-      on a.acc_id=b.acc_id
-      join admin c
-      on c.acc_id=b.acc_id`
-    );
+    const [rows, fields] = await pool.query('SELECT acc_id, acc_fname, acc_lname, acc_email, create_date FROM account');
     return res.json(rows);
   } catch (err) {
     return next(err)

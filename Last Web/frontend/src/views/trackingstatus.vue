@@ -1,13 +1,6 @@
 <template>
     <body>
-        <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src="/image/navbar/newlogo.png"></a>
-        <form class="form-inline">
-            <a id="navbar_register" href="#">Log In</a>
-            <div id=line_register></div>
-            <a id="navbar_register" href="#" style="margin-right: 30px">Register</a>
-        </form>
-        </nav>
+        <nnavbar></nnavbar>
         <center><p id="tracking_big_title">ติดตามสถานะเรื่องร้องเรียน</p></center>
         <div id="all_select_tab" class="container-fluid">
             <div class="row">
@@ -109,6 +102,7 @@
 </template>
 
 <script>
+import nnavbar from "../components/banner_navbar.vue";
 import axios from "axios";
 export default {
         data() {
@@ -123,6 +117,9 @@ export default {
                 errorid: ""
             }
         },
+    components: {
+      nnavbar
+    },
         methods:{
            type_report: function(){
             if(this.type_select == null){
@@ -270,7 +267,7 @@ export default {
     font-family: 'Kanit', sans-serif;
     font-size: 35px;
     font-weight: 400;
-    margin-top: 10%;
+    margin-top: 3.7%;
 }
 #all_select_tab{
     padding-left: 8%;

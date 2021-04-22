@@ -136,7 +136,8 @@ export default {
     font-family: 'Kanit', sans-serif;
     font-size: 35px;
     font-weight: 700;
-    padding-top: 0px;
+    padding-top: 10px;
+    margin-bottom: -50px;
 }
 
 #reportform_box{

@@ -8,6 +8,8 @@ import pathRegister from '../views/register.vue'
 import pathForum from '../views/forum.vue'
 import pathReportform from '../views/reportform.vue'
 import pathTrackingstatus from '../views/trackingstatus.vue'
+import pathForgot from '../views/forgotPassword.vue'
+import pathmanageacc from '../views/manage_acc.vue'
 
 Vue.use(VueRouter)
 
@@ -15,22 +17,22 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: pathIndex // set home as path '/'
+    component: pathIndex // set index as path '/'
   },
   {
     path: '/user',
     name: 'User',
-    component: pathHome // set home as path '/'
+    component: pathHome // set home as path '/user'
   },
   {
     path: '/admin',
     name: 'Admin',
-    component: pathAdmin // set home as path '/'
+    component: pathAdmin // set admin as path '/admin'
   },
   {
     path: '/login',
     name: 'Login',
-    component: pathLogin // set login as path '/'
+    component: pathLogin // set login as path '/login'
   },
   {
     path: '/forum',
@@ -52,6 +54,16 @@ const routes = [
     name: 'Register',
     component: pathRegister // set register as path '/'
   },
+  {
+    path: '/forgotpassword',
+    name: 'Forgot',
+    component: pathForgot // set forgot password as path '/forgotpassword'
+  },
+  {
+    path: '/manageuser',
+    name: 'Manage_acc',
+    component: pathmanageacc // set forgot password as path '/forgotpassword'
+  }
 ]
 
 const router = new VueRouter({

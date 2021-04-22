@@ -1,0 +1,105 @@
+/* login register */
+
+#loginLeft,#registerLeft{
+    background-color: red;
+}
+
+#loginRight,#registerRight{
+    background-color: #130d0d;
+}
+
+input[type="email"],input[type="password"],input[type="text"],#SelectStatusReg, textarea{
+    background-color : #130d0d; 
+    color: whitesmoke;
+}
+
+.form-control:focus, .form-control:active {
+    background: transparent;
+    color: whitesmoke;
+}
+
+#logo1{
+    animation-name: logomove1;
+    animation: logomove1 3s;
+}
+
+#logo2{
+    animation-name: logomove2;
+    animation: logomove2 3s;
+}
+
+#cloud1{
+    margin-left: -15px;
+    height: 400px;
+    max-width: 120%;
+    position: relative;
+    animation-name: cloudmove1;
+    animation: cloudmove1 2s;
+    animation-timing-function: ease-out;
+    overflow: hidden;
+}
+
+#cloud2{
+    margin-left: -15px;
+    height: 585px;
+    max-width: 120%;
+    position: relative;
+    animation-name: cloudmove2;
+    animation: cloudmove2 3s;
+    animation-timing-function: ease-out;
+    overflow: hidden;
+}
+
+@keyframes cloudmove1 {
+    from {top: -100px;}
+    to {top: 0px;}
+}
+
+@keyframes cloudmove2 {
+    from {top: -200px;}
+    to {top: 0px;}
+}
+
+@keyframes logomove1 {
+    0% {
+        opacity: 0.1;
+    }
+    25%{
+        opacity: 0.25;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    75%{
+        opacity: 0.75;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes logomove2 {
+    0% {
+        opacity: 0.1;
+    }
+    25%{
+        opacity: 0.25;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    75%{
+        opacity: 0.75;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.field-icon {
+    float: right;
+    margin-right: 30px;
+    margin-top: -26px;
+    position: relative;
+    z-index: 2;
+}

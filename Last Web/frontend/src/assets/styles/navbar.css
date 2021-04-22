@@ -1,0 +1,125 @@
+.banner {
+    /* The image used */
+    background-image: url('/image/navbar/banner_for_project_web.svg');
+    /* Center and scale the image nicely */
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* Needed to position the navbar */
+    position: relative;
+}
+.topnav{
+    color:#fff;
+    display:flex;
+    justify-content: space-between;
+}
+.topnav ul{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    padding-right: 20px;  
+}
+.topnav li{
+    list-style: none;        
+}
+.topnav #comp1 a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 200;
+    padding: 5px 12px;
+}
+.topnav #comp1 a:hover{
+    color: orange;
+    text-decoration: none;
+}
+.topnav #comp2 a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 5px 12px;
+}
+.topnav #comp2 a:hover{
+    color: yellow;
+    text-decoration: none;
+}
+
+.topnav #comp3{
+    color:white; 
+    background-color:#e4af01;
+    margin-bottom: 10px;
+    margin-right: 10px; 
+    margin-left: 10px; 
+}
+
+.topnav #comp3:hover{
+    background-color:#f7d12b; 
+}
+
+.topnav::before{
+    content: " ";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 300px;
+    left: 0px;
+    background-color:#963306;
+    opacity: 0.53;
+    z-index: 1;
+}
+.topnav > * {
+    z-index: 100;
+}
+.line {
+    border-left: 2px solid white;
+    height: 36px;
+}
+.content{
+    padding: 30px 0px 0px 30px;
+}
+.content #line-1{
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 500;
+}
+.content #line-2{
+    color: #000000;
+    font-size: 15px;
+    font-weight: 300;
+}
+.content #line-3{
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 300; 
+}
+.used{
+    padding: 20px 0px 40px 30px;
+}
+.used #apply{
+    text-decoration: none;
+    width: 170px;
+    padding: 10px 15px;
+    display: inline-block;
+    border-radius: 15px;
+    background: #000000;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;  
+}
+.used #tracking{
+    text-decoration: none;
+    width: 170px;
+    padding: 10px 15px;
+    display: inline-block;
+    border-radius: 15px;
+    background: #000000;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500; 
+    margin: 5px; 
+}
