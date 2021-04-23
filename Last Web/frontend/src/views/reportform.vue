@@ -3,7 +3,7 @@
     <nnavbar></nnavbar>
     <div id="reportform" class="container-fluid">
         <p id="reportform_title">แบบฟอร์มร้องเรียน</p>
-        <div class="col-12"  id="reportform_box" style="background-color: #3282b8;">
+        <div class="col-12"  id="reportform_box" style="background-color: #6BDCA8;">
             <div class="row">
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านสังคม</p>
@@ -13,7 +13,7 @@
                 <div class="col-6" id="reportform_image_right" style="background-image: url('https://d25tv1xepz39hi.cloudfront.net/2016-08-01/files/picture-style_1311.jpg');"></div>
             </div>
         </div>
-        <div class="col-12" id="reportform_box" style="background-color: #0375b4;">
+        <div class="col-12" id="reportform_box" style="background-color: #E35205;">
             <div class="row" style="height: 100%;">
                 <div class="col-6" id="reportform_image_left" style="background-image: url('https://www.educationcorner.com/images/featured-importance-education.png');"></div>
                 <div class="col-6" id="reportform_description">
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" id="reportform_box" style="background-color: #007849;">
+        <div class="col-12" id="reportform_box" style="background-color: #3FAAF6;">
             <div class="row" style="height: 100%;">
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านทุนการศึกษา</p>
@@ -33,7 +33,7 @@
                 <div class="col-6" id="reportform_image_right" style="background-image: url('https://5estimates.com/wp-content/uploads/2020/01/SCHOLARSHIP.jpg');"></div>
             </div>
         </div>
-        <div class="col-12" id="reportform_box" style="background-color: #e24e42;">
+        <div class="col-12" id="reportform_box" style="background-color: #DA8DFB;">
             <div class="row" style="height: 100%;">
                 <div class="col-6" id="reportform_image_left" style="background-image: url('http://agora.rovernet.eu/wp-content/uploads/2020/01/Registration.jpeg');"></div>
                 <div class="col-6" id="reportform_description">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" id="reportform_box" style="background-color: #e86e80;">
+        <div class="col-12" id="reportform_box" style="background-color: #F5B406;">
             <div class="row" style="height: 100%;">
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านสภาพแวดล้อม</p>
