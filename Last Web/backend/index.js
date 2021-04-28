@@ -18,7 +18,7 @@ const forum = require("./routes/forum")
 const getreportform = require("./routes/getreportform")
 const forgotpassword = require('./routes/forgotpassword')
 const checkadmin = require('./routes/checkadmin')
-const pool = require("./config");
+const dataReport = require('./routes/dataReport')
 // use routers
 app.use(dataRouter.router)
 app.use(registerRouter.router)
@@ -27,6 +27,7 @@ app.use(forum.router);
 app.use(getreportform.router)
 app.use(forgotpassword.router)
 app.use(checkadmin.router)
+app.use(dataReport.router)
 
 app.listen(5000, () => {
   console.log(`database running at http://localhost:5000`)

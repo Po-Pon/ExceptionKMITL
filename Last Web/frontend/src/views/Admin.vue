@@ -5,9 +5,9 @@
             <div class="topnav">
                 <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
-                    <li id="comp1" v-if="manage_acc == 1"><a href="/manageuser">Manage User</a></li>
+                    <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
                     <li id="comp1" v-if="manage_standand == 1"><a href="">Manage Forum</a></li>
-                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageproblem">Manage Problem</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
                     <template v-if="id == ''">
                         <li id="comp2"><a href="/login">Log In</a></li>
                         <div class="line"></div>

@@ -64,7 +64,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model.trim="$v.firstname.$model"
+                        v-model.trim.lazy="$v.firstname.$model"
                         :class="{
                           'is-invalid': validationStatusError($v.firstname),
                           'is-valid': !$v.firstname.$invalid,
