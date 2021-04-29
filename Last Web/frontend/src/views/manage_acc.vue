@@ -12,7 +12,7 @@
         /></a>
         <ul>
           <li id="comp1"><a href="/manageUser">Manage User</a></li>
-          <li id="comp1"><a href="/">Manage Forum</a></li>
+          <li id="comp1"><a href="/manageUser">Manage Forum</a></li>
           <li id="comp1"><a href="/manageReport">Manage Report</a></li>
           <template v-if="id == ''">
             <li id="comp2"><a href="/login">Log In</a></li>

@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/styles/navbar.css'
 import './assets/styles/login_reg.css'
 import './assets/styles/footer.css'
-import './assets/styles/style.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 

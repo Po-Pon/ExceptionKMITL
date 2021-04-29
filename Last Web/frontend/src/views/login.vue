@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="banner">
-      <div class="topnav">
+      <div class="topnav_login_reg">
         <a href="/"
           ><img
             src="/image/navbar/newlogo.png"
@@ -20,12 +20,6 @@
     <div class="container p-6 mt-4" id="loginform">
       <div class="row">
         <div class="col-sm-4" id="loginLeft">
-          <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    With Bootstrap!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div> -->
           <div class="p-6 mt-6" style="background-color: red">
             <img
               src="/image/navbar/newlogo.png"

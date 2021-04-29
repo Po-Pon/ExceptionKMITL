@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="banner">
-      <div class="topnav">
+      <div class="topnav_login_reg">
         <a href="/"
           ><img
             src="/image/navbar/newlogo.png"

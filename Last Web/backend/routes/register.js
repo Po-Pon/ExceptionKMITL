@@ -1,7 +1,6 @@
 const express = require("express");
-const path = require("path")
 const pool = require("../config");
-const bcrypt = require ('bcrypt')
+const bcrypt = require ('bcrypt');
 
 router = express.Router();
 
