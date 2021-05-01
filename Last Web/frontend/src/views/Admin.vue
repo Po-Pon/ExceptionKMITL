@@ -5,17 +5,13 @@
             <div class="topnav">
                 <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
+                    <div id="MyClockDisplay" class="clock"></div>
                     <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
                     <li id="comp1" v-if="manage_standand == 1"><a href="">Manage Forum</a></li>
                     <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
-                    <template v-if="id == ''">
-                        <li id="comp2"><a href="/login">Log In</a></li>
-                        <div class="line"></div>
-                        <li id="comp2"><a href="/register">Register</a></li>
-                    </template>
-                    <div class="dropdown" v-if="id !=''">
+                    <div class="dropdown">
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{id}}
+                            <i class="fa fa-user-plus"></i> {{id}}
                         </button>
                         <p class="dropdown-menu" >
                             <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
@@ -31,8 +27,8 @@
                 และสามารถติดตามสถานะของเรื่องร้องเรียนนั้นได้ด้วยตนเอง!</span>
             </div>
             <div class="used">
-                <a href="/" id="apply">ร้องเรียนปัญหา</a>
-                <a href="/" id="tracking">ติดตามสถานะ</a>
+                <a href="/reportform" id="apply">ร้องเรียนปัญหา</a>
+                <a href="/trackingstatus" id="tracking">ติดตามสถานะ</a>
             </div>
         </div>
 
@@ -265,35 +261,47 @@ import axios from "axios";
 export default {
     data(){
         return{
+            User_permission: null,
             datauser: null,
             id: '',
             manage_acc: null,
             manage_standand: null,
         }
     },
-    beforecreate(){
-        this.datauser = JSON.parse(localStorage.getItem('formLogin'))
-        console.log(this.datauser)
-        if(this.datauser == null){
-            console.log('kuy2')
-            if(this.datauser.rule_manage_acc == 1 || this.datauser.rule_standand_admin == 1){
-                this.$router.push({ name: "Home"})
-            }
-        }
-    },
+    // beforecreate(){
+    //     this.datauser = JSON.parse(localStorage.getItem('formLogin'))
+    //     console.log(this.datauser)
+    //     if(this.datauser == null){
+    //         console.log('kuy2')
+    //         if(this.datauser.rule_manage_acc == 1 || this.datauser.rule_standand_admin == 1){
+    //             this.$router.push({ name: "Home"})
+    //         }
+    //     }
+    // },
     created(){
-        this.datauser = JSON.parse(localStorage.getItem('formLogin'))
+        this.User_permission = JSON.parse(localStorage.getItem('formLoginUser'))
+        this.datauser = JSON.parse(localStorage.getItem('formLoginAdmin'))
         if(this.datauser != null){
             this.id = this.datauser.user_id
             this.manage_acc = this.datauser.rule_manage_acc
             this.manage_standand = this.datauser.rule_standand_admin
         }
+        else{
+            if(this.User_permission != null){
+                alert('You are not an Admin!!')
+                this.$router.push({ name: "User" });
+            }
+            else{
+                alert('ฮั่นแหน่รู้นะจะทำอะไร!!...กรุณาล็อกอินก่อนเข้าใช้งานนะครับ')
+                this.$router.push({ name: "Home" });
+            }
+        }
     },
     methods:{
         logout(){
             this.id = ''
-            this.datauser = ''
-            localStorage.removeItem('formLogin')
+            this.datauser = null
+            localStorage.removeItem('formLoginAdmin')
             console.log('Log out!')
             this.$router.push({ name: "Home" });
         },
@@ -313,5 +321,7 @@ export default {
 </script>
 
 <style scoped>
-
+.fa-user-plus{
+    color:rgb(0, 0, 200);
+}
 </style>

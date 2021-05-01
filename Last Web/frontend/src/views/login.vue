@@ -147,6 +147,7 @@
                   class="form-check-input"
                   id="Check1"
                   style="background-color: #130d0d; border-color: white"
+                  v-model="remember"
                 />
                 <label class="form-check-label" for="Check1">Remember me</label>
                 <a
@@ -225,6 +226,8 @@ export default {
       password: "",
       passwordError: "",
       br: "<br><br>",
+      remember: false,
+      rememberData: null,
     };
   },
   validations: {
@@ -237,6 +240,14 @@ export default {
       minLength: minLength(8),
       maxLength: maxLength(255),
     },
+  },
+  created(){
+    this.rememberData = JSON.parse(localStorage.getItem('rememberMe'))
+    if(this.rememberData != null){
+      this.email = this.rememberData.rememberEmail
+      this.password = this.rememberData.rememberPassword
+      this.remember = this.rememberData.rememberTrue
+    }
   },
   methods: {
     togglePassLogin() {
@@ -268,20 +279,34 @@ export default {
           },
         })
         .then((response) => {
+
           const data = response.data;
           this.emailError = data.errorEmail;
           this.passwordError = data.errorPassword;
-          // console.log(this.emailError)
-          // console.log(this.passwordError)
-          // console.log(response.data)
+
+          const data_remember = {
+            rememberEmail: this.email,
+            rememberPassword: this.password,
+            rememberTrue: this.remember
+          }
           console.log(data.message);
+
           if (data.message == "log in success!") {
-            let myJSON = JSON.stringify(data);
-            localStorage.setItem("formLogin", myJSON);
+            if(this.remember == true){
+              let remember_json = JSON.stringify(data_remember)
+              localStorage.setItem('rememberMe', remember_json)
+            }
+            if(this.remember == false){
+              localStorage.removeItem('rememberMe')
+            }
             if (data.rule_manage_acc == 1 || data.rule_standand_admin == 1){
+              let myJSON = JSON.stringify(data);
+              localStorage.setItem("formLoginAdmin", myJSON);
               this.$router.push({ name: "Admin" });
             }
             else{
+              let myJSON = JSON.stringify(data);
+              localStorage.setItem("formLoginUser", myJSON);
               this.$router.push({ name: "User" });
             }
           }

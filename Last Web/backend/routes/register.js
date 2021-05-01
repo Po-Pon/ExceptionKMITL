@@ -45,7 +45,7 @@ router.post("/register/submit", async function (req, res, next){
                 [StudentID, Status]
             ) //  insert data in table_user
             await conn.query(
-                "INSERT INTO admin(rule_manage_acc, rule_standand_admin, access_key) VALUES(false, false, null);"
+                "INSERT INTO admin(rule_manage_acc, rule_standand_admin, access_key) VALUES(0, 0, null);"
             ) //  insert data in table_admin
             await conn.commit()
             var d = new Date();

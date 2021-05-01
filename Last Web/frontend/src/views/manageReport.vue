@@ -5,17 +5,13 @@
             <div class="topnav">
                 <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
+                    <div id="MyClockDisplay" class="clock"></div>
                     <li id="comp1"><a href="/manageUser">Manage User</a></li>
                     <li id="comp1"><a href="/manageReport">Manage Forum</a></li>
                     <li id="comp1"><a href="/manageReport">Manage Report</a></li>
-                    <template v-if="id == ''">
-                        <li id="comp2"><a href="/login">Log In</a></li>
-                        <div class="line"></div>
-                        <li id="comp2"><a href="/register">Register</a></li>
-                    </template>
                     <div class="dropdown" v-if="id !=''">
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{id}}
+                            <i class="fa fa-user-plus"></i> {{id}}
                         </button>
                         <p class="dropdown-menu" >
                             <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
@@ -32,22 +28,22 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-2">
-                        <button type="button" id="button" class="btn btn-secondary" @click="filter_all()">All</button>
+                        <p type="button" id="button" class="btn btn-secondary" @click="filter_all()">All</p>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="button" class="btn btn-primary" @click="filter_New()">เรื่องร้องเรียนใหม่</button>
+                        <p type="button" id="button" class="btn btn-primary" @click="filter_New()">เรื่องร้องเรียนใหม่</p>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="button" class="btn btn-warning" @click="filter_Check()">กำลังตรวจสอบ</button>
+                        <p type="button" id="button" class="btn btn-warning" @click="filter_Check()">กำลังตรวจสอบ</p>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="button" class="btn btn-info" @click="filter_InProgress()">กำลังดำเนินการ</button>
+                        <p type="button" id="button" class="btn btn-info" @click="filter_InProgress()">กำลังดำเนินการ</p>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="button" class="btn btn-danger" @click="filter_NotPass()">ไม่ผ่าน</button>
+                        <p type="button" id="button" class="btn btn-danger" @click="filter_NotPass()">ไม่ผ่าน</p>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="button" class="btn btn-success" @click="filter_Completed()">เสร็จสิ้น</button>
+                        <p type="button" id="button" class="btn btn-success" @click="filter_Completed()">เสร็จสิ้น</p>
                     </div>
                 </div>
             </div>
@@ -71,11 +67,11 @@
                                     <td class="col-md-2">{{report.report_form_topic}}</td>
                                     <td class="col-md-2">{{report.user_studentid}}</td>
                                     <td id="td_action" class="col-md-1">
-                                        <a v-if="report.status != 3 && report.status != 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-caret-square-right" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
-                                        <a v-if="report.status != 3 && report.status != 4" @click="check_Notpass(report.report_form_id, report.status)"><i class="fas fa-ban" style="color:red; font-size:20px"></i></a>
-                                        <a v-if="report.status == 3"><i class="fas fa-search" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
-                                        <a v-if="report.status == 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-undo" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
-                                        <a v-if="report.status == 3 || report.status == 4"><i class="fas fa-times-circle" style="color:red; font-size:20px"></i></a>
+                                        <a v-show="report.status != 3 && report.status != 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-caret-square-right" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
+                                        <a v-show="report.status != 3 && report.status != 4" @click="check_Notpass(report.report_form_id, report.status)"><i class="fas fa-ban" style="color:red; font-size:20px"></i></a>
+                                        <a v-show="report.status == 3" @click="show_detail(report.report_form_id, report.type)"><i class="fas fa-search" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
+                                        <a v-show="report.status == 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-undo" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
+                                        <a v-show="report.status == 3 || report.status == 4" @click="check_delete(report.report_form_id, report.status)"><i class="fas fa-times-circle" style="color:red; font-size:20px"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -83,6 +79,7 @@
                     </div>
                 </div>
                 <div class="div col-md-2" style="margin-top: 10px">
+                    <div class="separator">Filter by problem</div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="check1" id="check1" value="1" v-model="problem" @click="problem_1()">
                         <label class="form-check-label">
@@ -113,10 +110,12 @@
                             ปัญหาด้านสภาพสิ่งแวดล้อม
                         </label>
                     </div>
-                    <input style="margin: 10px 0px 0px 25px;" id="clear" type='submit' value='clear' @click="clear()">                
+                    <input style="margin: 10px 0px 0px 25px;" id="clear" type='submit' value='clear' @click="clear()"> 
+                    <hr id="hr">          
                 </div>
             </div>
         </div>
+        <!-- modal next status -->
         <div class="modal" :class = "{ 'is-active' : modal_nextStatus }">
             <div class="modal-background"></div>
                 <div class="modal-card">
@@ -147,6 +146,7 @@
                 </footer>
             </div>
         </div>
+        <!-- modal notpass -->
         <div class="modal" :class = "{ 'is-active' : modal_Notpass }">
             <div class="modal-background"></div>
                 <div class="modal-card">
@@ -172,47 +172,250 @@
                 </footer>
             </div>
         </div>
-
+        <!-- modal delete -->
+        <div class="modal" :class = "{ 'is-active' : modal_delete }">
+            <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title" style="margin-bottom:-8px;">Delete Report</p>
+                        <button class="delete" aria-label="close" @click='modal_delete = false'></button>
+                    </header>
+                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px">
+                            <!-- คุณต้องการที่จะลบ Report Form ID: {{formid_Notpass}} ออกจากระบบ? -->
+                            คุณต้องการที่จะส่ง Report Form ID: {{formid_delete}} status: <span class="bg-primary text-white">{{form_status_delete}}</span> ออกจากระบบ ?
+                        <div class="columns">
+                            <div class="column">
+                                <p class="control" style="padding-top:10px;"> 
+                                    <span style="padding-left: 73%;"><button class="button" @click="modal_delete = false">Cancel</button></span>
+                                    <span style="padding-left: 12px;" @click="deleteReport(formid_delete)"><button class="button is-danger">Yes</button></span>
+                                 </p>
+                            </div>
+                        </div>
+                    </section>
+                <footer class="modal-card-foot">
+                    <!-- footer -->
+                </footer>
+            </div>
+        </div>
+        <!-- modal show detail ! sociality ! -->
+        <div class="modal" :class = "{ 'is-active' : modal_sociality }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Detail Report Form ID: {{report_form_id_sociality}} sociality</p>
+                    <button class="delete" aria-label="close"  @click='modal_sociality = false'></button>
+                </header>
+                <section class="modal-card-body">
+                    {{report_form_id_sociality}}<br>
+                    {{report_form_date_time_sociality}}<br>
+                    {{report_form_topic_sociality}}<br>
+                    {{type_sociality}}<br>
+                    {{user_reprot_sociality}}<br>
+                    {{social_location}}<br>
+                    {{problem_description_sociality}}<br>
+                    {{condition_of_submission_sociality}}<br>
+                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-danger" style="margin-left: 85%;" @click='modal_sociality = false'>close</button>
+                </footer>
+            </div>
+        </div>
+        <!-- modal show detail ! studying ! -->
+        <div class="modal" :class = "{ 'is-active' : modal_studying }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_studying}} studying</p>
+                <button class="delete" aria-label="close" @click='modal_studying = false'></button>
+                </header>
+                <section class="modal-card-body">
+                    {{report_form_id_studying}}<br>
+                    {{report_form_date_time_studying}}<br>
+                    {{report_form_topic_studying}}<br>
+                    {{type_studying}}<br>
+                    {{user_reprot_studying}}<br>
+                    {{studying_subject_id}}<br>
+                    {{problem_description_studying}}<br>
+                    {{condition_of_submission_studying}}<br>
+                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                </section>
+                <footer class="modal-card-foot">
+                <button class="button is-danger" style="margin-left: 85%;" @click='modal_studying = false'>close</button>
+                </footer>
+            </div>
+        </div>
+        <!-- modal show detail ! scholarship ! -->
+        <div class="modal" :class = "{ 'is-active' : modal_scholarship }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_scholarship}} scholarship</p>
+                <button class="delete" aria-label="close" @click='modal_scholarship = false'></button>
+                </header>
+                <section class="modal-card-body">
+                    {{report_form_id_scholarship}}<br>
+                    {{report_form_date_time_scholarship}}<br>
+                    {{report_form_topic_scholarship}}<br>
+                    {{type_scholarship}}<br>
+                    {{user_reprot_scholarship}}<br>
+                    {{scholarship_type}}<br>
+                    {{problem_description_scholarship}}<br>
+                    {{condition_of_submission_scholarship}}<br>
+                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                </section>
+                <footer class="modal-card-foot">
+                <button class="button is-danger" style="margin-left: 85%;" @click='modal_scholarship = false'>close</button>
+                </footer>
+            </div>
+        </div>
+        <!-- modal show detail ! register ! -->
+        <div class="modal" :class = "{ 'is-active' : modal_register }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_register}} register</p>
+                <button class="delete" aria-label="close"  @click='modal_register = false'></button>
+                </header>
+                <section class="modal-card-body">
+                    {{report_form_id_register}}<br>
+                    {{report_form_date_time_register}}<br>
+                    {{report_form_topic_register}}<br>
+                    {{type_register}}<br>
+                    {{user_reprot_register}}<br>
+                    {{regis_subject}}<br>
+                    {{problem_description_register}}<br>
+                    {{condition_of_submission_register}}<br>
+                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                </section>
+                <footer class="modal-card-foot">
+                <button class="button is-danger" style="margin-left: 85%;"  @click='modal_register = false'>close</button>
+                </footer>
+            </div>
+        </div>
+        <!-- modal show detail ! environment ! -->
+        <div class="modal" :class = "{ 'is-active' : modal_environment }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_environment}} environment</p>
+                <button class="delete" aria-label="close" @click='modal_environment = false'></button>
+                </header>
+                <section class="modal-card-body">
+                    {{report_form_id_environment}}<br>
+                    {{report_form_date_time_environment}}<br>
+                    {{report_form_topic_environment}}<br>
+                    {{type_environment}}<br>
+                    {{user_reprot_environment}}<br>
+                    {{environment_location}}<br>
+                    {{problem_description_environment}}<br>
+                    {{condition_of_submission_environment}}<br>
+                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                </section>
+                <footer class="modal-card-foot">
+                <button class="button is-danger" style="margin-left: 85%;" @click='modal_environment = false'>close</button>
+                </footer>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  data() {
-    return {
-        // start
-        datauser: null,
-        id: "",
-        data: null,
-        report_form_all: [],
-        report_form_all_copy: null,
-        report_form_sociality: null,
-        report_form_studying: null,
-        report_form_scholarship: null,
-        report_form_register: null,
-        report_form_environment: null,
-        filter: null,
-        filterStatus: null,
-        // problem sort
-        problem: '',
-        // Modal
-        modal_nextStatus: false,
-        modal_Notpass: false,
-        // nextstatus 
-        formid_nextStatus: null,
-        formid_Notpass: null,
-        form_status_current: null,
-        form_status_next: null,
-    };
-  },
-  created() {
-    this.datauser = JSON.parse(localStorage.getItem("formLogin"));
-    if (this.datauser != null) {
-      this.id = this.datauser.user_id;
+    data() {
+        return {
+            // start
+            datauser: null,
+            id: "",
+            data: null,
+            report_form_all: [],
+            report_form_all_copy: null,
+            report_form_sociality: null,
+            report_form_studying: null,
+            report_form_scholarship: null,
+            report_form_register: null,
+            report_form_environment: null,
+            filter: null,
+            filterStatus: null,
+            // problem sort
+            problem: '',
+            // Modal Action
+            modal_nextStatus: false,
+            modal_Notpass: false,
+            modal_delete: false,
+            // Modal show detail
+            modal_sociality: false,
+            modal_studying: false,
+            modal_scholarship: false,
+            modal_register: false,
+            modal_environment: false,
+            // report form Action id
+            formid_nextStatus: null,
+            formid_Notpass: null,
+            formid_delete: null,
+            // Action status
+            form_status_current: null,
+            form_status_next: null,
+            form_status_delete: null,
+            // detail sociality
+            report_form_id_sociality: null,
+            report_form_date_time_sociality: null,
+            report_form_topic_sociality: null,
+            type_sociality: null,
+            user_reprot_sociality: null,
+            social_location: null,
+            problem_description_sociality: null,
+            condition_of_submission_sociality: null,
+            status_sociality: null,
+            // detail studying
+            report_form_id_studying: null,
+            report_form_date_time_studying: null,
+            report_form_topic_studying: null,
+            type_studying: null,
+            user_reprot_studying: null,
+            studying_subject_id: null,
+            problem_description_studying: null,
+            condition_of_submission_studying: null,
+            status_studying: null,
+            // detail scholarship
+            report_form_id_scholarship: null,
+            report_form_date_time_scholarship: null,
+            report_form_topic_scholarship: null,
+            type_scholarship: null,
+            user_reprot_scholarship: null,
+            scholarship_type: null,
+            problem_description_scholarship: null,
+            condition_of_submission_scholarship: null,
+            status_scholarship: null,
+            // detail register
+            report_form_id_register: null,
+            report_form_date_time_register: null,
+            report_form_topic_register: null,
+            type_register: null,
+            user_reprot_register: null,
+            regis_subject: null,
+            problem_description_register: null,
+            condition_of_submission_register: null,
+            status_register: null,
+            // detail environment
+            report_form_id_environment: null,
+            report_form_date_time_environment: null,
+            report_form_topic_environment: null,
+            type_environment: null,
+            user_reprot_environment: null,
+            environment_location: null,
+            problem_description_environment: null,
+            condition_of_submission_environment: null,
+            status_environment: null
+        };
+    },
+    created() {
+        this.datauser = JSON.parse(localStorage.getItem("formLoginAdmin"));
+        if (this.datauser != null) {
+        this.id = this.datauser.user_id;
     }
-    axios
-      .get("http://localhost:5000/dataReport")
+    axios.get("http://localhost:5000/dataReport")
       .then((response) => {
         var i;
         // set ตามประเภท
@@ -230,161 +433,272 @@ export default {
             this.report_form_all.push(this.report_form_studying[i]);
         }
         for(i = 0 ; this.report_form_environment.length > i; i++){
-            this.report_form_all.push(this.report_form_scholarship[i]);
-        }
-        for(i = 0 ; this.report_form_scholarship.length > i; i++){
-            this.report_form_all.push(this.report_form_register[i]);
-        }
-        for(i = 0 ; this.report_form_register.length > i ; i++){
             this.report_form_all.push(this.report_form_environment[i]);
         }
-        // loop แก้ไข format date
+        for(i = 0 ; this.report_form_scholarship.length > i; i++){
+            this.report_form_all.push(this.report_form_scholarship[i]);
+        }
+        for(i = 0 ; this.report_form_register.length > i ; i++){
+            this.report_form_all.push(this.report_form_register[i]);
+        }
+        // loop แก้ไข format date ทั้งหมด
         for(i = 0; i < this.report_form_all.length; i++){
             this.report_form_all[i].report_form_date_time = (new Date(this.report_form_all[i].report_form_date_time)).toString().substring(0,24);
         }
-        // copy report ไว้ใช้
+        // copy report ไว้ใช้ ในการทำ filter
         this.report_form_all_copy = this.report_form_all
-        console.log(this.report_form_all)
+        // console.log(this.report_form_all)
       })
       .catch((err) => {
         console.log(err);
       });
-  },
-  methods: {
-    logout() {
-      this.id = "";
-      this.datauser = "";
-      localStorage.removeItem("formLogin");
-      console.log("Log out!");
-      this.$router.push({ name: "Home" });
     },
-    reset_checkbox(){
-        this.problem = ''
-    },
-    clear(){
-        this.problem = ''
-        if(this.filterStatus != null){
-            return this.report_form_all = this.report_form_all_copy.filter(status => status.status === this.filterStatus);
+    methods: {
+        logout() {
+        this.id = "";
+        this.datauser = null;
+        localStorage.removeItem("formLoginAdmin");
+        console.log("Log out!");
+        this.$router.push({ name: "Home" });
+        },
+        reset_checkbox(){
+            this.problem = ''
+        },
+        clear(){
+            this.problem = ''
+            if(this.filterStatus != null){
+                return this.report_form_all = this.report_form_all_copy.filter(status => status.status === this.filterStatus);
+            }
+            else{
+                return this.report_form_all = this.report_form_all_copy;
+            }
+        },
+        filter_all(){
+            this.reset_checkbox();
+            this.filterStatus = null;
+            this.report_form_all = this.report_form_all_copy;
+        },
+        filter_New(){
+            this.reset_checkbox();
+            this.filterStatus = 0;
+            this.report_form_all = this.report_form_all_copy.filter(status => status.status == 0);
+        },
+        filter_Check(){
+            this.reset_checkbox();
+            this.filterStatus = 1;
+            this.report_form_all = this.report_form_all_copy.filter(status => status.status == 1);
+        },
+        filter_InProgress(){
+            this.reset_checkbox();
+            this.filterStatus = 2;
+            this.report_form_all = this.report_form_all_copy.filter(status => status.status == 2);
+        },
+        filter_Completed(){
+            this.reset_checkbox();
+            this.filterStatus = 3;
+            this.report_form_all = this.report_form_all_copy.filter(status => status.status == 3);
+        },
+        filter_NotPass(){
+            this.reset_checkbox();
+            this.filterStatus = 4;
+            this.report_form_all = this.report_form_all_copy.filter(status => status.status == 4);
+        },
+        problem_1(){
+            if(this.filterStatus != null){
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านการเรียน' && types.status === this.filterStatus);
+            }
+            else{
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านการเรียน');
+            }
+        },
+        problem_2(){
+            if(this.filterStatus != null){
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านทุนการศึกษา' && types.status === this.filterStatus);
+            }
+            else{
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านทุนการศึกษา');
+            }
+        },
+        problem_3(){
+            if(this.filterStatus != null){
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสังคม' && types.status === this.filterStatus);
+            }
+            else{
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสังคม');
+            }
+        },
+        problem_4(){
+            if(this.filterStatus != null){
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านระบบการลงทะเบียน' && types.status === this.filterStatus);
+            }
+            else{
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านระบบการลงทะเบียน');
+            }
+        },
+        problem_5(){
+            if(this.filterStatus != null){
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสภาพสิ่งแวดล้อม' && types.status === this.filterStatus);
+            }
+            else{
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสภาพสิ่งแวดล้อม');
+            }
+        },
+        check_nextStatus(report_form_id, status){
+            this.formid_nextStatus = report_form_id;
+            if(status == 0){this.form_status_current = 'เรื่องร้องเรียนใหม่'; this.form_status_next = 'กำลังตรวจสอบ';}
+            if(status == 1){this.form_status_current = 'กำลังตรวจสอบ'; this.form_status_next = 'กำลังดำเนินการ'}
+            if(status == 2){this.form_status_current = 'กำลังดำเนินการ'; this.form_status_next = 'เสร็จสิ้น'}
+            if(status == 4){this.form_status_current = 'ไม่ผ่าน'; this.form_status_next = 'เรื่องร้องเรียนใหม่'}
+            this.modal_nextStatus = true;
+        },
+        check_Notpass(report_form_id, status){
+            this.formid_Notpass = report_form_id
+            if(status == 0){this.form_status_current = 'เรื่องร้องเรียนใหม่';}
+            if(status == 1){this.form_status_current = 'กำลังตรวจสอบ';}
+            if(status == 2){this.form_status_current = 'กำลังดำเนินการ';}
+            this.modal_Notpass = true;
+        },
+        check_delete(report_form_id, status){
+            this.formid_delete = report_form_id
+            if(status == 3){this.form_status_delete = 'เสร็จสิ้น'}
+            if(status == 4){this.form_status_delete = 'ไม่ผ่าน'}
+            this.modal_delete = true;
+        },
+        nextStatus(report_id){
+            this.modal_nextStatus = false;
+            axios.put("http://localhost:5000/actionReport/nextStatus/"+report_id)
+            .then(() =>{
+                // location.reload();
+                for(let j = 0 ; j < this.report_form_all.length ; j++){
+                    if(this.report_form_all[j].report_form_id == report_id && this.report_form_all[j].status != 4){
+                        this.report_form_all[j].status += 1;
+                    }
+                    else if(this.report_form_all[j].report_form_id == report_id && this.report_form_all[j].status == 4){
+                        this.report_form_all[j].status = 0;
+                    }
+                }
+                if(this.filterStatus != null){
+                    this.report_form_all = this.report_form_all_copy.filter(status => status.status == this.filterStatus);
+                }
+                else{this.report_form_all = this.report_form_all_copy;}
+            }).catch((err) => {
+                console.log(err);
+            })
+        },
+        NotPass(report_id){
+            this.modal_Notpass = false;
+            axios.put("http://localhost:5000/actionReport/NotpassStatus/"+report_id)
+            .then(() =>{
+                for(let j = 0 ; j < this.report_form_all.length ; j++){
+                    if(this.report_form_all[j].report_form_id == report_id){
+                        this.report_form_all[j].status = 4;
+                    }
+                }
+                if(this.filterStatus != null){
+                    this.report_form_all = this.report_form_all_copy.filter(status => status.status == this.filterStatus);
+                }
+                else{this.report_form_all = this.report_form_all_copy;}            
+            }).catch((err) => {
+                console.log(err);
+            })
+        },
+        deleteReport(report_id){
+            this.modal_delete = false;
+            axios.delete("http://localhost:5000/actionReport/delete/"+report_id)
+            .then(() =>{
+                for(let j = 0 ; j < this.report_form_all.length ; j++){
+                    if(this.report_form_all[j].report_form_id == report_id){
+                        this.report_form_all.splice(j, 1);
+                    }
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        },
+        show_detail(report_id, type){
+            alert(report_id + type)
+            if(type == 'ปัญหาด้านสังคม'){
+                this.modal_sociality = true;
+                for(let j = 0; j < this.report_form_sociality.length ; j++){
+                    if(this.report_form_sociality[j].report_form_id == report_id){
+                        this.report_form_id_sociality = this.report_form_sociality[j].report_form_id
+                        this.report_form_date_time_sociality = this.report_form_sociality[j].report_form_date_time
+                        this.report_form_topic_sociality = this.report_form_sociality[j].report_form_topic
+                        this.type_sociality = this.report_form_sociality[j].type
+                        this.user_reprot_sociality = this.report_form_sociality[j].user_studentid
+                        this.social_location = this.report_form_sociality[j].social_location
+                        this.problem_description_sociality = this.report_form_sociality[j].problem_description
+                        this.condition_of_submission_sociality = this.report_form_sociality[j].condition_of_submission
+                        this.status_sociality = this.report_form_sociality[j].status
+                    }
+                }
+            }
+            if(type == 'ปัญหาด้านการเรียน'){
+                this.modal_studying = true;
+                for(let j = 0; j < this.report_form_studying.length ; j++){
+                    if(this.report_form_studying[j].report_form_id == report_id){
+                        this.report_form_id_studying= this.report_form_studying[j].report_form_id
+                        this.report_form_date_time_studying = this.report_form_studying[j].report_form_date_time
+                        this.report_form_topic_studying = this.report_form_studying[j].report_form_topic
+                        this.type_studying = this.report_form_studying[j].type
+                        this.user_reprot_studying = this.report_form_studying[j].user_studentid
+                        this.studying_subject_id = this.report_form_studying[j].studying_subject_id
+                        this.problem_description_studying = this.report_form_studying[j].problem_description
+                        this.condition_of_submission_studying = this.report_form_studying[j].condition_of_submission
+                        this.status_studying = this.report_form_studying[j].status
+                    }
+                }
+            }
+            if(type == 'ปัญหาด้านทุนการศึกษา'){
+                this.modal_scholarship = true;
+                for(let j = 0; j < this.report_form_scholarship.length ; j++){
+                    if(this.report_form_scholarship[j].report_form_id == report_id){
+                        this.report_form_id_scholarship= this.report_form_scholarship[j].report_form_id
+                        this.report_form_date_time_scholarship = this.report_form_scholarship[j].report_form_date_time
+                        this.report_form_topic_scholarship = this.report_form_scholarship[j].report_form_topic
+                        this.type_scholarship = this.report_form_scholarship[j].type
+                        this.user_reprot_scholarship = this.report_form_scholarship[j].user_studentid
+                        this.scholarship_type = this.report_form_scholarship[j].scholarship_type
+                        this.problem_description_scholarship= this.report_form_scholarship[j].problem_description
+                        this.condition_of_submission_scholarship = this.report_form_scholarship[j].condition_of_submission
+                        this.status_scholarship = this.report_form_scholarship[j].status
+                    }
+                }
+            }
+            if(type == 'ปัญหาด้านระบบการลงทะเบียน'){
+                this.modal_register = true;
+                for(let j = 0; j < this.report_form_register.length ; j++){
+                    if(this.report_form_register[j].report_form_id == report_id){
+                        this.report_form_id_register= this.report_form_register[j].report_form_id
+                        this.report_form_date_time_register = this.report_form_register[j].report_form_date_time
+                        this.report_form_topic_register = this.report_form_register[j].report_form_topic
+                        this.type_register = this.report_form_register[j].type
+                        this.user_reprot_register = this.report_form_register[j].user_studentid
+                        this.regis_subject = this.report_form_register[j].regis_subject
+                        this.problem_description_register = this.report_form_register[j].problem_description
+                        this.condition_of_submission_register = this.report_form_register[j].condition_of_submission
+                        this.status_register = this.report_form_register[j].status
+                    }
+                }
+            }
+            if(type == 'ปัญหาด้านสภาพสิ่งแวดล้อม'){
+                this.modal_environment = true;
+                for(let j = 0; j < this.report_form_environment.length ; j++){
+                    if(this.report_form_environment[j].report_form_id == report_id){
+                        this.report_form_id_environment= this.report_form_environment[j].report_form_id
+                        this.report_form_date_time_environment = this.report_form_environment[j].report_form_date_time
+                        this.report_form_topic_environment = this.report_form_environment[j].report_form_topic
+                        this.type_environment = this.report_form_environment[j].type
+                        this.user_reprot_environment = this.report_form_environment[j].user_studentid
+                        this.environment_location = this.report_form_environment[j].environment_location
+                        this.problem_description_environment = this.report_form_environment[j].problem_description
+                        this.condition_of_submission_environment = this.report_form_environment[j].condition_of_submission
+                        this.status_environment = this.report_form_environment[j].status
+                    }
+                }
+            }
         }
-        else{
-            return this.report_form_all = this.report_form_all_copy;
-        }
     },
-    filter_all(){
-        this.reset_checkbox();
-        this.filterStatus = null;
-        this.report_form_all = this.report_form_all_copy;
-    },
-    filter_New(){
-        this.reset_checkbox();
-        this.filterStatus = 0;
-        this.report_form_all = this.report_form_all_copy.filter(status => status.status == 0);
-    },
-    filter_Check(){
-        this.reset_checkbox();
-        this.filterStatus = 1;
-        this.report_form_all = this.report_form_all_copy.filter(status => status.status == 1);
-    },
-    filter_InProgress(){
-        this.reset_checkbox();
-        this.filterStatus = 2;
-        this.report_form_all = this.report_form_all_copy.filter(status => status.status == 2);
-    },
-    filter_Completed(){
-        this.reset_checkbox();
-        this.filterStatus = 3;
-        this.report_form_all = this.report_form_all_copy.filter(status => status.status == 3);
-    },
-    filter_NotPass(){
-        this.reset_checkbox();
-        this.filterStatus = 4;
-        this.report_form_all = this.report_form_all_copy.filter(status => status.status == 4);
-    },
-    problem_1(){
-        if(this.filterStatus != null){
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านการเรียน' && types.status === this.filterStatus);
-        }
-        else{
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านการเรียน');
-
-        }
-    },
-    problem_2(){
-        if(this.filterStatus != null){
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านทุนการศึกษา' && types.status === this.filterStatus);
-        }
-        else{
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านทุนการศึกษา');
-
-        }
-    },
-    problem_3(){
-        if(this.filterStatus != null){
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสังคม' && types.status === this.filterStatus);
-        }
-        else{
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสังคม');
-
-        }
-    },
-    problem_4(){
-        if(this.filterStatus != null){
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านระบบการลงทะเบียน' && types.status === this.filterStatus);
-        }
-        else{
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านระบบการลงทะเบียน');
-
-        }
-    },
-    problem_5(){
-        if(this.filterStatus != null){
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสภาพสิ่งแวดล้อม' && types.status === this.filterStatus);
-        }
-        else{
-            this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสภาพสิ่งแวดล้อม');
-
-        }
-    },
-    check_nextStatus(report_form_id, status){
-        this.formid_nextStatus = report_form_id;
-        if(status == 0){this.form_status_current = 'เรื่องร้องเรียนใหม่'; this.form_status_next = 'กำลังตรวจสอบ';}
-        if(status == 1){this.form_status_current = 'กำลังตรวจสอบ'; this.form_status_next = 'กำลังดำเนินการ'}
-        if(status == 2){this.form_status_current = 'กำลังดำเนินการ'; this.form_status_next = 'เสร็จสิ้น'}
-        if(status == 4){this.form_status_current = 'ไม่ผ่าน'; this.form_status_next = 'เรื่องร้องเรียนใหม่'}
-        this.modal_nextStatus = true;
-    },
-    check_Notpass(report_form_id, status){
-        this.formid_Notpass = report_form_id
-        if(status == 0){this.form_status_current = 'เรื่องร้องเรียนใหม่';}
-        if(status == 1){this.form_status_current = 'กำลังตรวจสอบ';}
-        if(status == 2){this.form_status_current = 'กำลังดำเนินการ';}
-        this.modal_Notpass = true;
-    },
-    nextStatus(report_id){
-        this.modal_nextStatus = false;
-        location.reload();
-        axios.put("http://localhost:5000/actionReport/nextStatus/"+report_id)
-        .then((response) =>{
-            console.log(response)
-        }).catch((err) => {
-            console.log(err);
-        })
-    },
-    NotPass(report_id){
-        axios.put("http://localhost:5000/actionReport/NotpassStatus/"+report_id).then((response) =>{
-            console.log(response)
-        }).catch((err) => {
-            console.log(err);
-        })
-    },
-    deleteReport(report_id){
-        axios.delete("http://localhost:5000/actionReport/delete/:id"+report_id).then((response) =>{
-            console.log(response)
-        }).catch((err) => {
-            console.log(err);
-        })
-    },
-  },
 };
 </script>
 
@@ -392,6 +706,12 @@ export default {
     #button {
         width: 150px;
         border-color:rgb(230, 230, 230);
+        color: black;
+    }
+    #button:hover{
+        font-size: 17px;
+        color: white;
+        border-color: rgb(72, 72, 72);
     }
     .box{
         margin: 30px 20px 20px 20px; 
@@ -441,5 +761,30 @@ export default {
     .form-check-label{
         font-size:13px;
         color:yellowgreen;
+    }
+    /* head sort */
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: rgb(255, 255, 255);
+    }
+
+    .separator::before,
+    .separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 2px solid rgb(128, 128, 128);
+    }
+
+    .separator:not(:empty)::before {
+        margin-right: .25em;
+    }
+
+    .separator:not(:empty)::after {
+        margin-left: .25em;
+    }
+    .fa-user-plus{
+        color:rgb(0, 0, 200);
     }
 </style>

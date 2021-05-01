@@ -36,6 +36,11 @@ const routes = [
     component: pathLogin 
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: pathRegister 
+  },
+  {
     path: '/forum',
     name: 'Forum',
     component: pathForum 
@@ -49,11 +54,6 @@ const routes = [
     path: '/trackingstatus',
     name: 'Tracking',
     component: pathTrackingstatus 
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: pathRegister 
   },
   {
     path: '/forgotpassword',

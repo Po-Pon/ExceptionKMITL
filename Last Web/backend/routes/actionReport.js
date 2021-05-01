@@ -61,17 +61,91 @@ router.put("/actionReport/nextStatus/:id", async function (req, res, next){
                 res.send('update report_id: '+ environment[0].report_form_id +'success!')
             }
         }
-    }catch (err) {
-        return next(err)
+    }catch (error) {
+        return next(error)
     }
 })
 
 router.put("/actionReport/NotpassStatus/:id", async function (req, res, next){
-    console.log(req.params.id)
+    try {
+        const [sociality, notuse1] = await pool.query("SELECT report_form_id,status FROM sociality_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [studying, notuse2] = await pool.query("SELECT report_form_id,status FROM studying_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [scholarship, notuse3] = await pool.query("SELECT report_form_id,status FROM scholarship_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [register, notuse4] = await pool.query("SELECT report_form_id,status FROM register_system_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [environment, notuse5] = await pool.query("SELECT report_form_id,status FROM environment_report_form WHERE report_form_id = ?" , [req.params.id]);
+        if(sociality.length != 0){
+            await pool.query("UPDATE sociality_report_form SET status = 4 WHERE report_form_id = ?", [req.params.id])
+            res.send('update report id: '+ sociality[0].report_form_id +'success!')
+        }
+        if(studying.length != 0){
+            await pool.query("UPDATE studying_report_form SET status = 4 WHERE report_form_id = ?", [req.params.id])
+            res.send('update report id: '+ studying[0].report_form_id +'success!')
+        }
+        if(scholarship.length != 0){
+            await pool.query("UPDATE scholarship_report_form SET status = 4 WHERE report_form_id = ?", [req.params.id])
+            res.send('update report id: '+ scholarship[0].report_form_id +'success!')
+        }
+        if(register.length != 0){
+            await pool.query("UPDATE register_system_report_form SET status = 4 WHERE report_form_id = ?", [req.params.id])
+            res.send('update report id: '+ register[0].report_form_id +'success!')
+        }
+        if(environment.length != 0){
+            await pool.query("UPDATE environment_report_form SET status = 4 WHERE report_form_id = ?", [req.params.id])
+            res.send('update report id: '+ environment[0].report_form_id +'success!')
+        }
+        console.log('update report id: '+ req.params.id + ' success')
+    } catch (error) {
+        return next(error)
+    }
 })
 
 router.delete("/actionReport/delete/:id", async function (req, res, next){
-    console.log(req.params.id)
+    const conn = await pool.getConnection()
+    await conn.beginTransaction();
+
+    try {
+        const [sociality, notuse1] = await conn.query("SELECT report_form_id FROM sociality_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [studying, notuse2] = await conn.query("SELECT report_form_id FROM studying_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [scholarship, notuse3] = await conn.query("SELECT report_form_id FROM scholarship_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [register, notuse4] = await conn.query("SELECT report_form_id FROM register_system_report_form WHERE report_form_id = ?" , [req.params.id]);
+        const [environment, notuse5] = await conn.query("SELECT report_form_id FROM environment_report_form WHERE report_form_id = ?" , [req.params.id]);
+       
+        if(sociality.length != 0){
+            await conn.query("DELETE FROM sociality_report_form WHERE report_form_id = ?", [req.params.id])
+            await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
+            res.send('delete report id: '+ sociality[0].report_form_id +'success!')
+            await conn.commit()
+        }
+        if(studying.length != 0){
+            await conn.query("DELETE FROM studying_report_form WHERE report_form_id = ?", [req.params.id])
+            await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
+            res.send('delete report id: '+ studying[0].report_form_id +'success!')
+            await conn.commit()
+        }
+        if(scholarship.length != 0){
+            await conn.query("DELETE FROM scholarship_report_form WHERE report_form_id = ?", [req.params.id])
+            await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
+            res.send('delete report id: '+ scholarship[0].report_form_id +'success!')
+            await conn.commit()
+        }
+        if(register.length != 0){
+            await conn.query("DELETE FROM register_system_report_form WHERE report_form_id = ?", [req.params.id])
+            await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
+            res.send('delete report id: '+ register[0].report_form_id +'success!')
+            await conn.commit()
+        }
+        if(environment.length != 0){
+            await conn.query("DELETE FROM environment_report_form WHERE report_form_id = ?", [req.params.id])
+            await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
+            res.send('delete report id: '+ environment[0].report_form_id +'success!')
+            await conn.commit()
+        }
+        console.log('delete report id: '+ req.params.id +' success' )
+    } catch (error) {
+        return next(error)
+    }finally{
+        conn.release()
+    }
 })
 
 exports.router = router;

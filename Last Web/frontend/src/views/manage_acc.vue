@@ -11,14 +11,10 @@
             alt=""
         /></a>
         <ul>
+          <div id="MyClockDisplay" class="clock"></div>
           <li id="comp1"><a href="/manageUser">Manage User</a></li>
           <li id="comp1"><a href="/manageUser">Manage Forum</a></li>
           <li id="comp1"><a href="/manageReport">Manage Report</a></li>
-          <template v-if="id == ''">
-            <li id="comp2"><a href="/login">Log In</a></li>
-            <div class="line"></div>
-            <li id="comp2"><a href="/register">Register</a></li>
-          </template>
           <div class="dropdown" v-if="id != ''">
             <button
               class="btn btn-danger dropdown-toggle"
@@ -27,7 +23,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <i class="fas fa-user"></i> {{ id }}
+              <i class="fa fa-user-plus"></i> {{ id }}
             </button>
             <p class="dropdown-menu">
               <button
@@ -120,7 +116,7 @@ export default {
     };
   },
   created() {
-    this.datauser = JSON.parse(localStorage.getItem("formLogin"));
+    this.datauser = JSON.parse(localStorage.getItem("formLoginAdmin"));
     if (this.datauser != null) {
       this.id = this.datauser.user_id;
     }
@@ -137,7 +133,7 @@ export default {
     logout() {
       this.id = "";
       this.datauser = "";
-      localStorage.removeItem("formLogin");
+      localStorage.removeItem("formLoginAdmin");
       console.log("Log out!");
       this.$router.push({ name: "Home" });
     },
@@ -302,6 +298,9 @@ table.table .avatar {
   float: left;
   margin-top: 10px;
   font-size: 13px;
+}
+.fa-user-plus{
+    color:rgb(0, 0, 200);
 }
 </style>
 

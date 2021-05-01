@@ -19,7 +19,10 @@ router.post("/checkingLogin", async function(req, res, next){
             if(match){
                 let [userid, _] = await conn.query("SELECT a.acc_id,user_studentid FROM account a join user b ON a.acc_id=b.acc_id WHERE acc_email = ?", [email])
                 let [role, _2] = await conn.query("SELECT rule_manage_acc, rule_standand_admin FROM admin WHERE acc_id = ?", [userid[0].acc_id])
-                res.json({message: 'log in success!', user_id: userid[0].user_studentid, acc_id: userid[0].acc_id, rule_manage_acc: role[0].rule_manage_acc, rule_standand_admin: role[0].rule_standand_admin})
+                if(role[0].rule_manage_acc == true || role[0].rule_standand_admin == true){
+                    res.json({message: 'log in success!', user_id: userid[0].user_studentid, acc_id: userid[0].acc_id, rule_manage_acc: role[0].rule_manage_acc, rule_standand_admin: role[0].rule_standand_admin})
+                }
+                else{res.json({message: 'log in success!', user_id: userid[0].user_studentid, acc_id: userid[0].acc_id})}
                 console.log('studentid', userid[0].user_studentid)
                 var d = new Date();
                 var n = d.toString();

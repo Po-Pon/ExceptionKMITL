@@ -5,14 +5,9 @@
 </template>
 
 <script>
-  // import headerBar from './components/banner_navbar'
-  // import footerBar from './components/footer'
+  
   export default {
     name: 'App',
-    // components: {
-    //   headerBar,
-    //   footerBar
-    // }
   }
 </script>
 

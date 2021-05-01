@@ -5,12 +5,9 @@
             <div class="topnav">
                 <a href="/user"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
-                    <template v-if="id == ''">
-                        <li id="comp2"><a href="/login">Log In</a></li>
-                        <div class="line"></div>
-                        <li id="comp2"><a href="/register">Register</a></li>
-                    </template>
-                    <div class="dropdown" v-if="id !=''">
+                    <div id="MyClockDisplay" class="clock"></div>
+                    <a href="/user" style="text-decoration: none;"><button type="button" class="home btn btn-outline-light">Home</button></a>
+                    <div class="dropdown">
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i> {{id}}
                         </button>
@@ -28,8 +25,8 @@
                 และสามารถติดตามสถานะของเรื่องร้องเรียนนั้นได้ด้วยตนเอง!</span>
             </div>
             <div class="used">
-                <a href="/" id="apply">ร้องเรียนปัญหา</a>
-                <a href="/" id="tracking">ติดตามสถานะ</a>
+                <a href="/reportform" id="apply">ร้องเรียนปัญหา</a>
+                <a href="/trackingstatus" id="tracking">ติดตามสถานะ</a>
             </div>
         </div>
 
@@ -256,32 +253,41 @@
         </footer>
     </div>
 </template>
-
 <script>
-// import axios from "axios";
 export default {
     data(){
         return{
+            Admin_permission: null,
             datauser: null,
             id: '',
         }
     },
     created(){
-        this.datauser = JSON.parse(localStorage.getItem('formLogin'))
+        this.Admin_permission = JSON.parse(localStorage.getItem('formLoginAdmin'))
+        this.datauser = JSON.parse(localStorage.getItem('formLoginUser'))
         if(this.datauser != null){
             this.id = this.datauser.user_id
+        }
+        else{
+            if(this.Admin_permission != null){
+                alert('You are Admin!!')
+                this.$router.push({ name: "Admin" });
+            }
+            else{
+                alert('ฮั่นแหน่รู้นะจะทำอะไร!!...กรุณาล็อกอินก่อนเข้าใช้งานนะครับ')
+                this.$router.push({ name: "Home" });
+            }
         }
     },
     methods:{
         logout(){
             this.id = ''
-            this.datauser = ''
-            localStorage.removeItem('formLogin')
+            this.datauser = null
+            localStorage.removeItem('formLoginUser')
             console.log('Log out!')
             this.$router.push({ name: "Home" });
-        }
-    },
-    
+        },
+    }
 }
 </script>
 
@@ -368,5 +374,14 @@ export default {
     font-size: 30px;
     font-weight: 900;
     opacity: 0.64;
+}
+.home{
+    color: white;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-right: 30px;
+}
+.home:hover{
+    color:black;
 }
 </style>

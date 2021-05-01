@@ -3,22 +3,12 @@
         <!-- navbar -->
         <div class="banner" >
             <div class="topnav">
-                <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+                <a href="/"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
-                    
-                    <template v-if="id == ''">
-                        <li id="comp2"><a href="/login">Log In</a></li>
-                        <div class="line"></div>
-                        <li id="comp2"><a href="/register">Register</a></li>
-                    </template>
-                    <div class="dropdown" v-if="id !=''">
-                        <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> {{id}}
-                        </button>
-                        <p class="dropdown-menu" >
-                            <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
-                        </p>
-                    </div>
+                    <div id="MyClockDisplay" class="clock"></div>
+                    <li id="comp2"><a href="/login">Log In</a></li>
+                    <div class="line"></div>
+                    <li id="comp2"><a href="/register">Register</a></li>
                 </ul>
             </div>
             <div class="content">
@@ -29,8 +19,8 @@
                 และสามารถติดตามสถานะของเรื่องร้องเรียนนั้นได้ด้วยตนเอง!</span>
             </div>
             <div class="used">
-                <a href="/reportform" id="apply">ร้องเรียนปัญหา</a>
-                <a href="/trackingstatus" id="tracking">ติดตามสถานะ</a>
+                <a href="/login" id="apply">ร้องเรียนปัญหา</a>
+                <a href="/login" id="tracking">ติดตามสถานะ</a>
             </div>
         </div>
 
@@ -50,7 +40,6 @@
                 </div>
 
                 <!-- card row 1 -->
-
                 <div class="row justify-content-center" id="card-row-1">
                     <div class="col-md-3">
                         <a href="">
@@ -259,33 +248,20 @@
 </template>
 
 <script>
-// import axios from "axios";
+import { time } from "../router/time"
 export default {
     data(){
-        return{
-            datauser: null,
-            id: '',
-        }
+        return{}
+    },
+    beforeCreate(){
+        time
     },
     created(){
-        this.datauser = JSON.parse(localStorage.getItem('formLogin'))
-        if(this.datauser != null){
-            this.id = this.datauser.user_id
-        }
-    },
-    methods:{
-        logout(){
-            this.id = ''
-            this.datauser = ''
-            localStorage.removeItem('formLogin')
-            console.log('Log out!')
-            this.$router.push({ name: "Home" });
-        }
-    },
-    
+        localStorage.removeItem('formLoginUser')
+        localStorage.removeItem('formLoginAdmin')
+    }
 }
 </script>
 
 <style scoped>
-
 </style>
