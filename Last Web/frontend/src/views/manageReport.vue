@@ -53,7 +53,7 @@
                         <table class="table table-bordered table-fixed table-hover">
                             <thead class="thead-dark" style="text-align:center;">
                                 <th scope="col" class="col-md-1">ID</th>
-                                <th scope="col" class="col-md-3">Date</th>
+                                <th scope="col" class="col-md-2">Date</th>
                                 <th scope="col" class="col-md-3">ประเภทเรื่องร้องเรียน</th>
                                 <th scope="col" class="col-md-2">Title</th>
                                 <th scope="col" class="col-md-2">Username</th>
@@ -68,10 +68,10 @@
                                     <td class="col-md-2">{{report.user_studentid}}</td>
                                     <td id="td_action" class="col-md-1">
                                         <a v-show="report.status != 3 && report.status != 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-caret-square-right" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
-                                        <a v-show="report.status != 3 && report.status != 4" @click="check_Notpass(report.report_form_id, report.status)"><i class="fas fa-ban" style="color:red; font-size:20px"></i></a>
+                                        <a v-show="report.status != 3 && report.status != 4" @click="check_Notpass(report.report_form_id, report.status)"><i class="fas fa-ban" style="color:red; font-size:20px;"></i></a>
                                         <a v-show="report.status == 3" @click="show_detail(report.report_form_id, report.type)"><i class="fas fa-search" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
                                         <a v-show="report.status == 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-undo" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
-                                        <a v-show="report.status == 3 || report.status == 4" @click="check_delete(report.report_form_id, report.status)"><i class="fas fa-times-circle" style="color:red; font-size:20px"></i></a>
+                                        <a v-show="report.status == 3 || report.status == 4" @click="check_delete(report.report_form_id, report.status)"><i class="fas fa-times-circle" style="color:red; font-size:20px;"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -419,7 +419,7 @@ export default {
         this.permission = 'for admin'
         axios.post("http://localhost:5000/checkTokenLogin", {
             role: 'Admin',
-            token: this.tokenAdmin
+            tokenAdmin: this.tokenAdmin
         }).then((response => {
                 if(response.data.message == 'You can pass! (Admin)'){
                     this.id = response.data.id
@@ -483,8 +483,6 @@ export default {
     methods: {
         logout() {
         this.id = "";
-        this.datauser = null;
-        localStorage.removeItem("formLoginAdmin");
         console.log("Log out!");
         this.$router.push({ name: "Home" });
         },

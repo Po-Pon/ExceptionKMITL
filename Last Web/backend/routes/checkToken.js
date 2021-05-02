@@ -9,14 +9,21 @@ router.post("/checkTokenLogin", async function(req, res, next){
     await conn.beginTransaction();
 
     try {
-        const token = req.body.token
+        var token;
         const role = req.body.role
 
-        const [token_db, notuse1] = await conn.query("SELECT acc_id,token FROM tokens WHERE token = ?", [token])
+        if(role == 'User'){
+            token = req.body.tokenUser
+        }
+        if(role == 'Admin'){
+            token = req.body.tokenAdmin
+        }
 
-        if(token == token_db[0].token){
-            const [data, notuse2] = await conn.query("SELECT user_studentid FROM user WHERE acc_id = ?", [token_db[0].acc_id])
-            const [dataAdmin, notuse3] = await conn.query("SELECT rule_manage_acc, rule_standand_admin FROM admin WHERE acc_id = ?", [token_db[0].acc_id])
+        const [tokens, notuse1] = await conn.query("SELECT acc_id,token FROM tokens WHERE token = ?", [token])
+
+        if(token == tokens[0].token){
+            const [data, notuse2] = await conn.query("SELECT user_studentid FROM user WHERE acc_id = ?", [tokens[0].acc_id])
+            const [dataAdmin, notuse3] = await conn.query("SELECT rule_manage_acc, rule_standand_admin FROM admin WHERE acc_id = ?", [tokens[0].acc_id])
             
             if(role == 'Admin' && dataAdmin[0].rule_manage_acc == true || dataAdmin[0].rule_standand_admin == true){
                 res.status(200).json({message: "You can pass! (Admin)", rule_manage_acc: dataAdmin[0].rule_manage_acc, rule_standand_admin: dataAdmin[0].rule_standand_admin, id: data[0].user_studentid})

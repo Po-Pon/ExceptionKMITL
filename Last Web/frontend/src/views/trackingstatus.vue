@@ -7,7 +7,7 @@
                     <div id="MyClockDisplay" class="clock"></div>
                     <div class="dropdown" v-if="id !=''">
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user-plus"></i> {{id}}
+                            <i class="fa fa-user"></i> {{id}}
                         </button>
                         <p class="dropdown-menu" >
                             <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
@@ -140,7 +140,7 @@ export default {
                 this.permission = 'for user'
                 axios.post("http://localhost:5000/checkTokenLogin", {
                     role: 'User',
-                    token: this.tokenUser
+                    tokenUser: this.tokenUser
                 }).then((response => {
                         if(response.data.message == 'You can pass! (User)'){
                             this.id = response.data.id
@@ -162,6 +162,11 @@ export default {
             }
         },
         methods:{
+            logout(){
+                this.id = ''
+                console.log('Log out!')
+                this.$router.push({ name: "Home" });
+            },
            type_report: function(){
             if(this.type_select == null){
                 this.id_screen = false;
