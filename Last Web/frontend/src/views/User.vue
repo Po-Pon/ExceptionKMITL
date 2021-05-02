@@ -41,7 +41,7 @@
                         <p><a href="">บทความยอดนิยม<br><br></a></p>
                     </div>
                     <div class="col-md-2" id="news" style="text-align: right;">
-                        <p><a href=""><br><i>ดูข่าวประชาสัมพันธ์</i><br></a></p>
+                        <p><a href="/forum"><br><i>ดูข่าวประชาสัมพันธ์</i><br></a></p>
                     </div>
                 </div>
 
