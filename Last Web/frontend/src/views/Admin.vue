@@ -7,7 +7,7 @@
                 <ul>
                     <div id="MyClockDisplay" class="clock"></div>
                     <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
-                    <li id="comp1" v-if="manage_standand == 1"><a href="">Manage Forum</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
                     <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
                     <div class="dropdown">
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
