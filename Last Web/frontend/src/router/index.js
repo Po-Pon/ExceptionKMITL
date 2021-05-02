@@ -6,6 +6,7 @@ import pathAdmin from '../views/Admin.vue'
 import pathLogin from '../views/login.vue'
 import pathRegister from '../views/register.vue'
 import pathForum from '../views/forum.vue'
+import pathForumPage from '../views/forumpage.vue'
 import pathReportform from '../views/reportform.vue'
 import pathTrackingstatus from '../views/trackingstatus.vue'
 import pathForgot from '../views/forgotPassword.vue'
@@ -44,6 +45,11 @@ const routes = [
     path: '/forum',
     name: 'Forum',
     component: pathForum 
+  },
+  {
+    path: '/forum/page',
+    name: 'Forumpage',
+    component: pathForumPage
   },
   {
     path: '/reportform',
