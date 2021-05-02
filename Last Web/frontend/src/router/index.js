@@ -8,10 +8,12 @@ import pathRegister from '../views/register.vue'
 import pathForum from '../views/forum.vue'
 import pathForumPage from '../views/forumpage.vue'
 import pathReportform from '../views/reportform.vue'
+import pathCreateReport from '../views/createreport.vue'
 import pathTrackingstatus from '../views/trackingstatus.vue'
 import pathForgot from '../views/forgotPassword.vue'
 import pathmanageacc from '../views/manage_acc.vue'
 import pathmanageReport from '../views/manageReport.vue'
+import pathForumManage from '../views/forum_manage.vue'
 
 Vue.use(VueRouter)
 
@@ -57,6 +59,11 @@ const routes = [
     component: pathReportform
   },
   {
+    path: '/reportform/createreport',
+    name: 'createreport',
+    component: pathCreateReport
+  },
+  {
     path: '/trackingstatus',
     name: 'Tracking',
     component: pathTrackingstatus 
@@ -75,7 +82,12 @@ const routes = [
     path: '/manageReport',
     name: 'manageReport',
     component: pathmanageReport 
-  }
+  },
+  {
+    path: '/manageforum',
+    name: 'forummanage',
+    component: pathForumManage
+  },
 ]
 
 const router = new VueRouter({

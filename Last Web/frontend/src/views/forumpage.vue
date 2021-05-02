@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src="../assets/homepage/LOGO2.png"></a>
+        <a class="navbar-brand" href="/"><img id="logo_navbar" src=""></a>
         <form class="form-inline">
             <a id="navbar_register" href="#">Log In</a>
             <div id=line_register></div>

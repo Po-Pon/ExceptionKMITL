@@ -22,7 +22,7 @@ router.get('/forum', async function(req, res, next){
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/forum/:id', async (req, res, next) => {
     const conn = await pool.getConnection();
     await conn.beginTransaction();
 
@@ -42,7 +42,7 @@ router.get('/:id', async (req, res, next) => {
     }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/forum/:id', async (req, res, next) => {
     const conn = await pool.getConnection();
     await conn.beginTransaction();
 
