@@ -1,6 +1,6 @@
 const express = require('express');
 const pool = require('../config')
-router = express.Router();
+const router = express.Router();
 
 router.get('/forum', async function(req, res, next){
     const conn = await pool.getConnection();
