@@ -304,7 +304,7 @@ export default {
               localStorage.setItem("tokenAdmin", token);
               this.$router.push({ name: "Admin" });
             }
-            if ((data.role == 'User')){
+            if (data.role == 'User'){
               let token = JSON.stringify(data.token);
               localStorage.setItem("tokenUser", token);
               this.$router.push({ name: "User" });

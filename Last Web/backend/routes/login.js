@@ -40,7 +40,7 @@ router.post("/checkingLogin", async function(req, res, next){
                     await conn.query("UPDATE tokens SET time_login = CURRENT_TIMESTAMP WHERE token = ?;", [tokenUser])
                     await conn.commit()
                 }
-                console.log('student_ID', userid[0].user_studentid)
+                console.log('student ID:', userid[0].user_studentid)
                 var d = new Date();
                 var n = d.toString();
                 console.log('login success!', 'Time:', n.substring(16,21))

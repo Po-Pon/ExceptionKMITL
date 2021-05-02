@@ -123,14 +123,15 @@
                         <p class="modal-card-title" style="margin-bottom:-8px;">Next Status</p>
                         <button class="delete" aria-label="close" @click='modal_nextStatus = false'></button>
                     </header>
-                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px">
+                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px; color:white;">
                             <template v-if="form_status_current == 'ไม่ผ่าน'">
                                 คุณต้องการที่จะส่ง Report Form ID: {{formid_nextStatus}} ไปยัง Status เริ่มต้น ?<br>
-                                current status: <span class="bg-primary text-white">{{form_status_current}}</span> <i class="fas fa-arrow-right"></i> status next: <span class="bg-primary text-white">{{form_status_next}}</span>
+                                current status: <span id="setcolor" class="bg-danger">{{form_status_current}}</span> <i class="fas fa-arrow-right"></i> status next: <span id="setcolor" class="bg-primary">{{form_status_next}}</span>
                             </template>
                             <template v-else>
                                 คุณต้องการที่จะส่ง Report Form ID: {{formid_nextStatus}} ไปยัง Status ถัดไป?<br>
-                                current status: <span class="bg-primary text-white">{{form_status_current}}</span> <i class="fas fa-arrow-right"></i> status next: <span class="bg-primary text-white">{{form_status_next}}</span>
+                                current status: <span id="setcolor" :class="{'bg-primary': form_status_current == 'เรื่องร้องเรียนใหม่', 'bg-warning': form_status_current == 'กำลังตรวจสอบ', 'bg-info': form_status_current == 'กำลังดำเนินการ'}">{{form_status_current}}</span> 
+                                <i class="fas fa-arrow-right"></i> status next: <span id="setcolor" :class="{'bg-warning': form_status_next == 'กำลังตรวจสอบ', 'bg-info': form_status_next == 'กำลังดำเนินการ', 'bg-success': form_status_next == 'เสร็จสิ้น'}">{{form_status_next}}</span>
                             </template>
                         <div class="columns">
                             <div class="column">
@@ -154,10 +155,9 @@
                         <p class="modal-card-title" style="margin-bottom:-8px;">Set status is not passed</p>
                         <button class="delete" aria-label="close" @click='modal_Notpass = false'></button>
                     </header>
-                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px">
-                            <!-- คุณต้องการที่จะลบ Report Form ID: {{formid_Notpass}} ออกจากระบบ? -->
+                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px; color:white;">
                             คุณต้องการที่จะส่ง Report Form ID: {{formid_Notpass}} ไปยัง Status "ไม่ผ่าน" ?<br>
-                            current status: <span class="bg-primary text-white">{{form_status_current}}</span> <i class="fas fa-arrow-right"></i> status next: <span class="bg-primary text-white">ไม่ผ่าน</span>
+                            current status: <span id="setcolor" :class="{'bg-primary': form_status_current == 'เรื่องร้องเรียนใหม่', 'bg-warning': form_status_current == 'กำลังตรวจสอบ', 'bg-info': form_status_current == 'กำลังดำเนินการ'}">{{form_status_current}}</span> <i class="fas fa-arrow-right"></i> status next: <span id="setcolor" class="bg-danger">ไม่ผ่าน</span>
                         <div class="columns">
                             <div class="column">
                                 <p class="control" style="padding-top:10px;"> 
@@ -180,9 +180,9 @@
                         <p class="modal-card-title" style="margin-bottom:-8px;">Delete Report</p>
                         <button class="delete" aria-label="close" @click='modal_delete = false'></button>
                     </header>
-                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px">
+                    <section class="modal-card-body" style="font-size:20px; margin-top:-10px; margin-bottom: -20px; color:white;">
                             <!-- คุณต้องการที่จะลบ Report Form ID: {{formid_Notpass}} ออกจากระบบ? -->
-                            คุณต้องการที่จะส่ง Report Form ID: {{formid_delete}} status: <span class="bg-primary text-white">{{form_status_delete}}</span> ออกจากระบบ ?
+                            คุณต้องการที่จะส่ง Report Form ID: {{formid_delete}} status: <span id="setcolor" :class="{'bg-danger': form_status_delete == 'ไม่ผ่าน', 'bg-success': form_status_delete == 'เสร็จสิ้น'}">{{form_status_delete}}</span> ออกจากระบบ ?
                         <div class="columns">
                             <div class="column">
                                 <p class="control" style="padding-top:10px;"> 
@@ -202,22 +202,22 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                    <p class="modal-card-title">Detail Report Form ID: {{report_form_id_sociality}} sociality</p>
+                    <p class="modal-card-title" style="padding-top: 20px;">Detail Report Form ID: {{report_form_id_sociality}} sociality</p>
                     <button class="delete" aria-label="close"  @click='modal_sociality = false'></button>
                 </header>
-                <section class="modal-card-body">
-                    {{report_form_id_sociality}}<br>
-                    {{report_form_date_time_sociality}}<br>
-                    {{report_form_topic_sociality}}<br>
-                    {{type_sociality}}<br>
-                    {{user_reprot_sociality}}<br>
-                    {{social_location}}<br>
-                    {{problem_description_sociality}}<br>
-                    {{condition_of_submission_sociality}}<br>
-                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                <section class="modal-card-body" style="font-size:20px; font-weight: 300; color:white">
+                    <span id="text-head">report_form_id</span> : {{report_form_id_sociality}}<br>
+                    <span id="text-head">report_form_date_time</span> : {{report_form_date_time_sociality}}<br>
+                    <span id="text-head">report_form_topic</span> : {{report_form_topic_sociality}}<br>
+                    <span id="text-head">type</span> : {{type_sociality}}<br>
+                    <span id="text-head">user student ID</span> : {{user_reprot_sociality}}<br>
+                    <span id="text-head">social_location</span> : {{social_location}}<br>
+                    <span id="text-head">problem_description</span> : {{problem_description_sociality}}<br>
+                    <span id="text-head">condition_of_submission</span> : {{condition_of_submission_sociality}}<br>
+                    <span id="text-head">current status</span> : <span class="bg-success text-white">เสร็จสิ้น<br></span>
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-danger" style="margin-left: 85%;" @click='modal_sociality = false'>close</button>
+                    <!-- footer modal detail -->
                 </footer>
             </div>
         </div>
@@ -226,22 +226,22 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_studying}} studying</p>
+                <p class="modal-card-title" style="padding-top: 20px;">Detail Report Form ID: {{report_form_id_studying}} studying</p>
                 <button class="delete" aria-label="close" @click='modal_studying = false'></button>
                 </header>
-                <section class="modal-card-body">
-                    {{report_form_id_studying}}<br>
-                    {{report_form_date_time_studying}}<br>
-                    {{report_form_topic_studying}}<br>
-                    {{type_studying}}<br>
-                    {{user_reprot_studying}}<br>
-                    {{studying_subject_id}}<br>
-                    {{problem_description_studying}}<br>
-                    {{condition_of_submission_studying}}<br>
-                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                <section class="modal-card-body" style="font-size:20px; font-weight: 300; color:white">
+                    <span id="text-head">report_form_id</span> : {{report_form_id_studying}}<br>
+                    <span id="text-head">report_form_date_time</span> : {{report_form_date_time_studying}}<br>
+                    <span id="text-head">report_form_topic</span> : {{report_form_topic_studying}}<br>
+                    <span id="text-head">type</span> : {{type_studying}}<br>
+                    <span id="text-head">user student ID</span> : {{user_reprot_studying}}<br>
+                    <span id="text-head">studying_subject_id</span> : {{studying_subject_id}}<br>
+                    <span id="text-head">problem_description</span> : {{problem_description_studying}}<br>
+                    <span id="text-head">condition_of_submission</span> : {{condition_of_submission_studying}}<br>
+                    <span id="text-head">current status</span> : <span class="bg-success text-white">เสร็จสิ้น<br></span>
                 </section>
                 <footer class="modal-card-foot">
-                <button class="button is-danger" style="margin-left: 85%;" @click='modal_studying = false'>close</button>
+                    <!-- footer modal detail -->
                 </footer>
             </div>
         </div>
@@ -250,22 +250,22 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_scholarship}} scholarship</p>
+                <p class="modal-card-title" style="padding-top: 20px;">Detail Report Form ID: {{report_form_id_scholarship}} scholarship</p>
                 <button class="delete" aria-label="close" @click='modal_scholarship = false'></button>
                 </header>
-                <section class="modal-card-body">
-                    {{report_form_id_scholarship}}<br>
-                    {{report_form_date_time_scholarship}}<br>
-                    {{report_form_topic_scholarship}}<br>
-                    {{type_scholarship}}<br>
-                    {{user_reprot_scholarship}}<br>
-                    {{scholarship_type}}<br>
-                    {{problem_description_scholarship}}<br>
-                    {{condition_of_submission_scholarship}}<br>
-                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                <section class="modal-card-body" style="font-size:20px; font-weight: 300; color:white">
+                    <span id="text-head">report_form_id</span> : {{report_form_id_scholarship}}<br>
+                    <span id="text-head">report_form_date_time</span> : {{report_form_date_time_scholarship}}<br>
+                    <span id="text-head">report_form_topic</span> : {{report_form_topic_scholarship}}<br>
+                    <span id="text-head">type</span> : {{type_scholarship}}<br>
+                    <span id="text-head">user student ID</span> : {{user_reprot_scholarship}}<br>
+                    <span id="text-head">scholarship_type</span> : {{scholarship_type}}<br>
+                    <span id="text-head">problem_description</span> : {{problem_description_scholarship}}<br>
+                    <span id="text-head">condition_of_submission</span> : {{condition_of_submission_scholarship}}<br>
+                    <span id="text-head">current status</span> : <span class="bg-success text-white">เสร็จสิ้น<br></span>
                 </section>
                 <footer class="modal-card-foot">
-                <button class="button is-danger" style="margin-left: 85%;" @click='modal_scholarship = false'>close</button>
+                    <!-- footer modal detail -->
                 </footer>
             </div>
         </div>
@@ -274,22 +274,22 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_register}} register</p>
+                <p class="modal-card-title" style="padding-top: 20px;">Detail Report Form ID: {{report_form_id_register}} register</p>
                 <button class="delete" aria-label="close"  @click='modal_register = false'></button>
                 </header>
-                <section class="modal-card-body">
-                    {{report_form_id_register}}<br>
-                    {{report_form_date_time_register}}<br>
-                    {{report_form_topic_register}}<br>
-                    {{type_register}}<br>
-                    {{user_reprot_register}}<br>
-                    {{regis_subject}}<br>
-                    {{problem_description_register}}<br>
-                    {{condition_of_submission_register}}<br>
-                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                <section class="modal-card-body" style="font-size:20px; font-weight: 300; color:white">
+                    <span id="text-head">report_form_id</span> : {{report_form_id_register}}<br>
+                    <span id="text-head">report_form_date_time</span> : {{report_form_date_time_register}}<br>
+                    <span id="text-head">report_form_topic</span> : {{report_form_topic_register}}<br>
+                    <span id="text-head">type</span> : {{type_register}}<br>
+                    <span id="text-head">user student ID</span> : {{user_reprot_register}}<br>
+                    <span id="text-head">regis_subject</span> : {{regis_subject}}<br>
+                    <span id="text-head">problem_description</span> : {{problem_description_register}}<br>
+                    <span id="text-head">condition_of_submission</span> : {{condition_of_submission_register}}<br>
+                    <span id="text-head">current status</span> : <span class="bg-success text-white">เสร็จสิ้น<br></span>
                 </section>
                 <footer class="modal-card-foot">
-                <button class="button is-danger" style="margin-left: 85%;"  @click='modal_register = false'>close</button>
+                    <!-- footer modal detail -->
                 </footer>
             </div>
         </div>
@@ -298,22 +298,22 @@
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
-                <p class="modal-card-title">Detail Report Form ID: {{report_form_id_environment}} environment</p>
+                <p class="modal-card-title" style="padding-top: 20px;">Detail Report Form ID: {{report_form_id_environment}} environment</p>
                 <button class="delete" aria-label="close" @click='modal_environment = false'></button>
                 </header>
-                <section class="modal-card-body">
-                    {{report_form_id_environment}}<br>
-                    {{report_form_date_time_environment}}<br>
-                    {{report_form_topic_environment}}<br>
-                    {{type_environment}}<br>
-                    {{user_reprot_environment}}<br>
-                    {{environment_location}}<br>
-                    {{problem_description_environment}}<br>
-                    {{condition_of_submission_environment}}<br>
-                    current status: <span class="bg-success text-white">เสร็จสิ้น<br></span>
+                <section class="modal-card-body" style="font-size:20px; font-weight: 300; color:white">
+                    <span id="text-head">report_form_id</span> : {{report_form_id_environment}}<br>
+                    <span id="text-head">report_form_date_time</span> : {{report_form_date_time_environment}}<br>
+                    <span id="text-head">report_form_topic</span> : {{report_form_topic_environment}}<br>
+                    <span id="text-head">type</span> : {{type_environment}}<br>
+                    <span id="text-head">user student ID</span> : {{user_reprot_environment}}<br>
+                    <span id="text-head">environment_location</span> : {{environment_location}}<br>
+                    <span id="text-head">problem_description</span> : {{problem_description_environment}}<br>
+                    <span id="text-head">condition_of_submission</span> : {{condition_of_submission_environment}}<br>
+                    <span id="text-head">current status</span> : <span class="bg-success text-white">เสร็จสิ้น<br></span>
                 </section>
                 <footer class="modal-card-foot">
-                <button class="button is-danger" style="margin-left: 85%;" @click='modal_environment = false'>close</button>
+                    <!-- footer modal detail -->
                 </footer>
             </div>
         </div>
@@ -325,9 +325,12 @@ import axios from "axios";
 export default {
     data() {
         return {
+            permission: null,
+            tokenAdmin: null,
+            id: '',
+            manage_acc: null,
+            manage_standand: null,
             // start
-            datauser: null,
-            id: "",
             data: null,
             report_form_all: [],
             report_form_all_copy: null,
@@ -411,10 +414,34 @@ export default {
         };
     },
     created() {
-        this.datauser = JSON.parse(localStorage.getItem("formLoginAdmin"));
-        if (this.datauser != null) {
-        this.id = this.datauser.user_id;
+    this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+    if(this.tokenAdmin != null){
+        this.permission = 'for admin'
+        axios.post("http://localhost:5000/checkTokenLogin", {
+            role: 'Admin',
+            token: this.tokenAdmin
+        }).then((response => {
+                if(response.data.message == 'You can pass! (Admin)'){
+                    this.id = response.data.id
+                    this.manage_acc = response.data.rule_manage_acc
+                    this.manage_standand = response.data.rule_standand_admin
+                }
+                else{
+                    alert("You can't access the admin, you are the user.! hahaha.")
+                    this.$router.push({ name: "Home" });
+                }
+                console.log(response)
+        })).catch((err) => {
+            alert("Error Your token! hahahaha.")
+            this.$router.push({ name: "Home" });
+            console.log(err)
+        })
     }
+    else{
+        alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+        this.$router.push({ name: "Home" });
+    }
+    // get data
     axios.get("http://localhost:5000/dataReport")
       .then((response) => {
         var i;
@@ -616,7 +643,6 @@ export default {
             })
         },
         show_detail(report_id, type){
-            alert(report_id + type)
             if(type == 'ปัญหาด้านสังคม'){
                 this.modal_sociality = true;
                 for(let j = 0; j < this.report_form_sociality.length ; j++){
@@ -709,7 +735,7 @@ export default {
         color: black;
     }
     #button:hover{
-        font-size: 17px;
+        font-size: 16px;
         color: white;
         border-color: rgb(72, 72, 72);
     }
@@ -786,5 +812,25 @@ export default {
     }
     .fa-user-plus{
         color:rgb(0, 0, 200);
+    }
+    .modal-card-head{
+        height: 60px;
+        background-color: rgb(80, 255, 255);
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+    }
+    .modal-card-body{
+        background-color: rgb(80, 80, 80);
+    }
+     .modal-card-foot{
+        height: 30px;
+        background-color: rgb(80, 255, 255);
+    }
+    #text-head{
+        font-weight: 400;
+        color:rgb(200, 150, 20);
+    }
+    #setcolor{
+        color: black;
     }
 </style>

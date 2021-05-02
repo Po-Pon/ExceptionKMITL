@@ -110,24 +110,42 @@ import axios from "axios";
 export default {
   data() {
     return {
-      datauser: null,
-      id: "",
+      permission: null,
+      tokenAdmin: null,
+      id: '',
+      manage_acc: null,
+      manage_standand: null,
       users: [],
     };
   },
   created() {
-    this.datauser = JSON.parse(localStorage.getItem("formLoginAdmin"));
-    if (this.datauser != null) {
-      this.id = this.datauser.user_id;
+    this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+    if(this.tokenAdmin != null){
+        this.permission = 'for admin'
+        axios.post("http://localhost:5000/checkTokenLogin", {
+            role: 'Admin',
+            token: this.tokenAdmin
+        }).then((response => {
+                if(response.data.message == 'You can pass! (Admin)'){
+                    this.id = response.data.id
+                    this.manage_acc = response.data.rule_manage_acc
+                    this.manage_standand = response.data.rule_standand_admin
+                }
+                else{
+                    alert("You can't access the admin, you are the user.! hahaha.")
+                    this.$router.push({ name: "Home" });
+                }
+                console.log(response)
+        })).catch((err) => {
+            alert("Error Your token! hahahaha.")
+            this.$router.push({ name: "Home" });
+            console.log(err)
+        })
     }
-    axios
-      .get("http://localhost:5000/")
-      .then((response) => {
-        this.users = response.data;
-      })
-      .catch((err) => {
-        if (err) throw err;
-      });
+    else{
+        alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+        this.$router.push({ name: "Home" });
+    }
   },
   methods: {
     logout() {

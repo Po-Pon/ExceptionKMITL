@@ -107,6 +107,9 @@ import axios from "axios";
 export default {
         data() {
             return{
+                permission: null,
+                tokenUser: null,
+                id: '',
                 reportforms: [],
                 type_select: null,
                 id_select: "",
@@ -117,9 +120,36 @@ export default {
                 errorid: ""
             }
         },
-    components: {
-      nnavbar
-    },
+        components: {
+            nnavbar
+        },
+        created(){
+            this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
+            if(this.tokenUser != null){
+                this.permission = 'for user'
+                axios.post("http://localhost:5000/checkTokenLogin", {
+                    role: 'User',
+                    token: this.tokenUser
+                }).then((response => {
+                        if(response.data.message == 'You can pass! (User)'){
+                            this.id = response.data.id
+                        }
+                        else{
+                            alert("You can't access the user, you are the admin.! hahaha.")
+                            this.$router.push({ name: "Home" });
+                        }
+                        console.log(response)
+                })).catch((err) => {
+                    alert("Error Your token! hahahaha.")
+                    this.$router.push({ name: "Home" });
+                    console.log(err)
+                })
+            }
+            else{
+                alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+                this.$router.push({ name: "Home" });
+            }
+        },
         methods:{
            type_report: function(){
             if(this.type_select == null){
