@@ -19,7 +19,7 @@
     <div id="favorite_arc" class="container-fluid">
         <p id="favorite_arc_title">ข่าวประชาสัมพันธ์</p>
         <div id="all_favorite_arc" class="row">
-            <div class="col-3" style="margin-bottom: 32px;" v-for="forum in forums">
+            <div class="col-3" style="margin-bottom: 32px;" v-for="forum in forums" @click="forumpage(forum.forum_id)">
                 <div id="favorite_arc_card" class="card">
                     <img id="favorite_arc_card_image" class="card-img-top" :src="forum.image_address">
                     <div id="favorite_arc_card_body" :style="{'border-top-color' : forumcolor(forum.forum_type)}" class="card-body">
@@ -86,11 +86,12 @@ export default {
     axios
       .get("http://localhost:5000/forum")
       .then((response) => {
-        this.forums = response.data.rows;
+        this.forums = response.data;
       })
       .catch((err) => {
         console.log(err);
       });
+      localStorage.removeItem("forum_id");
   },
   methods: {
     forumcolor: function (type) {
@@ -106,6 +107,10 @@ export default {
         return this.typecolor.scholarship;
       }
     },
+    forumpage: function(id){
+        window.location.href = "/forum/page";
+        localStorage.setItem("forum_id", "" + id);
+    }
   },
 };
 </script>
@@ -179,6 +184,10 @@ body {
   height: 445px;
   border-radius: 15px;
   margin-right: 80px;
+}
+
+#favorite_arc_card:hover{
+    opacity: 0.8;
 }
 
 #favorite_arc_card_image {
