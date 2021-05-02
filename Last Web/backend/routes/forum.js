@@ -8,7 +8,7 @@ router.get('/forum', async function(req, res, next){
 
     try{
         let [rows, fields] = await conn.query(
-            'SELECT forum_id, forum_topic, forum_type, image_address FROM forum, forum_image WHERE forum.forum_id = forum_image.id'
+            'SELECT forum_id, forum_topic, forum_type, image_address FROM forum'
         );
         conn.commit()
         console.log(rows);

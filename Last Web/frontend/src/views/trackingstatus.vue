@@ -1,6 +1,21 @@
 <template>
     <body>
-        <nnavbar></nnavbar>
+        <div class="banner" >
+            <div class="topnav">
+                <a href="/user"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+                <ul>
+                    <div id="MyClockDisplay" class="clock"></div>
+                    <div class="dropdown" v-if="id !=''">
+                        <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-user-plus"></i> {{id}}
+                        </button>
+                        <p class="dropdown-menu" >
+                            <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
+                        </p>
+                    </div>
+                </ul>
+            </div>
+        </div>
         <center><p id="tracking_big_title">ติดตามสถานะเรื่องร้องเรียน</p></center>
         <div id="all_select_tab" class="container-fluid">
             <div class="row">
@@ -102,7 +117,6 @@
 </template>
 
 <script>
-import nnavbar from "../components/banner_navbar.vue";
 import axios from "axios";
 export default {
         data() {
@@ -119,9 +133,6 @@ export default {
                 errortype: "",
                 errorid: ""
             }
-        },
-        components: {
-            nnavbar
         },
         created(){
             this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))

@@ -643,6 +643,7 @@ export default {
             })
         },
         show_detail(report_id, type){
+            alert(report_id+ type)
             if(type == 'ปัญหาด้านสังคม'){
                 this.modal_sociality = true;
                 for(let j = 0; j < this.report_form_sociality.length ; j++){

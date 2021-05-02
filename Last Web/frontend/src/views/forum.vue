@@ -1,14 +1,21 @@
 <template lang="en">
     <body>
-    <!-- <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src="/image/navbar/newlogo.png"></a>
-        <form class="form-inline">
-            <a id="navbar_register" href="#">Log In</a>
-            <div id=line_register></div>
-            <a id="navbar_register" href="#" style="margin-right: 30px">Register</a>
-        </form>
-    </nav> -->
-    <nnavbar></nnavbar>
+    <div class="banner" >
+      <div class="topnav">
+        <a href="/user"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+          <ul>
+            <div id="MyClockDisplay" class="clock"></div>
+              <div class="dropdown" v-if="id !=''">
+                  <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-user-plus"></i> {{id}}
+                  </button>
+                  <p class="dropdown-menu" >
+                <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
+              </p>
+          </div>
+        </ul>
+      </div>
+    </div>
     <div id="favorite_arc" class="container-fluid">
         <p id="favorite_arc_title">ข่าวประชาสัมพันธ์</p>
         <div id="all_favorite_arc" class="row">
@@ -35,13 +42,12 @@
 </template>
 
 <script>
-import nnavbar from "../components/banner_navbar.vue";
 import axios from "axios";
-
 export default {
   data() {
     return {
       forums: null,
+      id: null,
       typecolor: {
         education: "#E35205",
         parttimejob: "#6BDCA8",
@@ -51,10 +57,32 @@ export default {
       },
     };
   },
-  components: {
-      nnavbar
-    },
   created() {
+    this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
+    if(this.tokenUser != null){
+        this.permission = 'for user'
+        axios.post("http://localhost:5000/checkTokenLogin", {
+            role: 'User',
+            token: this.tokenUser
+        }).then((response => {
+              if(response.data.message == 'You can pass! (User)'){
+                  this.id = response.data.id
+              }
+              else{
+                alert("You can't access the user, you are the admin.! hahaha.")
+                this.$router.push({ name: "Home" });
+              }
+                console.log(response)
+        })).catch((err) => {
+            alert("Error Your token! hahahaha.")
+            this.$router.push({ name: "Home" });
+            console.log(err)
+        })
+      }
+      else{
+        alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+        this.$router.push({ name: "Home" });
+    }
     axios
       .get("http://localhost:5000/forum")
       .then((response) => {
