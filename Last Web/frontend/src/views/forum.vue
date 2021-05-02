@@ -58,7 +58,7 @@ export default {
     axios
       .get("http://localhost:5000/forum")
       .then((response) => {
-        this.forums = response.data.rows;
+        this.forums = response.data;
       })
       .catch((err) => {
         console.log(err);
