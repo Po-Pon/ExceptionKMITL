@@ -289,7 +289,7 @@ export default {
             rememberPassword: this.password,
             rememberTrue: this.remember
           }
-          console.log(data.message);
+          console.log(response);
 
           if (data.message == "log in success!") {
             if(this.remember == true){
@@ -299,14 +299,14 @@ export default {
             if(this.remember == false){
               localStorage.removeItem('rememberMe')
             }
-            if (data.rule_manage_acc == 1 || data.rule_standand_admin == 1){
-              let myJSON = JSON.stringify(data);
-              localStorage.setItem("formLoginAdmin", myJSON);
+            if (data.role == 'Admin'){
+              let token = JSON.stringify(data.token);
+              localStorage.setItem("tokenAdmin", token);
               this.$router.push({ name: "Admin" });
             }
-            else{
-              let myJSON = JSON.stringify(data);
-              localStorage.setItem("formLoginUser", myJSON);
+            if ((data.role == 'User')){
+              let token = JSON.stringify(data.token);
+              localStorage.setItem("tokenUser", token);
               this.$router.push({ name: "User" });
             }
           }

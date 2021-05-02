@@ -1,6 +1,7 @@
 const express = require("express");
 const pool = require("../config");
 const bcrypt = require ('bcrypt');
+const { generateToken } = require("../utils/token");
 
 router = express.Router();
 
@@ -17,13 +18,29 @@ router.post("/checkingLogin", async function(req, res, next){
         {
             const match = await bcrypt.compare(password, rows[0].acc_password);
             if(match){
-                let [userid, _] = await conn.query("SELECT a.acc_id,user_studentid FROM account a join user b ON a.acc_id=b.acc_id WHERE acc_email = ?", [email])
-                let [role, _2] = await conn.query("SELECT rule_manage_acc, rule_standand_admin FROM admin WHERE acc_id = ?", [userid[0].acc_id])
+                let [userid, notuse] = await conn.query("SELECT a.acc_id,user_studentid FROM account a join user b ON a.acc_id=b.acc_id WHERE acc_email = ?", [email])
+                let [role, notuse2] = await conn.query("SELECT rule_manage_acc, rule_standand_admin FROM admin WHERE acc_id = ?", [userid[0].acc_id])
                 if(role[0].rule_manage_acc == true || role[0].rule_standand_admin == true){
-                    res.json({message: 'log in success!', user_id: userid[0].user_studentid, acc_id: userid[0].acc_id, rule_manage_acc: role[0].rule_manage_acc, rule_standand_admin: role[0].rule_standand_admin})
+                    const [tokensAdmin, notuse3] = await conn.query(
+                        'SELECT token FROM tokens WHERE acc_id=?', 
+                        [userid[0].acc_id]
+                    )
+                    let tokenAdmin = tokensAdmin[0].token
+                    res.status(200).json({message: 'log in success!',role: 'Admin', token: tokenAdmin})
+                    await conn.query("UPDATE tokens SET time_login = CURRENT_TIMESTAMP WHERE token = ?;", [tokenAdmin])
+                    await conn.commit()                
                 }
-                else{res.json({message: 'log in success!', user_id: userid[0].user_studentid, acc_id: userid[0].acc_id})}
-                console.log('studentid', userid[0].user_studentid)
+                else{
+                    const [tokensUser, notuse4] = await conn.query(
+                        'SELECT token FROM tokens WHERE acc_id=?', 
+                        [userid[0].acc_id]
+                    )
+                    let tokenUser = tokensUser[0].token
+                    res.status(200).json({message: 'log in success!', role: 'User', token: tokenUser})
+                    await conn.query("UPDATE tokens SET time_login = CURRENT_TIMESTAMP WHERE token = ?;", [tokenUser])
+                    await conn.commit()
+                }
+                console.log('student_ID', userid[0].user_studentid)
                 var d = new Date();
                 var n = d.toString();
                 console.log('login success!', 'Time:', n.substring(16,21))
@@ -40,6 +57,9 @@ router.post("/checkingLogin", async function(req, res, next){
     } catch (error) {
         await conn.rollback();
         next(error);
+    }
+    finally{
+        conn.release()
     }
 })
 

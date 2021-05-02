@@ -1,6 +1,7 @@
 const express = require("express");
 const pool = require("../config");
 const bcrypt = require ('bcrypt');
+const { generateToken } = require("../utils/token");
 
 router = express.Router();
 
@@ -47,6 +48,10 @@ router.post("/register/submit", async function (req, res, next){
             await conn.query(
                 "INSERT INTO admin(rule_manage_acc, rule_standand_admin, access_key) VALUES(0, 0, null);"
             ) //  insert data in table_admin
+            let token = generateToken() // create token
+            await conn.query(
+                "INSERT INTO tokens(token) VALUES(?);", [token]
+            ) //  insert data in tokens
             await conn.commit()
             var d = new Date();
             var n = d.toString();

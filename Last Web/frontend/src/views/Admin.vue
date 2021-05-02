@@ -261,40 +261,40 @@ import axios from "axios";
 export default {
     data(){
         return{
-            User_permission: null,
-            datauser: null,
+            permission: null,
+            tokenAdmin: null,
             id: '',
             manage_acc: null,
             manage_standand: null,
         }
     },
-    // beforecreate(){
-    //     this.datauser = JSON.parse(localStorage.getItem('formLogin'))
-    //     console.log(this.datauser)
-    //     if(this.datauser == null){
-    //         console.log('kuy2')
-    //         if(this.datauser.rule_manage_acc == 1 || this.datauser.rule_standand_admin == 1){
-    //             this.$router.push({ name: "Home"})
-    //         }
-    //     }
-    // },
     created(){
-        this.User_permission = JSON.parse(localStorage.getItem('formLoginUser'))
-        this.datauser = JSON.parse(localStorage.getItem('formLoginAdmin'))
-        if(this.datauser != null){
-            this.id = this.datauser.user_id
-            this.manage_acc = this.datauser.rule_manage_acc
-            this.manage_standand = this.datauser.rule_standand_admin
+        this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+        if(this.tokenAdmin != null){
+            this.permission = 'for admin'
+            axios.post("http://localhost:5000/checkTokenLogin", {
+                role: 'Admin',
+                token: this.tokenAdmin
+            }).then((response => {
+                    if(response.data.message == 'You can pass! (Admin)'){
+                        this.id = response.data.id
+                        this.manage_acc = response.data.rule_manage_acc
+                        this.manage_standand = response.data.rule_standand_admin
+                    }
+                    else{
+                        alert("You can't access the admin, you are the user.! hahaha.")
+                        this.$router.push({ name: "Home" });
+                    }
+                    console.log(response)
+            })).catch((err) => {
+                alert("Error Your token! hahahaha.")
+                this.$router.push({ name: "Home" });
+                console.log(err)
+            })
         }
         else{
-            if(this.User_permission != null){
-                alert('You are not an Admin!!')
-                this.$router.push({ name: "User" });
-            }
-            else{
-                alert('ฮั่นแหน่รู้นะจะทำอะไร!!...กรุณาล็อกอินก่อนเข้าใช้งานนะครับ')
-                this.$router.push({ name: "Home" });
-            }
+            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+            this.$router.push({ name: "Home" });
         }
     },
     methods:{

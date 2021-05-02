@@ -257,8 +257,8 @@ export default {
         time
     },
     created(){
-        localStorage.removeItem('formLoginUser')
-        localStorage.removeItem('formLoginAdmin')
+        localStorage.removeItem('tokenAdmin')
+        localStorage.removeItem('tokenUser')
     }
 }
 </script>

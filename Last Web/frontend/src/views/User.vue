@@ -254,29 +254,40 @@
     </div>
 </template>
 <script>
+import axios from "axios";
 export default {
     data(){
         return{
-            Admin_permission: null,
-            datauser: null,
+            permission: null,
+            tokenUser: null,
             id: '',
         }
     },
     created(){
-        this.Admin_permission = JSON.parse(localStorage.getItem('formLoginAdmin'))
-        this.datauser = JSON.parse(localStorage.getItem('formLoginUser'))
-        if(this.datauser != null){
-            this.id = this.datauser.user_id
+        this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
+        if(this.tokenUser != null){
+            this.permission = 'for user'
+            axios.post("http://localhost:5000/checkTokenLogin", {
+                role: 'User',
+                token: this.tokenUser
+            }).then((response => {
+                    if(response.data.message == 'You can pass! (User)'){
+                        this.id = response.data.id
+                    }
+                    else{
+                        alert("You can't access the user, you are the admin.! hahaha.")
+                        this.$router.push({ name: "Home" });
+                    }
+                    console.log(response)
+            })).catch((err) => {
+                alert("Error Your token! hahahaha.")
+                this.$router.push({ name: "Home" });
+                console.log(err)
+            })
         }
         else{
-            if(this.Admin_permission != null){
-                alert('You are Admin!!')
-                this.$router.push({ name: "Admin" });
-            }
-            else{
-                alert('ฮั่นแหน่รู้นะจะทำอะไร!!...กรุณาล็อกอินก่อนเข้าใช้งานนะครับ')
-                this.$router.push({ name: "Home" });
-            }
+            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+            this.$router.push({ name: "Home" });
         }
     },
     methods:{
