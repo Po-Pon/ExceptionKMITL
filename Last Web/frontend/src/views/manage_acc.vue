@@ -146,6 +146,14 @@ export default {
         alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
         this.$router.push({ name: "Home" });
     }
+    axios
+      .get("http://localhost:5000/")
+      .then((response) => {
+        this.users = response.data;
+      })
+      .catch((err) => {
+        if (err) throw err;
+      });
   },
   methods: {
     logout() {
