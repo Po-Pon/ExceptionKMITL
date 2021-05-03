@@ -23,7 +23,7 @@
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านสังคม</p>
                     <p id="reportform_box_description">ร้องเรียนปัญหาด้านสังคมได้ที่นี่</p>
-                    <button id="reportform_button" class="btn" @click="createreport('sociality')">ร้องเรียน</button>
+                    <button id="reportform_button" class="btn" @click="createreport('สภาพสังคม')">ร้องเรียน</button>
                 </div>
                 <div class="col-6" id="reportform_image_right" style="background-image: url('https://d25tv1xepz39hi.cloudfront.net/2016-08-01/files/picture-style_1311.jpg');"></div>
             </div>
@@ -34,7 +34,7 @@
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านการเรียน</p>
                     <p id="reportform_box_description">ร้องเรียนปัญหาด้านการเรียนได้ที่นี่</p>
-                    <button id="reportform_button" class="btn" @click="createreport('education')">ร้องเรียน</button>
+                    <button id="reportform_button" class="btn" @click="createreport('การศึกษา')">ร้องเรียน</button>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านทุนการศึกษา</p>
                     <p id="reportform_box_description">ร้องเรียนปัญหาด้านทุนการศึกษาได้ที่นี่</p>
-                    <button id="reportform_button" class="btn" @click="createreport('scholarship')">ร้องเรียน</button>
+                    <button id="reportform_button" class="btn" @click="createreport('ทุนการศึกษา')">ร้องเรียน</button>
                 </div>
                 <div class="col-6" id="reportform_image_right" style="background-image: url('https://5estimates.com/wp-content/uploads/2020/01/SCHOLARSHIP.jpg');"></div>
             </div>
@@ -54,7 +54,7 @@
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านระบบการลงทะเบียน</p>
                     <p id="reportform_box_description">ร้องเรียนปัญหาด้านระบบการลงทะเบียนได้ที่นี่</p>
-                    <button id="reportform_button" class="btn" @click="createreport('register')">ร้องเรียน</button>
+                    <button id="reportform_button" class="btn" @click="createreport('การลงทะเบียนเรียน')">ร้องเรียน</button>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                 <div class="col-6" id="reportform_description">
                     <p id="reportform_box_title">ปัญหาด้านสภาพแวดล้อม</p>
                     <p id="reportform_box_description">ร้องเรียนปัญหาด้านสภาพแวดล้อมได้ที่นี่</p>
-                    <button id="reportform_button" class="btn" href="#" @click="createreport('environment')">ร้องเรียน</button>
+                    <button id="reportform_button" class="btn" href="#" @click="createreport('สภาพแวดล้อม')">ร้องเรียน</button>
                 </div>
                 <div class="col-6" id="reportform_image_right" style="background-image: url('https://coenv-media-gene1ufvxiloffjq.stackpathdns.com/2016/02/career-fair-1.jpg');"></div>
             </div>
@@ -124,25 +124,25 @@ export default {
             this.$router.push({ name: "Home" });
         },
         createreport: function(type){
-            if(type == "sociality"){
+            if(type == "สภาพสังคม"){
                 localStorage.setItem("color", "#6BDCA8");
-                localStorage.setItem("type", "sociality");
+                localStorage.setItem("type", "สภาพสังคม");
             }
-            else if(type == "education"){
+            else if(type == "การศึกษา"){
                 localStorage.setItem("color", "#E35205");
-                localStorage.setItem("type", "education");
+                localStorage.setItem("type", "การศึกษา");
             }
-            else if(type == "scholarship"){
+            else if(type == "ทุนการศึกษา"){
                 localStorage.setItem("color", "#3FAAF6");
-                localStorage.setItem("type", "scholarship");
+                localStorage.setItem("type", "ทุนการศึกษา");
             }
-            else if(type == "register"){
+            else if(type == "การลงทะเบียนเรียน"){
                 localStorage.setItem("color", "#DA8DFB");
-                localStorage.setItem("type", "register");
+                localStorage.setItem("type", "การลงทะเบียนเรียน");
             }
-            else if(type == "environment"){
+            else if(type == "สภาพแวดล้อม"){
                 localStorage.setItem("color", "#F5B406");
-                localStorage.setItem("type", "environment");
+                localStorage.setItem("type", "สภาพแวดล้อม");
             }
             window.location.href = "/reportform/createreport"
         }

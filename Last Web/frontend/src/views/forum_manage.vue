@@ -22,7 +22,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="forum in filterforum" :key="forum.forum_topic">
+                            <tr v-for="forum in filterforum" :key="forum.forum_id">
                                 <td id="table_body">{{forum.forum_id}}</td>
                                 <td colspan="2" id="table_body">{{forum.forum_topic}}</td>
                                 <td id="table_body"><button class="btn btn-primary" @click="gotopicture(forum.image_address, forum.forum_topic)" data-toggle="modal" data-target=".picture-modal-xl">click here</button></td>
@@ -104,7 +104,7 @@
                     <br>
                     <div class="form-group">
                         <p>ประเภท</p>
-                        <button class="btn btn-success" id="submit_btn">สร้าง</button>
+                        <button class="btn btn-success" id="submit_btn" data-dismiss="modal" @click="realcreate">สร้าง</button>
                         <button class="btn btn-secondary" id="submit_btn" data-dismiss="modal" @click="close_modal_button">ปิด</button>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                     <br>
                     <div class="form-group">
                         <p>ประเภท</p>
-                        <button class="btn btn-success" id="submit_btn">แก้ไข</button>
+                        <button class="btn btn-success" id="submit_btn" data-dismiss="modal" @click="realedit">แก้ไข</button>
                         <button class="btn btn-secondary" id="submit_btn" data-dismiss="modal" @click="close_modal_button">ปิด</button>
                     </div>
                 </div>
@@ -202,24 +202,77 @@ export default {
         axios.get("http://localhost:5000/forum")
         .then((response) => {
             this.allforum = response.data;
-            this.useforum = this.allforum;
         })
-        localStorage.removeItem("picture")
     },
     methods: {
         gotopicture: function(url, topic){
             this.image_address = url;
             this.forum_topic = topic;
         },
-        editopen: function(id){
-            axios.get("http://localhost:5000/forum/" + id)
+        realcreate(){
+            let acc_id = 2;
+            let newdata = {
+                forum_topic: this.forum_topic,
+                forum_description: this.forum_description,
+                forum_type: this.forum_type,
+                acc_id: acc_id,
+                image_address: this.image_address
+            }
+            axios
+            .post("http://localhost:5000/forum/createforum", newdata)
             .then((response) => {
-            console.log(response.data[0]);
-            this.forum_topic = response.data[0].forum_topic;
-            this.forum_description = response.data[0].forum_description;
-            this.forum_type = response.data[0].forum_type;
-            this.image_address = response.data[0].image_address;
+                this.forum_id = response.data;
+                this.allforum.push(
+                {
+                    forum_id: this.forum_id,
+                    forum_topic: this.forum_topic,
+                    forum_description: this.forum_description,
+                    forum_type: this.forum_type,
+                    image_address: this.image_address
+                }
+            )
+            }).catch((err) => {alert(err);})
+            this.close_modal_button;
+        },
+        editopen: function(id){
+            this.forum_id = id;
+            this.allforum.map((x) => {
+                if(x.forum_id == this.forum_id){
+                    this.forum_topic = x.forum_topic;
+                    this.forum_description = x.forum_description;
+                    this.forum_type = x.forum_type;
+                    this.image_address = x.image_address;
+                }
             })
+        },
+        realedit(){
+            let forum_edit = this.allforum.map((x) => {
+                if(x.forum_id == this.forum_id){
+                    return {
+                        forum_id: this.forum_id,
+                        forum_topic: this.forum_topic,
+                        forum_description: this.forum_description,
+                        forum_type: this.forum_type,
+                        image_address: this.image_address
+                    }
+                }
+                else{
+                    return x;
+                }
+            })
+            this.allforum = forum_edit;
+            
+            let newdata = {
+                forum_topic: this.forum_topic,
+                forum_description: this.forum_description,
+                forum_type: this.forum_type,
+                image_address: this.image_address
+            }
+
+            axios
+            .put("http://localhost:5000/forum/" + this.forum_id, newdata)
+            .then().catch((err) => {alert(err);})
+            this.close_modal_button;
         },
         deleteopen: function(id){
             let forum_delete = this.allforum.filter((x) => {
