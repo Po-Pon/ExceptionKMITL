@@ -27,8 +27,8 @@
                 และสามารถติดตามสถานะของเรื่องร้องเรียนนั้นได้ด้วยตนเอง!</span>
             </div>
             <div class="used">
-                <a href="/reportform" id="apply">ร้องเรียนปัญหา</a>
-                <a href="/trackingstatus" id="tracking">ติดตามสถานะ</a>
+                <a href="/admin" id="apply">ร้องเรียนปัญหา</a>
+                <a href="/admin" id="tracking">ติดตามสถานะ</a>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
                         <p><a href="">บทความยอดนิยม<br><br></a></p>
                     </div>
                     <div class="col-md-2" id="news" style="text-align: right;">
-                        <p><a href=""><br><i>ดูข่าวประชาสัมพันธ์</i><br></a></p>
+                        <p><a href="/forum"><br><i>ดูข่าวประชาสัมพันธ์</i><br></a></p>
                     </div>
                 </div>
 
@@ -274,7 +274,7 @@ export default {
             this.permission = 'for admin'
             axios.post("http://localhost:5000/checkTokenLogin", {
                 role: 'Admin',
-                token: this.tokenAdmin
+                tokenAdmin: this.tokenAdmin
             }).then((response => {
                     if(response.data.message == 'You can pass! (Admin)'){
                         this.id = response.data.id
@@ -300,9 +300,6 @@ export default {
     methods:{
         logout(){
             this.id = ''
-            this.datauser = null
-            localStorage.removeItem('formLoginAdmin')
-            console.log('Log out!')
             this.$router.push({ name: "Home" });
         },
         checkadmin(){

@@ -269,7 +269,7 @@ export default {
             this.permission = 'for user'
             axios.post("http://localhost:5000/checkTokenLogin", {
                 role: 'User',
-                token: this.tokenUser
+                tokenUser: this.tokenUser
             }).then((response => {
                     if(response.data.message == 'You can pass! (User)'){
                         this.id = response.data.id
@@ -293,8 +293,6 @@ export default {
     methods:{
         logout(){
             this.id = ''
-            this.datauser = null
-            localStorage.removeItem('formLoginUser')
             console.log('Log out!')
             this.$router.push({ name: "Home" });
         },

@@ -124,7 +124,7 @@ export default {
         this.permission = 'for admin'
         axios.post("http://localhost:5000/checkTokenLogin", {
             role: 'Admin',
-            token: this.tokenAdmin
+            tokenAdmin: this.tokenAdmin
         }).then((response => {
                 if(response.data.message == 'You can pass! (Admin)'){
                     this.id = response.data.id
@@ -158,8 +158,6 @@ export default {
   methods: {
     logout() {
       this.id = "";
-      this.datauser = "";
-      localStorage.removeItem("formLoginAdmin");
       console.log("Log out!");
       this.$router.push({ name: "Home" });
     },

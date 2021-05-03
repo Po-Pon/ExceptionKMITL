@@ -1,18 +1,23 @@
 <template lang="en">
     <body>
     <div class="banner" >
-      <div class="topnav">
-        <a href="/user"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+      <div class="topnav_login_reg">
+        <a :href="`${permissionPath}`"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
           <ul>
             <div id="MyClockDisplay" class="clock"></div>
-              <div class="dropdown" v-if="id !=''">
-                  <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-user-plus"></i> {{id}}
-                  </button>
-                  <p class="dropdown-menu" >
+            <template v-if="id ==''">
+              <li id="comp2"><a href="/login">Log In</a></li>
+              <div class="line"></div>
+              <li id="comp2"><a href="/register">Register</a></li>
+            </template>
+            <div class="dropdown" v-if="id !=''">
+              <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i :class="{'fa fa-user-plus': role == 'Admin', 'fa fa-user': role == 'User'}"></i> {{id}}
+              </button>
+              <p class="dropdown-menu" >
                 <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
               </p>
-          </div>
+            </div>
         </ul>
       </div>
     </div>
@@ -47,7 +52,11 @@ export default {
   data() {
     return {
       forums: null,
-      id: null,
+      tokenUser: null,
+      tokenAdmin: null,
+      role: null,
+      id: '',
+      permissionPath: null,
       typecolor: {
         education: "#E35205",
         parttimejob: "#6BDCA8",
@@ -59,29 +68,29 @@ export default {
   },
   created() {
     this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
-    if(this.tokenUser != null){
-        this.permission = 'for user'
+    this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+    if(this.tokenUser != null){this.role = 'User'}
+    if(this.tokenAdmin != null){this.role = 'Admin'}
+    if(this.tokenUser != null || this.tokenAdmin != null){
         axios.post("http://localhost:5000/checkTokenLogin", {
-            role: 'User',
-            token: this.tokenUser
+            role: this.role,
+            tokenUser: this.tokenUser,
+            tokenAdmin: this.tokenAdmin,
         }).then((response => {
               if(response.data.message == 'You can pass! (User)'){
                   this.id = response.data.id
+                  this.permissionPath = '/user'
               }
-              else{
-                alert("You can't access the user, you are the admin.! hahaha.")
-                this.$router.push({ name: "Home" });
+              if(response.data.message == 'You can pass! (Admin)'){
+                  this.id = response.data.id
+                  this.permissionPath = '/admin'
               }
-                console.log(response)
         })).catch((err) => {
-            alert("Error Your token! hahahaha.")
-            this.$router.push({ name: "Home" });
             console.log(err)
-        })
-      }
-      else{
-        alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
-        this.$router.push({ name: "Home" });
+        })  
+    }
+    else{
+      this.permissionPath = '/'
     }
     axios
       .get("http://localhost:5000/forum")
@@ -110,7 +119,11 @@ export default {
     forumpage: function(id){
         window.location.href = "/forum/page";
         localStorage.setItem("forum_id", "" + id);
-    }
+    },
+    logout(){
+      this.id = ''
+      this.$router.push({ name: "Home" });
+    },
   },
 };
 </script>
@@ -249,5 +262,8 @@ body {
   margin-top: 16px;
   margin-right: 30px;
   color: #1a1819;
+}
+.fa-user-plus{
+    color:rgb(0, 0, 200);
 }
 </style>
