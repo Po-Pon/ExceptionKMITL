@@ -78,20 +78,26 @@
                         <label for="inputtopic" class="col-sm-1 col-form-label">หัวข้อ</label>
                         <div class="col-sm-11">
                             <input v-model="$v.forum_topic.$model" type="text" class="form-control" :class="{'is-invalid' : $v.forum_topic.$error}" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
+<<<<<<< Updated upstream
                             <template v-if="$v.forum_topic.$error">
                                 <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                                 <p v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
                             </template>
+=======
+>>>>>>> Stashed changes
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="report_topic">เนื้อหา</label>
                         <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
+<<<<<<< Updated upstream
                         <template v-if="$v.forum_description.$error">
                             <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                             <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
                         </template>
+=======
+>>>>>>> Stashed changes
                     </div>
                     <br>
                     <div class="form-group">
@@ -137,16 +143,24 @@
                         </div>
                         <template v-if="$v.forum_topic.$error">
                             <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+<<<<<<< Updated upstream
                             <p v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+=======
+>>>>>>> Stashed changes
                         </template>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="report_topic">เนื้อหา</label>
                         <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
+<<<<<<< Updated upstream
                         <template v-if="$v.forum_description.$error">
                             <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                             <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
+=======
+                        <template v-if="$v.forum_topic.$error">
+                            <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+>>>>>>> Stashed changes
                         </template>
                     </div>
                     <br>
@@ -206,7 +220,11 @@
 
 <script type="text/javascript">
 import axios from "axios";
+<<<<<<< Updated upstream
 import {required, url, minLength} from 'vuelidate/lib/validators'
+=======
+import {required, url} from 'vuelidate/lib/validators'
+>>>>>>> Stashed changes
 
 export default {
     data() {
@@ -227,11 +245,17 @@ export default {
     validations: {
         forum_topic: {
             required,
+<<<<<<< Updated upstream
             minLength: minLength(10)
         },
         forum_description: {
             required,
             minLength: minLength(50)
+=======
+        },
+        forum_description: {
+            required
+>>>>>>> Stashed changes
         },
         forum_type: {
             required
