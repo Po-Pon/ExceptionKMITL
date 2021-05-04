@@ -3,7 +3,6 @@ const pool = require("../config");
 const bcrypt = require ('bcrypt');
 const Joi = require('joi');
 const { generateToken } = require("../utils/token");
-const Joi = require("joi");
 
 router = express.Router();
 
