@@ -70,20 +70,28 @@
             </div>
         </div>
         
-        <div class="modal fade create-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade create-modal-xl" tabindex="-1" role="dialog" aria-hidden="true" id="createmodal">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content" id="allmodal">
                     <p id="modal_title">สร้างข่าวประชาสัมพันธ์ใหม่</p>
                     <div class="form-group row">
                         <label for="inputtopic" class="col-sm-1 col-form-label">หัวข้อ</label>
                         <div class="col-sm-11">
-                            <input v-model="forum_topic" type="text" class="form-control" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
+                            <input v-model="$v.forum_topic.$model" type="text" class="form-control" :class="{'is-invalid' : $v.forum_topic.$error}" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
+                            <template v-if="$v.forum_topic.$error">
+                                <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                                <p v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                            </template>
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="report_topic">เนื้อหา</label>
-                        <textarea v-model="forum_description" class="form-control" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
+                        <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
+                        <template v-if="$v.forum_description.$error">
+                            <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
+                        </template>
                     </div>
                     <br>
                     <div class="form-group">
@@ -94,12 +102,19 @@
                         <button @click="forum_type = 'การลงทะเบียน'" class="btn" :class="{'btn-primary' : forum_type == 'การลงทะเบียน', 'btn-secondary' : forum_type != 'การลงทะเบียน'}" id="type_button">การลงทะเบียน</button>
                         <button @click="forum_type = 'ทุนการศึกษา'" class="btn" :class="{'btn-primary' : forum_type == 'ทุนการศึกษา', 'btn-secondary' : forum_type != 'ทุนการศึกษา'}" id="type_button">ทุนการศึกษา</button>
                     </div>
+                    <template v-if="$v.forum_type.$error">
+                        <p v-if="!$v.forum_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                    </template>
                     <br>
                     <div class="form-group row">
                         <label for="inputtopic" class="col-sm-3 col-form-label">Link รูปภาพประกอบ</label>
                         <div class="col-sm-9">
-                            <input v-model="image_address" type="text" class="form-control" id="inputtopic" placeholder="ใส่ลิ้งค์ที่นี่">
+                            <input v-model="$v.image_address.$model" type="text" class="form-control" :class="{'is-invalid' : $v.image_address.$error}" id="inputtopic" placeholder="ใส่ลิ้งค์ที่นี่">
                         </div>
+                        <template v-if="$v.image_address.$error">
+                            <p v-if="!$v.image_address.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p v-if="!$v.image_address.url">*ต้องใส่เป็น url เท่านั้น</p>
+                        </template>
                     </div>
                     <br>
                     <div class="form-group">
@@ -118,13 +133,21 @@
                     <div class="form-group row">
                         <label for="inputtopic" class="col-sm-1 col-form-label">หัวข้อ</label>
                         <div class="col-sm-11">
-                            <input v-model="forum_topic" type="text" class="form-control" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
+                            <input v-model="$v.forum_topic.$model" type="text" class="form-control" :class="{'is-invalid' : $v.forum_topic.$error}" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
                         </div>
+                        <template v-if="$v.forum_topic.$error">
+                            <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                        </template>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="report_topic">เนื้อหา</label>
-                        <textarea v-model="forum_description" class="form-control" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
+                        <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
+                        <template v-if="$v.forum_description.$error">
+                            <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
+                        </template>
                     </div>
                     <br>
                     <div class="form-group">
@@ -135,18 +158,26 @@
                         <button @click="forum_type = 'การลงทะเบียน'" class="btn" :class="{'btn-primary' : forum_type == 'การลงทะเบียน', 'btn-secondary' : forum_type != 'การลงทะเบียน'}" id="type_button">การลงทะเบียน</button>
                         <button @click="forum_type = 'ทุนการศึกษา'" class="btn" :class="{'btn-primary' : forum_type == 'ทุนการศึกษา', 'btn-secondary' : forum_type != 'ทุนการศึกษา'}" id="type_button">ทุนการศึกษา</button>
                     </div>
+                    <template v-if="$v.forum_type.$error">
+                            <p v-if="!$v.forum_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                    </template>
+
                     <br>
                     <div class="form-group row">
                         <label for="inputtopic" class="col-sm-3 col-form-label">Link รูปภาพประกอบ</label>
                         <div class="col-sm-9">
-                            <input v-model="image_address" type="text" class="form-control" id="inputtopic" placeholder="ใส่ลิ้งค์ที่นี่">
+                            <input v-model="$v.image_address.$model" type="text" class="form-control" :class="{'is-invalid' : $v.image_address.$error}" id="inputtopic" placeholder="ใส่ลิ้งค์ที่นี่">
                         </div>
+                        <template v-if="$v.image_address.$error">
+                            <p v-if="!$v.image_address.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p v-if="!$v.image_address.url">*ต้องใส่เป็น url เท่านั้น</p>
+                        </template>
                     </div>
                     <br>
                     <div class="form-group">
                         <p>ประเภท</p>
                         <button class="btn btn-success" id="submit_btn" data-dismiss="modal" @click="realedit">แก้ไข</button>
-                        <button class="btn btn-secondary" id="submit_btn" data-dismiss="modal" @click="close_modal_button">ปิด</button>
+                        <button class="btn btn-secondary" id="submit_btn" data-dismiss="modal" @click="close_modal_button()">ปิด</button>
                     </div>
                 </div>
             </div>
@@ -173,9 +204,9 @@
     </div>
 </template>
 
-<script>
+<script type="text/javascript">
 import axios from "axios";
-import { required } from 'vuelidate/lib/validators'
+import {required, url, minLength} from 'vuelidate/lib/validators'
 
 export default {
     data() {
@@ -193,9 +224,21 @@ export default {
             image_address: ""
         }
     },
-    Validations: {
+    validations: {
         forum_topic: {
+            required,
+            minLength: minLength(10)
+        },
+        forum_description: {
+            required,
+            minLength: minLength(50)
+        },
+        forum_type: {
             required
+        },
+        image_address: {
+            required,
+            url
         }
     },
     created() {
@@ -209,7 +252,41 @@ export default {
             this.image_address = url;
             this.forum_topic = topic;
         },
+        valiaftersubmit() {
+            let special = ""
+
+            if(!this.$v.forum_topic.required){
+                special = "กรุณาใส่หัวข้อข่าวประชาสัมพันธ์"
+            }
+            else if(!this.$v.forum_topic.minLength){
+                special = 'หัวข้อข่าวประชาสัมพันธ์ต้องมีความยาวไม่ต่ำกว่า 10 ตัวอักษร'
+            }
+            else if(!this.$v.forum_description.required){
+                special = 'กรุณาใส่เนื้อหาข่าวประชาสัมพันธ์'
+            }
+            else if(!this.$v.forum_description.minLength){
+                special = 'หัวข้อข่าวประชาสัมพันธ์ต้องมีความยาวไม่ต่ำกว่า 50 ตัวอักษร'
+            }
+            else if(!this.$v.forum_type.required){
+                special = 'กรุณาเลือกประเภทข่าวประชาสัมพันธ์'
+            }
+            else if(!this.$v.image_address.required){
+                special = 'กรุณาใส่ลิ้งค์รูปภาพประกอบ'
+            }
+            else if(!this.$v.image_address.url){
+                special = 'ลิ้งค์รูปภาพประกอบต้องใส่เป็น url เท่านั้น'
+            }
+
+            if(this.$v.$error){
+                alert("ไม่สามารถสร้าง/แก้ไขข่าวประชาสัมพันธ์" + "\n" + special);
+            }
+        },
         realcreate(){
+            this.$v.$touch();
+
+            this.valiaftersubmit();
+
+            if(!this.$v.$invalid){
             let acc_id = 2;
             let newdata = {
                 forum_topic: this.forum_topic,
@@ -233,6 +310,7 @@ export default {
             )
             }).catch((err) => {alert(err);})
             this.close_modal_button;
+            }
         },
         editopen: function(id){
             this.forum_id = id;
@@ -246,6 +324,11 @@ export default {
             })
         },
         realedit(){
+            this.$v.$touch();
+
+            this.valiaftersubmit();
+
+            if(!this.$v.$invalid){
             let forum_edit = this.allforum.map((x) => {
                 if(x.forum_id == this.forum_id){
                     return {
@@ -273,6 +356,7 @@ export default {
             .put("http://localhost:5000/forum/" + this.forum_id, newdata)
             .then().catch((err) => {alert(err);})
             this.close_modal_button;
+            }
         },
         deleteopen: function(id){
             let forum_delete = this.allforum.filter((x) => {
