@@ -1,23 +1,22 @@
 <template>
     <div>
       <div class="banner">
-        <div class="topnav">
-          <a href="/"
-            ><img
-              src="/image/navbar/newlogo.png"
-              width="110px"
-              height="auto"
-              style="padding-left: 20px"
-              alt=""
-          /></a>
-          <ul>
-
-            <li id="comp2"><a href="/login">Log In</a></li>
-            <div class="line"></div>
-            <li id="comp2"><a href="/register">Register</a></li>
-          </ul>
-        </div>
+      <div class="topnav_login_reg">
+        <a href="/"
+          ><img
+            src="/image/navbar/newlogo.png"
+            width="110px"
+            height="auto"
+            style="padding-left: 20px"
+            alt=""
+        /></a>
+        <ul>
+          <li id="comp2"><a href="/login">Log In</a></li>
+          <div class="line"></div>
+          <li id="comp2"><a href="/register">Register</a></li>
+        </ul>
       </div>
+    </div>
         <div class="wrapper fadeInDown">
             <div id="formContent" style="margin-top:80px; margin-bottom:80px;">
                 <div class="fadeIn first">
@@ -591,6 +590,73 @@ input[type=email],input[type=password],input[type=text]  {
   font-size: 15px;
   font-weight: 500;
 }
+
+ /* topnav_login_reg only login && reg */
+
+  .topnav_login_reg{
+      color:#fff;
+      display:flex;
+      justify-content: space-between;
+  }
+  .topnav_login_reg ul{
+      display: flex;
+      justify-content: space-around;
+      padding-top: 10px;
+      padding-right: 20px;  
+  }
+  .topnav_login_reg li{
+      list-style: none;        
+  }
+  .topnav_login_reg #comp1 a{
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 200;
+      padding: 5px 12px;
+  }
+  .topnav_login_reg #comp1 a:hover{
+      color: orange;
+      text-decoration: none;
+  }
+  .topnav_login_reg #comp2 a{
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 5px 12px;
+  }
+  .topnav_login_reg #comp2 a:hover{
+      color: yellow;
+      text-decoration: none;
+  }
+
+  .topnav_login_reg #comp3{
+      color:white; 
+      background-color:#e4af01;
+      margin-right: 20px; 
+      margin-left: 10px; 
+  }
+
+  .topnav_login_reg #comp3:hover{
+      background-color:#f7d12b; 
+  }
+
+  .topnav_login_reg::before{
+      content: " ";
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      background-color:#d86a03;
+      opacity: 0.53;
+      z-index: 1;
+  }
+
+  .topnav_login_reg > * {
+      z-index: 100;
+  }
+
 /* footer */
 
 footer {

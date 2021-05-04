@@ -8,6 +8,11 @@ router = express.Router();
 // coding here !!
 
 router.post("/register/submit", async function (req, res, next){
+    try {
+        signupSchema.validateAsync(req.body.form,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }
     // User send form data to backend
     console.log(req.body.form)
     const Firstname = req.body.form.Firstname
