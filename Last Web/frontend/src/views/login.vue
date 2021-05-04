@@ -277,10 +277,8 @@ export default {
       if (this.$v.$pendding || this.$v.$error) return;
       axios
         .post("http://localhost:5000/checkingLogin", {
-          form: {
             email: this.email,
             password: this.password,
-          },
         })
         .then((response) => {
 

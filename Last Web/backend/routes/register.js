@@ -1,26 +1,56 @@
 const express = require("express");
 const pool = require("../config");
 const bcrypt = require ('bcrypt');
+const Joi = require('joi');
 const { generateToken } = require("../utils/token");
 
 router = express.Router();
 
 // coding here !!
 
+const passwordValidator = (value, helpers) => {
+    if (value.length < 8) {
+        throw new Joi.ValidationError('Password must contain at least 8 characters')
+    }
+    if (!(value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/))) {
+        throw new Joi.ValidationError('Password must be harder')
+    }
+    return value
+}
+
+const StudentIDValidator = (value, helpers) => {
+    if (value.toString().length != 8) {
+        throw new Joi.ValidationError('StudentID Must be equal to 8 integers')
+    }
+    return value
+}
+
+//Joi Here 
+
+const signupSchema = Joi.object({
+    Firstname: Joi.string().required().max(255),
+    Lastname: Joi.string().required().max(255),
+    StudentID: Joi.number().integer().required().custom(StudentIDValidator),
+    Status: Joi.required().valid('กำลังศึกษาอยู่','จบการศึกษาแล้ว'),
+    Email: Joi.string().required().email(),
+    Password: Joi.string().required().custom(passwordValidator),
+    repeatPassword: Joi.string().required().valid(Joi.ref('Password'))
+})
+
 router.post("/register/submit", async function (req, res, next){
     try {
-        signupSchema.validateAsync(req.body.form,  { abortEarly: false })
+        signupSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
     }
     // User send form data to backend
-    console.log(req.body.form)
-    const Firstname = req.body.form.Firstname
-    const Lastname = req.body.form.Lastname
-    const StudentID = req.body.form.StudentID
-    const Status = req.body.form.Status
-    const Email = req.body.form.Email
-    const Password = req.body.form.Password
+    console.log(req.body)
+    const Firstname = req.body.Firstname
+    const Lastname = req.body.Lastname
+    const StudentID = req.body.StudentID
+    const Status = req.body.Status
+    const Email = req.body.Email
+    const Password = req.body.Password
     // bcrypt password
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(Password, salt)
@@ -30,7 +60,7 @@ router.post("/register/submit", async function (req, res, next){
         let [rows1, notuse1] = await conn.query("SELECT acc_email FROM account WHERE acc_email = ?", [Email])
         let [rows2, notuse2] = await conn.query("SELECT user_studentid FROM user WHERE user_studentid = ?", [StudentID])
         if(rows1.length > 0 && rows2.length > 0){
-            res.json({message : "Email นี้ถูกใช้แล้ว", errorEmail : 'error', errorStudentid : 'error'})
+            res.json({message : "Email นี้ถูกใช้แล้ว และ Password นี้ถูกใช้แล้ว", errorEmail : 'error', errorStudentid : 'error'})
             console.log('Error', 'Email และ StudentID ซ้ำ')
         }
         else if(rows1.length > 0){

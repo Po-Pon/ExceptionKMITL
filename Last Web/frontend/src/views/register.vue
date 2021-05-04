@@ -74,8 +74,8 @@
                       />
                       <div class="invalid-feedback">
                         <span v-if="!$v.firstname.required">กรุณากรอกชื่อ</span>
-                        <span v-if="!$v.firstname.number"
-                          >ชื่อจริงต้องไม่มีตัวเลข</span
+                        <span v-if="!$v.firstname.string"
+                          >ชื่อจริงไม่ถูกต้อง</span
                         >
                         <span v-if="!$v.firstname.minLength"
                           >ชื่อจริงผู้ใช้ต้องไม่ต่ำกว่า
@@ -140,8 +140,8 @@
                         <span v-if="!$v.lastname.required"
                           >กรุณากรอกนามสกุล</span
                         >
-                        <span v-if="!$v.lastname.number"
-                          >นามสกุลต้องไม่มีตัวเลข</span
+                        <span v-if="!$v.lastname.string"
+                          >นามสกุลไม่ถูกต้อง</span
                         >
                         <span v-if="!$v.lastname.minLength"
                           >นามสกุลผู้ใช้ต้องไม่ต่ำกว่า
@@ -263,11 +263,14 @@
                 ></a>
                 <div class="invalid-feedback">
                   <span v-if="!$v.passWord.required">กรุณากรอกรหัสผ่าน</span>
-                  <span v-if="!$v.passWord.minLength"
-                    >Password ต้องไม่ต่ำกว่า 16 ตัว</span
+                  <span v-else-if="!$v.passWord.minLength"
+                    >Password ต้องไม่ต่ำกว่า 8 ตัว</span
                   >
-                  <span v-if="!$v.passWord.maxLength"
+                  <span v-else-if="!$v.passWord.maxLength"
                     >Password ต้องไม่เกิน 255 ตัว</span
+                  >
+                  <span v-else-if="!$v.passWord.complex"
+                  >Password ง่ายเกินไป ควรมี A-Z หรือ a-z หรือ อักขระพิเศษ อย่างน้อย 1 ตัว</span
                   >
                 </div>
               </div>
@@ -403,9 +406,16 @@ import {
 } from "vuelidate/lib/validators";
 import axios from "axios";
 
-function isnumber(value){
-  if(value.match(/[0-9]/)){return false;}
+function specialChar(value){
+  if(value.match(/[0-9!@#$%^&*)(+=._-]/)){return false;}
   else{return true;}
+}
+
+function complexPassword(value) {
+  if (!(value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/))) {
+    return false;
+  }
+  return true;
 }
 
 export default {
@@ -444,16 +454,16 @@ export default {
         console.log(err);
       });
   },
-  validations: {
+  validations:{
     firstname: {
       required,
-      number: isnumber,
+      string: specialChar,
       minLength: minLength(3),
       maxLength: maxLength(255),
     },
     lastname: {
       required,
-      number: isnumber,
+      string: specialChar,
       minLength: minLength(3),
       maxLength: maxLength(255),
     },
@@ -474,6 +484,7 @@ export default {
       required,
       minLength: minLength(8),
       maxLength: maxLength(255),
+      complex: complexPassword,
     },
     repeatPassword: {
       required,
@@ -526,15 +537,13 @@ export default {
       if (this.$v.$pendding || this.$v.$error) return;
       axios
         .post("http://localhost:5000/register/submit", {
-          form: {
             Firstname: this.firstname,
             Lastname: this.lastname,
             StudentID: this.studentID,
             Status: this.status,
             Email: this.email,
             Password: this.passWord,
-            repeatPassword : this.repeatPassword
-          },
+            repeatPassword: this.repeatPassword
         })
         .then((response) => {
           const data = response.data;

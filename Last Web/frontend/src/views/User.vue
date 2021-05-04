@@ -260,11 +260,13 @@ export default {
         return{
             permission: null,
             tokenUser: null,
+            tokenAdminError: null,
             id: '',
         }
     },
     created(){
         this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
+        this.tokenAdminError = JSON.parse(localStorage.getItem('tokenAdmin'))
         if(this.tokenUser != null){
             this.permission = 'for user'
             axios.post("http://localhost:5000/checkTokenLogin", {
@@ -286,8 +288,13 @@ export default {
             })
         }
         else{
-            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
-            this.$router.push({ name: "Home" });
+            if(this.tokenAdminError != null){
+                alert('คุณไม่ใช่ user eiei')
+            }
+            else{
+                alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+                this.$router.push({ name: "Home" });
+            }
         }
     },
     methods:{
