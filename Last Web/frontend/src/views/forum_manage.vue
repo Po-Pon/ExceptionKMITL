@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="body">
         <div class="banner" >
           <div class="topnav_manage">
               <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
@@ -92,6 +92,7 @@
                             <template v-if="$v.forum_topic.$error">
                                 <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                                 <p v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                                <p v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
                             </template>
                         </div>
                     </div>
@@ -149,6 +150,7 @@
                         <template v-if="$v.forum_topic.$error">
                             <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                             <p v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                            <p v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
                         </template>
                     </div>
                     <br>
@@ -226,7 +228,7 @@
 
 <script type="text/javascript">
 import axios from "axios";
-import {required, url, minLength} from 'vuelidate/lib/validators'
+import {required, url, minLength, maxLength} from 'vuelidate/lib/validators'
 
 export default {
     data() {
@@ -252,7 +254,8 @@ export default {
     validations: {
         forum_topic: {
             required,
-            minLength: minLength(10)
+            minLength: minLength(10),
+            maxLength: maxLength(255)
         },
         forum_description: {
             required,
@@ -317,6 +320,9 @@ export default {
             }
             else if(!this.$v.forum_topic.minLength){
                 special = 'หัวข้อข่าวประชาสัมพันธ์ต้องมีความยาวไม่ต่ำกว่า 10 ตัวอักษร'
+            }
+            else if(!this.$v.forum_topic.maxLength){
+                special = 'หัวข้อข่าวประชาสัมพันธ์ต้องมีความยาวไม่เกิน 255 ตัวอักษร'
             }
             else if(!this.$v.forum_description.required){
                 special = 'กรุณาใส่เนื้อหาข่าวประชาสัมพันธ์'
@@ -500,7 +506,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     #navbar_homepage{
     background-color: rgb(150, 54, 3, .53);
     height: 12%;
