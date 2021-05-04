@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="body">
         <div class="banner" >
           <div class="topnav_manage">
               <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
@@ -486,7 +486,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     #navbar_homepage{
     background-color: rgb(150, 54, 3, .53);
     height: 12%;
