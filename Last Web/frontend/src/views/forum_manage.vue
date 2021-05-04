@@ -235,6 +235,7 @@ export default {
         return{
             permission: null,
             tokenAdmin: null,
+            tokenUserError: null,
             id: '',
             acc_id: '',
             manage_acc: null,
@@ -272,6 +273,7 @@ export default {
     },
     created() {
         this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+        this.tokenUserError = JSON.parse(localStorage.getItem('tokenUser'))
         if(this.tokenAdmin != null){
             this.permission = 'for admin'
             axios.post("http://localhost:5000/checkTokenLogin", {
@@ -296,8 +298,14 @@ export default {
             })
         }
         else{
-            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
-            this.$router.push({ name: "Home" });
+            if(this.tokenUserError != null){
+                alert("คุณไม่ใช่ Admin eiei")
+                this.$router.push({ name: "Home" });
+            }
+            else{
+                alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+                this.$router.push({ name: "Home" });
+            }
         }
         axios.get("http://localhost:5000/forum")
         .then((response) => {

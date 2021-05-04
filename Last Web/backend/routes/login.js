@@ -1,14 +1,27 @@
 const express = require("express");
 const pool = require("../config");
 const bcrypt = require ('bcrypt');
-const { generateToken } = require("../utils/token");
+const Joi = require('joi');
+// const { generateToken } = require("../utils/token");
 
 router = express.Router();
 
 // coding here !!
+
+const signupSchema = Joi.object({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+})
+
 router.post("/checkingLogin", async function(req, res, next){
-    const email = req.body.form.email
-    const password = req.body.form.password
+    try {
+        signupSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        res.status(400).json(err)
+    }
+    // User send email and password to backend
+    const email = req.body.email
+    const password = req.body.password
     console.log('email', email, 'password', password)
     const conn = await pool.getConnection()
     await conn.beginTransaction();
