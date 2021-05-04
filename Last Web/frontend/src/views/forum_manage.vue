@@ -92,6 +92,7 @@
                             <template v-if="$v.forum_topic.$error">
                                 <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                                 <p v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                                <p v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
                             </template>
                         </div>
                     </div>
@@ -149,6 +150,7 @@
                         <template v-if="$v.forum_topic.$error">
                             <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                             <p v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                            <p v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
                         </template>
                     </div>
                     <br>
@@ -217,7 +219,7 @@
 
 <script type="text/javascript">
 import axios from "axios";
-import {required, url, minLength} from 'vuelidate/lib/validators'
+import {required, url, minLength, maxLength} from 'vuelidate/lib/validators'
 
 export default {
     data() {
@@ -243,7 +245,8 @@ export default {
     validations: {
         forum_topic: {
             required,
-            minLength: minLength(10)
+            minLength: minLength(10),
+            maxLength: maxLength(255)
         },
         forum_description: {
             required,
@@ -303,6 +306,9 @@ export default {
             }
             else if(!this.$v.forum_topic.minLength){
                 special = 'หัวข้อข่าวประชาสัมพันธ์ต้องมีความยาวไม่ต่ำกว่า 10 ตัวอักษร'
+            }
+            else if(!this.$v.forum_topic.maxLength){
+                special = 'หัวข้อข่าวประชาสัมพันธ์ต้องมีความยาวไม่เกิน 255 ตัวอักษร'
             }
             else if(!this.$v.forum_description.required){
                 special = 'กรุณาใส่เนื้อหาข่าวประชาสัมพันธ์'

@@ -1,5 +1,6 @@
 const express = require('express');
-const pool = require('../config')
+const pool = require('../config');
+const joi = require('joi');
 const router = express.Router();
 
 router.get('/forum', async function(req, res, next){
@@ -42,7 +43,21 @@ router.get('/forum/:id', async (req, res, next) => {
     }
 })
 
+const createforumschema = joi.object({
+    forum_topic: joi.string().required().min(10).max(255),
+    forum_description: joi.string().required().min(50),
+    forum_type: joi.string().required().valid('การศึกษา', 'งานพาร์ทไทน์', 'สภาพแวดล้อม', 'การลงทะเบียน', 'ทุนการศึกษา'),
+    acc_id: joi.number().integer().required(),
+    image_address: joi.string().uri().required()
+})
+
 router.post('/forum/createforum', async (req, res, next) => {
+    try {
+        await createforumschema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+
     const conn = await pool.getConnection();
     await conn.beginTransaction();
 
@@ -76,7 +91,20 @@ router.post('/forum/createforum', async (req, res, next) => {
     }
 })
 
+const updateforumschema = joi.object({
+    forum_topic: joi.string().required().min(10).max(255),
+    forum_description: joi.string().required().min(50),
+    forum_type: joi.string().required().valid('การศึกษา', 'งานพาร์ทไทน์', 'สภาพแวดล้อม', 'การลงทะเบียน', 'ทุนการศึกษา'),
+    image_address: joi.string().uri().required()
+})
+
 router.put('/forum/:id', async (req, res, next) => {
+    try {
+        await updateforumschema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+
     const conn = await pool.getConnection();
     await conn.beginTransaction();
 
