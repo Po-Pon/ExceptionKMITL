@@ -1,13 +1,24 @@
 <template>
     <div>
-        <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src=""></a>
-        <form class="form-inline">
-            <a id="navbar_register" href="#">Log In</a>
-            <div id=line_register></div>
-            <a id="navbar_register" href="#" style="margin-right: 30px">Register</a>
-        </form>
-        </nav>
+        <div class="banner" >
+          <div class="topnav_manage">
+              <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+              <ul>
+                  <div id="MyClockDisplay" class="clock"></div>
+                  <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
+                  <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
+                  <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
+                  <div class="dropdown">
+                      <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fa fa-user-plus"></i> {{id}}
+                      </button>
+                      <p class="dropdown-menu" >
+                          <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
+                      </p>
+                  </div>
+              </ul>
+          </div>
+      </div>
         <div class="container_fluid" id="all_forum_manage">
             <p id="forum_manage_title">Manage forum</p>
             <div class="row">
@@ -176,10 +187,14 @@
 <script>
 import axios from "axios";
 import { required } from 'vuelidate/lib/validators'
-
 export default {
     data() {
         return{
+            permission: null,
+            tokenAdmin: null,
+            id: '',
+            manage_acc: null,
+            manage_standand: null,
             allforum: [],
             forum_id: "",
             forum_topic: "",
@@ -199,6 +214,33 @@ export default {
         }
     },
     created() {
+        this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+        if(this.tokenAdmin != null){
+            this.permission = 'for admin'
+            axios.post("http://localhost:5000/checkTokenLogin", {
+                role: 'Admin',
+                tokenAdmin: this.tokenAdmin
+            }).then((response => {
+                    if(response.data.message == 'You can pass! (Admin)'){
+                        this.id = response.data.id
+                        this.manage_acc = response.data.rule_manage_acc
+                        this.manage_standand = response.data.rule_standand_admin
+                    }
+                    else{
+                        alert("You can't access the admin, you are the user.! hahaha.")
+                        this.$router.push({ name: "Home" });
+                    }
+                    console.log(response)
+            })).catch((err) => {
+                alert("Error Your token! hahahaha.")
+                this.$router.push({ name: "Home" });
+                console.log(err)
+            })
+        }
+        else{
+            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+            this.$router.push({ name: "Home" });
+        }
         axios.get("http://localhost:5000/forum")
         .then((response) => {
             this.allforum = response.data;
@@ -410,7 +452,7 @@ export default {
     font-weight: 500;
 }
 #all_forum_manage{
-    margin-top: 7%;
+    margin-top: 2%;
     margin-bottom: 7%;
     padding-right: 8%;
     padding-left: 8%;
@@ -482,4 +524,69 @@ export default {
     padding-left: 5%;
     background-color: #ffffff;
 }
+/* topnav_manage only login && reg */
+
+    .topnav_manage{
+        color:#fff;
+        display:flex;
+        justify-content: space-between;
+    }
+    .topnav_manage ul{
+        display: flex;
+        justify-content: space-around;
+        padding-top: 10px;
+        padding-right: 20px;  
+    }
+    .topnav_manage li{
+        list-style: none;        
+    }
+    .topnav_manage #comp1 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 200;
+        padding: 5px 12px;
+    }
+    .topnav_manage #comp1 a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .topnav_manage #comp2 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 5px 12px;
+    }
+    .topnav_manage #comp2 a:hover{
+        color: yellow;
+        text-decoration: none;
+    }
+
+    .topnav_manage #comp3{
+        color:white; 
+        background-color:#e4af01;
+        margin-right: 20px; 
+        margin-left: 10px; 
+    }
+
+    .topnav_manage #comp3:hover{
+        background-color:#f7d12b; 
+    }
+
+    .topnav_manage::before{
+        content: " ";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color:#d86a03;
+        opacity: 0.53;
+        z-index: 1;
+    }
+
+    .topnav_manage > * {
+        z-index: 100;
+    }
 </style>

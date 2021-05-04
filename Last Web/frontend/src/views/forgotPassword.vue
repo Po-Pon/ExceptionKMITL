@@ -591,4 +591,29 @@ input[type=email],input[type=password],input[type=text]  {
   font-size: 15px;
   font-weight: 500;
 }
+/* footer */
+
+footer {
+    background-color: #963306;
+    padding: 10px 0px 10px 30px;
+}
+
+#help{
+    padding: 10px 30px;
+}
+
+#help a{
+    color: black;
+    float: right;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    width: 100px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffffff;
+    opacity: 0.7;
+}
+
 </style>

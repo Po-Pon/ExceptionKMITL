@@ -27,8 +27,8 @@
                 และสามารถติดตามสถานะของเรื่องร้องเรียนนั้นได้ด้วยตนเอง!</span>
             </div>
             <div class="used">
-                <a href="/admin" id="apply">ร้องเรียนปัญหา</a>
-                <a href="/admin" id="tracking">ติดตามสถานะ</a>
+                <a href="/reportform" id="apply">ร้องเรียนปัญหา</a>
+                <a href="/trackingstatus" id="tracking">ติดตามสถานะ</a>
             </div>
         </div>
 
@@ -318,6 +318,32 @@ export default {
 </script>
 
 <style scoped>
+
+/* footer */
+
+footer {
+    background-color: #963306;
+    padding: 10px 0px 10px 30px;
+}
+
+#help{
+    padding: 10px 30px;
+}
+
+#help a{
+    color: black;
+    float: right;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    width: 100px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: #ffffff;
+    opacity: 0.7;
+}
+
 .fa-user-plus{
     color:rgb(0, 0, 200);
 }
