@@ -74,7 +74,7 @@
                       />
                       <div class="invalid-feedback">
                         <span v-if="!$v.firstname.required">กรุณากรอกชื่อ</span>
-                        <span v-if="!$v.firstname.alpha"
+                        <span v-if="!$v.firstname.number"
                           >ชื่อจริงต้องไม่มีตัวเลข</span
                         >
                         <span v-if="!$v.firstname.minLength"
@@ -140,12 +140,16 @@
                         <span v-if="!$v.lastname.required"
                           >กรุณากรอกนามสกุล</span
                         >
-                        <span v-if="!$v.lastname.alpha"
+                        <span v-if="!$v.lastname.number"
                           >นามสกุลต้องไม่มีตัวเลข</span
                         >
                         <span v-if="!$v.lastname.minLength"
                           >นามสกุลผู้ใช้ต้องไม่ต่ำกว่า
                           {{ $v.firstname.$params.minLength.min }} ตัว</span
+                        >
+                        <span v-if="!$v.lastname.maxLength"
+                          >นามสกุลผู้ใช้ต้องไม่เกิน
+                          {{ $v.lastname.$params.maxLength.max }} ตัว</span
                         >
                         <span v-if="!$v.lastname.maxLength"
                           >นามสกุลผู้ใช้ต้องไม่เกิน
@@ -396,9 +400,14 @@ import {
   email,
   sameAs,
   integer,
-  alpha,
 } from "vuelidate/lib/validators";
 import axios from "axios";
+
+function isnumber(value){
+  if(value.match(/[0-9]/)){return false;}
+  else{return true;}
+}
+
 export default {
   data() {
     return {
@@ -438,13 +447,13 @@ export default {
   validations: {
     firstname: {
       required,
-      alpha,
+      number: isnumber,
       minLength: minLength(3),
       maxLength: maxLength(255),
     },
     lastname: {
       required,
-      alpha,
+      number: isnumber,
       minLength: minLength(3),
       maxLength: maxLength(255),
     },
@@ -524,6 +533,7 @@ export default {
             Status: this.status,
             Email: this.email,
             Password: this.passWord,
+            repeatPassword : this.repeatPassword
           },
         })
         .then((response) => {
@@ -541,7 +551,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     },
   },

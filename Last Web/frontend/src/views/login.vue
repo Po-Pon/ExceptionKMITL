@@ -189,7 +189,7 @@
       </div>
     </div>
     <footer>
-            <div class="row">
+          <div class="row">
                 <div class="col-md-5">
                     <div class="copyright text-white" style="font-weight: 200;"> 
                         King Mongkut's Institute of technology Ladkrabang<br>
@@ -205,8 +205,8 @@
                 <div class="col-md-2" id="help">
                     <a href="/">HELP</a>
                 </div>
-            </div>
-        </footer>
+          </div>
+      </footer>
   </div>
 </template>
 

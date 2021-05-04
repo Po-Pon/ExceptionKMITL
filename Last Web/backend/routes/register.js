@@ -2,12 +2,29 @@ const express = require("express");
 const pool = require("../config");
 const bcrypt = require ('bcrypt');
 const { generateToken } = require("../utils/token");
+const Joi = require("joi");
 
 router = express.Router();
 
 // coding here !!
 
+//Joi Here 
+const signupSchema = Joi.object({
+    Firstname: Joi.string().required().max(256),
+    Lastname: Joi.string().required().max(256),
+    StudentID: Joi.number().integer().required().min(8),
+    Status: Joi.string().required(),
+    Email: Joi.string().required().email(),
+    Password: Joi.string().required().min(8).max(256)
+})
+
 router.post("/register/submit", async function (req, res, next){
+    try {
+        await signupSchema.validateAsync(req.body.form, { abortEarly: false})
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+    
     // User send form data to backend
     console.log(req.body.form)
     const Firstname = req.body.form.Firstname

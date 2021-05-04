@@ -183,7 +183,7 @@ export default {
     margin-right: 10px;
   }
   #favorite_arc {
-    margin-top: 70px;
+    margin-top: 0px;
     margin-bottom: 38px;
     padding-right: 8%;
     padding-left: 8%;
