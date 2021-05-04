@@ -3,6 +3,7 @@ const pool = require("../config");
 const bcrypt = require ('bcrypt');
 const Joi = require('joi');
 const { generateToken } = require("../utils/token");
+const Joi = require("joi");
 
 router = express.Router();
 
@@ -41,8 +42,9 @@ router.post("/register/submit", async function (req, res, next){
     try {
         signupSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
-        res.status(400).json(err)
+        return res.status(400).json(err)
     }
+    
     // User send form data to backend
     console.log(req.body)
     const Firstname = req.body.Firstname
