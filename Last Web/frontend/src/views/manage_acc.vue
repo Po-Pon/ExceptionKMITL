@@ -84,6 +84,17 @@
         </footer>
       </div>
     </div>
+    <footer id="footer">
+      <div class="row">
+        <div class="col-md-5">
+          </div>
+          <div class="col-md-5">
+            <div class="copyright" style="padding-top: 20px; color: #aaa;">
+              Copyright &copy; 2021 ExptionKMITL
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -372,6 +383,14 @@ export default {
 
     .topnav_manage > * {
         z-index: 100;
+    }
+    #footer {
+      height: 60px;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #d86a03;
+      color: white;
     }
 </style>
 
