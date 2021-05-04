@@ -1,13 +1,22 @@
 <template>
     <body>
         <div class="banner" >
-            <div class="topnav">
-                <a href="/user"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+            <div class="topnav_trackingstatus">
+                <a :href="`${permissionPath}`"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
                     <div id="MyClockDisplay" class="clock"></div>
+                    <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
+                    <template v-if="id ==''">
+                        <li id="comp2"><a href="/login">Log In</a></li>
+                        <div class="line"></div>
+                        <li id="comp2"><a href="/register">Register</a></li>
+                    </template>
                     <div class="dropdown" v-if="id !=''">
+                        <a :href="`${permissionPath}`" style="text-decoration: none;" v-show="role == 'User'"><button type="button" class="home btn btn-outline-light">Home</button></a>
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user"></i> {{id}}
+                            <i :class="{'fa fa-user-plus': role == 'Admin', 'fa fa-user': role == 'User'}"></i> {{id}}
                         </button>
                         <p class="dropdown-menu" >
                             <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
@@ -121,9 +130,14 @@ import axios from "axios";
 export default {
         data() {
             return{
-                permission: null,
                 tokenUser: null,
+                tokenAdmin: null,
+                role: null,
                 id: '',
+                manage_acc: null,
+                manage_standand: null,
+                permissionPath: null,
+                // trackingstatus
                 reportforms: [],
                 type_select: null,
                 id_select: "",
@@ -136,25 +150,28 @@ export default {
         },
         created(){
             this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
-            if(this.tokenUser != null){
-                this.permission = 'for user'
+            this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+            if(this.tokenUser != null || this.tokenAdmin != null){
+                if(this.tokenUser != null){this.role = 'User'}
+                if(this.tokenAdmin != null){this.role = 'Admin'}
                 axios.post("http://localhost:5000/checkTokenLogin", {
-                    role: 'User',
-                    tokenUser: this.tokenUser
+                    role: this.role,
+                    tokenUser: this.tokenUser,
+                    tokenAdmin: this.tokenAdmin,
                 }).then((response => {
-                        if(response.data.message == 'You can pass! (User)'){
-                            this.id = response.data.id
-                        }
-                        else{
-                            alert("You can't access the user, you are the admin.! hahaha.")
-                            this.$router.push({ name: "Home" });
-                        }
-                        console.log(response)
+                    if(response.data.message == 'You can pass! (User)'){
+                        this.id = response.data.id
+                        this.permissionPath = '/user'
+                    }
+                    if(response.data.message == 'You can pass! (Admin)'){
+                        this.id = response.data.id
+                        this.manage_acc = response.data.rule_manage_acc
+                        this.manage_standand = response.data.rule_standand_admin
+                        this.permissionPath = '/admin'
+                    }
                 })).catch((err) => {
-                    alert("Error Your token! hahahaha.")
-                    this.$router.push({ name: "Home" });
                     console.log(err)
-                })
+                })  
             }
             else{
                 alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
@@ -262,167 +279,243 @@ export default {
     body{
       background-color: #1a1819;
     }
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }   
-  #navbar_homepage{
-    background-color: rgb(150, 54, 3);
-    height: 12%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+    #navbar_homepage{
+        background-color: rgb(150, 54, 3);
+        height: 12%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
-#logo_navbar{
-    margin-left: 3%;
-    margin-top: -3%;
-    width: 20%;
-    height: 10%;
-}
+    #logo_navbar{
+        margin-left: 3%;
+        margin-top: -3%;
+        width: 20%;
+        height: 10%;
+    }
 
-#navbar_manage{
-    font-family: 'Kanit', sans-serif;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 200;
-    margin-right: 40px;
-}
+    #navbar_manage{
+        font-family: 'Kanit', sans-serif;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 200;
+        margin-right: 40px;
+    }
 
-#navbar_register{
-    font-family: 'Kanit', sans-serif;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 700;
-}
+    #navbar_register{
+        font-family: 'Kanit', sans-serif;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 700;
+    }
 
-#line_register{
-    width: 0px;
-    border-left: 2px solid #ffffff;
-    height: 39px;
-    display: inline;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-#tracking_big_title{
-    color: #E35205;
-    font-family: 'Kanit', sans-serif;
-    font-size: 35px;
-    font-weight: 400;
-    margin-top: 3.7%;
-}
-#all_select_tab{
-    padding-left: 8%;
-    padding-right: 8%;
-    margin-top: 7%;
-}
-#select_by_type{
-    background-color: #ffe9d1;
-    border-radius: 30px;
-    text-align: center;
-}
-#type_select{
-    background-color: #FFA07A;
-    border: none;
-    border-radius: 30px;
-    width: 60%;
-    margin-left: 20%;
-    margin-top: 7%;
-    margin-bottom: 7%;
-    color: #1a1819;
-    font-family: 'Kanit', sans-serif;
-    font-size: 18px;
-}
-#select_by_id{
-    background-color: #ffe9d1;
-    border-radius: 30px;
-    text-align: center;
-}
-#id_select{
-    background-color: #FFA07A;
-    border-radius: 30px;
-    width: 60%;
-    margin-top: 7%;
-    margin-left: 20%;
-    margin-bottom: 7%;
-    color: #1a1819;
-    font-family: 'Kanit', sans-serif;
-    font-size: 18px;
-    -webkit-appearance: none;
-}
-#select_title{
-    color: #E35205;
-    font-family: 'Kanit', sans-serif;
-    font-size: 30px;
-    font-weight: 800;
-    padding-top: 5%;
-}
-#select_button{
-    background-color: #FFA07A;
-    margin-bottom: 7%;
-    border-radius: 30px;
-    color: #1a1819;
-    font-family: 'Kanit', sans-serif;
-    font-size: 18px;
-}
-#error_massage{
-    color: #E35205;
-    font-family: 'Kanit', sans-serif;
-    font-size: 18px;
-    padding-top: 1%;
-}
-#reportform_description{
-    color: #ffffff;
-    font-family: 'Kanit', sans-serif;
-    font-size: 18px;
-    padding-bottom: 1%;
-    padding-right: 5%;
-    word-wrap: break-word;
-}
-#reportform_description_id{
-    color: #ffffff;
-    font-family: 'Kanit', sans-serif;
-    font-size: 18px;
-    padding-top: 5%;
-}
-#reportform_bar{
-    color: #ffffff;
-    font-family: 'Kanit', sans-serif;
-    font-size: 13px;
-    padding-bottom: 1%;
-    padding-left: 5%;
-}
-#footer_homepage{
-    width: 100%;
-    height: 78px;
-    background-color: #E35205;
-}
+    #line_register{
+        width: 0px;
+        border-left: 2px solid #ffffff;
+        height: 39px;
+        display: inline;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #tracking_big_title{
+        color: #E35205;
+        font-family: 'Kanit', sans-serif;
+        font-size: 35px;
+        font-weight: 400;
+        margin-top: 3.7%;
+    }
+    
+    #all_select_tab{
+        padding-left: 8%;
+        padding-right: 8%;
+        margin-top: 7%;
+    }
+    #select_by_type{
+        background-color: #ffe9d1;
+        border-radius: 30px;
+        text-align: center;
+    }
+    #type_select{
+        background-color: #FFA07A;
+        border: none;
+        border-radius: 30px;
+        width: 60%;
+        margin-left: 20%;
+        margin-top: 7%;
+        margin-bottom: 7%;
+        color: #1a1819;
+        font-family: 'Kanit', sans-serif;
+        font-size: 18px;
+    }
+    #select_by_id{
+        background-color: #ffe9d1;
+        border-radius: 30px;
+        text-align: center;
+    }
+    #id_select{
+        background-color: #FFA07A;
+        border-radius: 30px;
+        width: 60%;
+        margin-top: 7%;
+        margin-left: 20%;
+        margin-bottom: 7%;
+        color: #1a1819;
+        font-family: 'Kanit', sans-serif;
+        font-size: 18px;
+        -webkit-appearance: none;
+    }
+    #select_title{
+        color: #E35205;
+        font-family: 'Kanit', sans-serif;
+        font-size: 30px;
+        font-weight: 800;
+        padding-top: 5%;
+    }
+    #select_button{
+        background-color: #FFA07A;
+        margin-bottom: 7%;
+        border-radius: 30px;
+        color: #1a1819;
+        font-family: 'Kanit', sans-serif;
+        font-size: 18px;
+    }
+    #error_massage{
+        color: #E35205;
+        font-family: 'Kanit', sans-serif;
+        font-size: 18px;
+        padding-top: 1%;
+    }
+    #reportform_description{
+        color: #ffffff;
+        font-family: 'Kanit', sans-serif;
+        font-size: 18px;
+        padding-bottom: 1%;
+        padding-right: 5%;
+        word-wrap: break-word;
+    }
+    #reportform_description_id{
+        color: #ffffff;
+        font-family: 'Kanit', sans-serif;
+        font-size: 18px;
+        padding-top: 5%;
+    }
+    #reportform_bar{
+        color: #ffffff;
+        font-family: 'Kanit', sans-serif;
+        font-size: 13px;
+        padding-bottom: 1%;
+        padding-left: 5%;
+    }
+    #footer_homepage{
+        width: 100%;
+        height: 78px;
+        background-color: #E35205;
+    }
 
-#address{
-    font-family: 'Kanit', sans-serif;
-    font-size: 15px;
-    font-weight: 200;
-    color : #ffffff;
-    margin-left: 30px;
-    margin-bottom: 0em;
-}
+    #address{
+        font-family: 'Kanit', sans-serif;
+        font-size: 15px;
+        font-weight: 200;
+        color : #ffffff;
+        margin-left: 30px;
+        margin-bottom: 0em;
+    }
 
-#footer_button{
-    width: 119px;
-    height: 46px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    font-family: 'Kanit', sans-serif;
-    font-size: 24px;
-    font-weight: 500;
-    float: right;
-    text-align: center;
-    margin-top: 16px;
-    margin-right: 30px;
-    color:  #1a1819;
-}
+    #footer_button{
+        width: 119px;
+        height: 46px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        font-family: 'Kanit', sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        float: right;
+        text-align: center;
+        margin-top: 16px;
+        margin-right: 30px;
+        color:  #1a1819;
+    }
+
+    /* topnav_trackingstatus only login && reg */
+
+    .topnav_trackingstatus{
+        color:#fff;
+        display:flex;
+        justify-content: space-between;
+    }
+    .topnav_trackingstatus ul{
+        display: flex;
+        justify-content: space-around;
+        padding-top: 10px;
+        padding-right: 20px;  
+    }
+    .topnav_trackingstatus li{
+        list-style: none;        
+    }
+    .topnav_trackingstatus #comp1 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 200;
+        padding: 5px 12px;
+    }
+    .topnav_trackingstatus #comp1 a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .topnav_trackingstatus #comp2 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 5px 12px;
+    }
+    .topnav_trackingstatus #comp2 a:hover{
+        color: yellow;
+        text-decoration: none;
+    }
+
+    .topnav_trackingstatus #comp3{
+        color:white; 
+        background-color:#e4af01;
+        margin-right: 20px; 
+        margin-left: 10px; 
+    }
+
+    .topnav_trackingstatus #comp3:hover{
+        background-color:#f7d12b; 
+    }
+
+    .topnav_trackingstatus::before{
+        content: " ";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color:#d86a03;
+        opacity: 0.53;
+        z-index: 1;
+    }
+
+    .topnav_trackingstatus > * {
+        z-index: 100;
+    }
+    .home{
+        color: white;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-right: 30px;
+    }
+    .home:hover{
+        color:black;
+    }
 </style>

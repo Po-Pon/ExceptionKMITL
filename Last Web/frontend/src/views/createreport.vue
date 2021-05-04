@@ -1,13 +1,30 @@
 <template>
     <div>
-    <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src=""></a>
-        <form class="form-inline">
-            <a id="navbar_register" href="#">Log In</a>
-            <div id=line_register></div>
-            <a id="navbar_register" href="#" style="margin-right: 30px">Register</a>
-        </form>
-    </nav>
+    <div class="banner" >
+      <div class="topnav_createreport">
+        <a :href="`${permissionPath}`"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+          <ul>
+            <div id="MyClockDisplay" class="clock"></div>
+            <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
+            <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
+            <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
+            <template v-if="id ==''">
+              <li id="comp2"><a href="/login">Log In</a></li>
+              <div class="line"></div>
+              <li id="comp2"><a href="/register">Register</a></li>
+            </template>
+            <div class="dropdown" v-if="id !=''">
+                <a :href="`${permissionPath}`" style="text-decoration: none;" v-show="role == 'User'"><button type="button" class="home btn btn-outline-light">Home</button></a>
+                <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i :class="{'fa fa-user-plus': role == 'Admin', 'fa fa-user': role == 'User'}"></i> {{id}}
+                </button>
+                <p class="dropdown-menu" >
+                    <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
+                </p>
+            </div>
+        </ul>
+      </div>
+    </div>
     <p id="createreport_big_title">แบบฟอร์มร้องเรียน</p>
     <div class="container" id="all_report" :style="{'background-color' : backcolor}">
         <div class="row">
@@ -108,6 +125,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import {required, numeric, minLength, maxLength} from 'vuelidate/lib/validators'
 
 const checkScholarshipType = (value) => {
@@ -124,24 +142,64 @@ const checkScholarshipType = (value) => {
     export default {
         data() {
             return{
-            backcolor: "#ffffff",
-            type: null,
-            topic: "",
-            description: "",
-            send_status: "",
-            sociality_location: "",
-            education_subject_id: null,
-            scholarship_type: "",
-            register_subject: "",
-            environment_location: ""
+                tokenUser: null,
+                tokenAdmin: null,
+                role: null,
+                id: '',
+                manage_acc: null,
+                manage_standand: null,
+                permissionPath: null,
+                // createreport
+                backcolor: "#ffffff",
+                type: null,
+                topic: "",
+                description: "",
+                send_status: "",
+                sociality_location: "",
+                education_subject_id: null,
+                scholarship_type: "",
+                register_subject: "",
+                environment_location: ""
             }
         },
         created () {
+            this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
+            this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+            if(this.tokenUser != null){this.role = 'User'}
+            if(this.tokenAdmin != null){this.role = 'Admin'}
+            if(this.tokenUser != null || this.tokenAdmin != null){
+                axios.post("http://localhost:5000/checkTokenLogin", {
+                    role: this.role,
+                    tokenUser: this.tokenUser,
+                    tokenAdmin: this.tokenAdmin,
+                }).then((response => {
+                    if(response.data.message == 'You can pass! (User)'){
+                        this.id = response.data.id
+                        this.permissionPath = '/user'
+                    }
+                    if(response.data.message == 'You can pass! (Admin)'){
+                        this.id = response.data.id
+                        this.manage_acc = response.data.rule_manage_acc
+                        this.manage_standand = response.data.rule_standand_admin
+                        this.permissionPath = '/admin'
+                    }
+                })).catch((err) => {
+                    console.log(err)
+                })  
+            }
+            else{
+                this.permissionPath = '/'
+            }
             this.backcolor = localStorage.getItem("color");
             this.type = localStorage.getItem("type");
             console.log(localStorage.getItem("color"));
         },
         methods: {
+            logout(){
+                this.id = ''
+                console.log('Log out!')
+                this.$router.push({ name: "Home" });
+            },
             submit(type) {
                 this.$v.$touch();
                 const basicinput = (!this.$v.topic.$error && !this.$v.description.$error && !this.$v.send_status.$error)
@@ -209,95 +267,129 @@ const checkScholarshipType = (value) => {
     }
 </script>
 
-<style>
-    #navbar_homepage{
-    background-color: rgb(150, 54, 3);
-    height: 12%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+<style important=true lang=css scoped>
+    #createreport_big_title{
+        color: #E35205;
+        font-family: 'Kanit', sans-serif;
+        font-size: 35px;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 2%;
+    }
+    #all_report{
+        padding-top: 3%;
+        padding-left: 5%;
+        padding-right: 5%;
+        border-radius: 30px;
+        color: #1a1819;
+        font-family: 'Kanit', sans-serif;
+        margin-bottom: 5%;
+    }
+    #btn_submit{
+        margin-bottom: 3%;
+    }
+    #footer_homepage{
+        width: 100%;
+        height: 78px;
+        background-color: #E35205;
+    }
 
-#logo_navbar{
-    margin-left: 3%;
-    margin-top: -3%;
-    width: 20%;
-    height: 10%;
-}
+    #address{
+        font-family: 'Kanit', sans-serif;
+        font-size: 15px;
+        font-weight: 200;
+        color : #ffffff;
+        margin-left: 30px;
+        margin-bottom: 0em;
+    }
 
-#navbar_manage{
-    font-family: 'Kanit', sans-serif;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 200;
-    margin-right: 40px;
-}
+    #footer_button{
+        width: 119px;
+        height: 46px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        font-family: 'Kanit', sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        float: right;
+        text-align: center;
+        margin-top: 16px;
+        margin-right: 30px;
+        color:  #1a1819;
+    }
 
-#navbar_register{
-    font-family: 'Kanit', sans-serif;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 700;
-}
+    /* topnav_createreport */
 
-#line_register{
-    width: 0px;
-    border-left: 2px solid #ffffff;
-    height: 39px;
-    display: inline;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-#createreport_big_title{
-    color: #E35205;
-    font-family: 'Kanit', sans-serif;
-    font-size: 35px;
-    font-weight: 700;
-    text-align: center;
-    padding-top: 8%;
-}
-#all_report{
-    padding-top: 3%;
-    padding-left: 5%;
-    padding-right: 5%;
-    border-radius: 30px;
-    color: #1a1819;
-    font-family: 'Kanit', sans-serif;
-    margin-bottom: 5%;
-}
-#btn_submit{
-    margin-bottom: 3%;
-}
-#footer_homepage{
-    width: 100%;
-    height: 78px;
-    background-color: #E35205;
-}
+    .topnav_createreport{
+        color:#fff;
+        display:flex;
+        justify-content: space-between;
+    }
+    .topnav_createreport ul{
+        display: flex;
+        justify-content: space-around;
+        padding-top: 10px;
+        padding-right: 20px;  
+    }
+    .topnav_createreport li{
+        list-style: none;        
+    }
+    .topnav_createreport #comp1 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 200;
+        padding: 5px 12px;
+    }
+    .topnav_createreport #comp1 a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .topnav_createreport #comp2 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 5px 12px;
+    }
+    .topnav_createreport #comp2 a:hover{
+        color: yellow;
+        text-decoration: none;
+    }
 
-#address{
-    font-family: 'Kanit', sans-serif;
-    font-size: 15px;
-    font-weight: 200;
-    color : #ffffff;
-    margin-left: 30px;
-    margin-bottom: 0em;
-}
+    .topnav_createreport #comp3{
+        color:white; 
+        background-color:#e4af01;
+        margin-right: 20px; 
+        margin-left: 10px; 
+    }
 
-#footer_button{
-    width: 119px;
-    height: 46px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    font-family: 'Kanit', sans-serif;
-    font-size: 24px;
-    font-weight: 500;
-    float: right;
-    text-align: center;
-    margin-top: 16px;
-    margin-right: 30px;
-    color:  #1a1819;
-}
+    .topnav_createreport #comp3:hover{
+        background-color:#f7d12b; 
+    }
+
+    .topnav_createreport::before{
+        content: " ";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color:#d86a03;
+        opacity: 0.53;
+        z-index: 1;
+    }
+
+    .topnav_createreport > * {
+        z-index: 100;
+    }
+    .home{
+        color: white;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-right: 30px;
+    }
+    .home:hover{
+        color:black;
+    }
 </style>

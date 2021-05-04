@@ -2,14 +2,14 @@
     <div>
     <!-- navbar -->
         <div class="banner" >
-            <div class="topnav">
+            <div class="topnav_manage">
                 <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
                 <ul>
                     <div id="MyClockDisplay" class="clock"></div>
-                    <li id="comp1"><a href="/manageUser">Manage User</a></li>
-                    <li id="comp1"><a href="/manageReport">Manage Forum</a></li>
-                    <li id="comp1"><a href="/manageReport">Manage Report</a></li>
-                    <div class="dropdown" v-if="id !=''">
+                    <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
+                    <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
+                    <div class="dropdown">
                         <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa fa-user-plus"></i> {{id}}
                         </button>
@@ -831,5 +831,71 @@ export default {
     }
     #setcolor{
         color: black;
+    }
+
+    /* topnav_manage only login && reg */
+
+    .topnav_manage{
+        color:#fff;
+        display:flex;
+        justify-content: space-between;
+    }
+    .topnav_manage ul{
+        display: flex;
+        justify-content: space-around;
+        padding-top: 10px;
+        padding-right: 20px;  
+    }
+    .topnav_manage li{
+        list-style: none;        
+    }
+    .topnav_manage #comp1 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 200;
+        padding: 5px 12px;
+    }
+    .topnav_manage #comp1 a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .topnav_manage #comp2 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 5px 12px;
+    }
+    .topnav_manage #comp2 a:hover{
+        color: yellow;
+        text-decoration: none;
+    }
+
+    .topnav_manage #comp3{
+        color:white; 
+        background-color:#e4af01;
+        margin-right: 20px; 
+        margin-left: 10px; 
+    }
+
+    .topnav_manage #comp3:hover{
+        background-color:#f7d12b; 
+    }
+
+    .topnav_manage::before{
+        content: " ";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color:#d86a03;
+        opacity: 0.53;
+        z-index: 1;
+    }
+
+    .topnav_manage > * {
+        z-index: 100;
     }
 </style>

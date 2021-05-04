@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- navbar -->
     <div class="banner">
       <div class="topnav_login_reg">
         <a href="/"
@@ -210,6 +211,7 @@
 </template>
 
 <script>
+// import navbarLogin from '../components/navbarLoginReg.vue'
 // import { required, email } from 'vuelidate/lib/validators'
 import {
   required,
@@ -242,6 +244,8 @@ export default {
     },
   },
   created(){
+    localStorage.removeItem('tokenAdmin')
+    localStorage.removeItem('tokenUser')
     this.rememberData = JSON.parse(localStorage.getItem('rememberMe'))
     if(this.rememberData != null){
       this.email = this.rememberData.rememberEmail
@@ -320,6 +324,200 @@ export default {
 </script>
 
 <style scoped>
+  /* login register */
+
+  #loginLeft,#registerLeft{
+      background-color: red;
+  }
+
+  #loginRight,#registerRight{
+      background-color: #130d0d;
+  }
+
+  input[type="email"],input[type="password"],input[type="text"],#SelectStatusReg, textarea{
+      background-color : #130d0d; 
+      color: whitesmoke;
+  }
+
+  .form-control:focus, .form-control:active {
+      background: transparent;
+      color: whitesmoke;
+  }
+
+  #logo1{
+      animation-name: logomove1;
+      animation: logomove1 3s;
+  }
+
+  #logo2{
+      animation-name: logomove2;
+      animation: logomove2 3s;
+  }
+
+  #cloud1{
+      margin-left: -15px;
+      height: 400px;
+      max-width: 120%;
+      position: relative;
+      animation-name: cloudmove1;
+      animation: cloudmove1 2s;
+      animation-timing-function: ease-out;
+      overflow: hidden;
+  }
+
+  #cloud2{
+      margin-left: -15px;
+      height: 585px;
+      max-width: 120%;
+      position: relative;
+      animation-name: cloudmove2;
+      animation: cloudmove2 3s;
+      animation-timing-function: ease-out;
+      overflow: hidden;
+  }
+
+  @keyframes cloudmove1 {
+      from {top: -100px;}
+      to {top: 0px;}
+  }
+
+  @keyframes cloudmove2 {
+      from {top: -200px;}
+      to {top: 0px;}
+  }
+
+  @keyframes logomove1 {
+      0% {
+          opacity: 0.1;
+      }
+      25%{
+          opacity: 0.25;
+      }
+      50%{
+          opacity: 0.5;
+      }
+      75%{
+          opacity: 0.75;
+      }
+      100% {
+          opacity: 1;
+      }
+  }
+
+  @keyframes logomove2 {
+      0% {
+          opacity: 0.1;
+      }
+      25%{
+          opacity: 0.25;
+      }
+      50%{
+          opacity: 0.5;
+      }
+      75%{
+          opacity: 0.75;
+      }
+      100% {
+          opacity: 1;
+      }
+  }
+
+  .field-icon {
+      float: right;
+      margin-right: 30px;
+      margin-top: -26px;
+      position: relative;
+      z-index: 2;
+  }
+
+  /* topnav_login_reg only login && reg */
+
+  .topnav_login_reg{
+      color:#fff;
+      display:flex;
+      justify-content: space-between;
+  }
+  .topnav_login_reg ul{
+      display: flex;
+      justify-content: space-around;
+      padding-top: 10px;
+      padding-right: 20px;  
+  }
+  .topnav_login_reg li{
+      list-style: none;        
+  }
+  .topnav_login_reg #comp1 a{
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 200;
+      padding: 5px 12px;
+  }
+  .topnav_login_reg #comp1 a:hover{
+      color: orange;
+      text-decoration: none;
+  }
+  .topnav_login_reg #comp2 a{
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 5px 12px;
+  }
+  .topnav_login_reg #comp2 a:hover{
+      color: yellow;
+      text-decoration: none;
+  }
+
+  .topnav_login_reg #comp3{
+      color:white; 
+      background-color:#e4af01;
+      margin-right: 20px; 
+      margin-left: 10px; 
+  }
+
+  .topnav_login_reg #comp3:hover{
+      background-color:#f7d12b; 
+  }
+
+  .topnav_login_reg::before{
+      content: " ";
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      background-color:#d86a03;
+      opacity: 0.53;
+      z-index: 1;
+  }
+
+  .topnav_login_reg > * {
+      z-index: 100;
+  }
+  /* footer */
+  footer {
+      background-color: #963306;
+      padding: 10px 0px 10px 30px;
+  }
+
+  #help{
+      padding: 10px 30px;
+  }
+
+  #help a{
+      color: black;
+      float: right;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 500;
+      text-decoration: none;
+      width: 100px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      background: #ffffff;
+      opacity: 0.7;
+  }
 
 </style>
 

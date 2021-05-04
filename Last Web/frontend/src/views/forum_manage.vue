@@ -1,13 +1,24 @@
 <template>
     <div>
-        <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src=""></a>
-        <form class="form-inline">
-            <a id="navbar_register" href="#">Log In</a>
-            <div id=line_register></div>
-            <a id="navbar_register" href="#" style="margin-right: 30px">Register</a>
-        </form>
-        </nav>
+        <div class="banner" >
+          <div class="topnav_manage">
+              <a href="/admin"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+              <ul>
+                  <div id="MyClockDisplay" class="clock"></div>
+                  <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
+                  <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
+                  <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
+                  <div class="dropdown">
+                      <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fa fa-user-plus"></i> {{id}}
+                      </button>
+                      <p class="dropdown-menu" >
+                          <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
+                      </p>
+                  </div>
+              </ul>
+          </div>
+      </div>
         <div class="container_fluid" id="all_forum_manage">
             <p id="forum_manage_title">Manage forum</p>
             <div class="row">
@@ -78,26 +89,20 @@
                         <label for="inputtopic" class="col-sm-1 col-form-label">หัวข้อ</label>
                         <div class="col-sm-11">
                             <input v-model="$v.forum_topic.$model" type="text" class="form-control" :class="{'is-invalid' : $v.forum_topic.$error}" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
-<<<<<<< Updated upstream
                             <template v-if="$v.forum_topic.$error">
                                 <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                                 <p v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
                             </template>
-=======
->>>>>>> Stashed changes
                         </div>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="report_topic">เนื้อหา</label>
                         <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
-<<<<<<< Updated upstream
                         <template v-if="$v.forum_description.$error">
                             <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                             <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
                         </template>
-=======
->>>>>>> Stashed changes
                     </div>
                     <br>
                     <div class="form-group">
@@ -143,24 +148,16 @@
                         </div>
                         <template v-if="$v.forum_topic.$error">
                             <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-<<<<<<< Updated upstream
                             <p v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
-=======
->>>>>>> Stashed changes
                         </template>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="report_topic">เนื้อหา</label>
                         <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
-<<<<<<< Updated upstream
                         <template v-if="$v.forum_description.$error">
                             <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                             <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
-=======
-                        <template v-if="$v.forum_topic.$error">
-                            <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
->>>>>>> Stashed changes
                         </template>
                     </div>
                     <br>
@@ -220,15 +217,16 @@
 
 <script type="text/javascript">
 import axios from "axios";
-<<<<<<< Updated upstream
 import {required, url, minLength} from 'vuelidate/lib/validators'
-=======
-import {required, url} from 'vuelidate/lib/validators'
->>>>>>> Stashed changes
 
 export default {
     data() {
         return{
+            permission: null,
+            tokenAdmin: null,
+            id: '',
+            manage_acc: null,
+            manage_standand: null,
             allforum: [],
             forum_id: "",
             forum_topic: "",
@@ -245,17 +243,11 @@ export default {
     validations: {
         forum_topic: {
             required,
-<<<<<<< Updated upstream
             minLength: minLength(10)
         },
         forum_description: {
             required,
             minLength: minLength(50)
-=======
-        },
-        forum_description: {
-            required
->>>>>>> Stashed changes
         },
         forum_type: {
             required
@@ -266,6 +258,33 @@ export default {
         }
     },
     created() {
+        this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+        if(this.tokenAdmin != null){
+            this.permission = 'for admin'
+            axios.post("http://localhost:5000/checkTokenLogin", {
+                role: 'Admin',
+                tokenAdmin: this.tokenAdmin
+            }).then((response => {
+                    if(response.data.message == 'You can pass! (Admin)'){
+                        this.id = response.data.id
+                        this.manage_acc = response.data.rule_manage_acc
+                        this.manage_standand = response.data.rule_standand_admin
+                    }
+                    else{
+                        alert("You can't access the admin, you are the user.! hahaha.")
+                        this.$router.push({ name: "Home" });
+                    }
+                    console.log(response)
+            })).catch((err) => {
+                alert("Error Your token! hahahaha.")
+                this.$router.push({ name: "Home" });
+                console.log(err)
+            })
+        }
+        else{
+            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+            this.$router.push({ name: "Home" });
+        }
         axios.get("http://localhost:5000/forum")
         .then((response) => {
             this.allforum = response.data;
@@ -518,7 +537,7 @@ export default {
     font-weight: 500;
 }
 #all_forum_manage{
-    margin-top: 7%;
+    margin-top: 2%;
     margin-bottom: 7%;
     padding-right: 8%;
     padding-left: 8%;
@@ -590,4 +609,69 @@ export default {
     padding-left: 5%;
     background-color: #ffffff;
 }
+/* topnav_manage only login && reg */
+
+    .topnav_manage{
+        color:#fff;
+        display:flex;
+        justify-content: space-between;
+    }
+    .topnav_manage ul{
+        display: flex;
+        justify-content: space-around;
+        padding-top: 10px;
+        padding-right: 20px;  
+    }
+    .topnav_manage li{
+        list-style: none;        
+    }
+    .topnav_manage #comp1 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 200;
+        padding: 5px 12px;
+    }
+    .topnav_manage #comp1 a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .topnav_manage #comp2 a{
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 5px 12px;
+    }
+    .topnav_manage #comp2 a:hover{
+        color: yellow;
+        text-decoration: none;
+    }
+
+    .topnav_manage #comp3{
+        color:white; 
+        background-color:#e4af01;
+        margin-right: 20px; 
+        margin-left: 10px; 
+    }
+
+    .topnav_manage #comp3:hover{
+        background-color:#f7d12b; 
+    }
+
+    .topnav_manage::before{
+        content: " ";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-color:#d86a03;
+        opacity: 0.53;
+        z-index: 1;
+    }
+
+    .topnav_manage > * {
+        z-index: 100;
+    }
 </style>
