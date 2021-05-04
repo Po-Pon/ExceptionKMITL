@@ -56,12 +56,12 @@
                     </template>
                 </div>
                 <div class="form-group" v-if="type == 'การศึกษา'">
-                    <label for="report_topic">รหัสวิชาที่ต้องการร้องเรียน</label>
+                    <label for="report_topic">รหัสของรายวิชาที่ต้องการร้องเรียน</label>
                     <input v-model="$v.education_subject_id.$model" type="text" class="form-control" :class="{'is-invalid' : $v.education_subject_id.$error}" id="report_topic" aria-describedby="reporttopichelp" placeholder="ใส่รหัสวิชา">
                     <template v-if="$v.education_subject_id.$error">
                         <p id="error-message" v-if="!$v.education_subject_id.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                         <p id="error-message" v-if="!$v.education_subject_id.numeric">*กรุณาใส่เป็นตัวเลขเท่านั้น</p>
-                        <p id="error-message" v-if="!($v.education_subject_id.minLength && $v.education_subject_id.maxLength)">*คุณใส่ข้อมูลไม่ตรงกับความยาวที่กำหนด</p>
+                        <p id="error-message" v-if="!($v.education_subject_id.minLength && $v.education_subject_id.maxLength)">*รหัสวิชาต้องเป็นตัวเลข 8 หลักเท่านั้น</p>
                     </template>
                 </div>
                 <div class="form-group" aria-describedby="reporthelp" v-if="type == 'ทุนการศึกษา'">
@@ -85,12 +85,12 @@
                     </template>
                 </div>
                 <div class="form-group" v-if="type == 'การลงทะเบียนเรียน'">
-                    <label for="report_topic">ชื่อของรายวิชา</label>
+                    <label for="report_topic">รหัสของรายวิชาที่ต้องการร้องเรียน</label>
                     <input v-model="$v.register_subject.$model" type="text" class="form-control" :class="{'is-invalid' : $v.register_subject.$error}" id="report_topic" aria-describedby="reporttopichelp" placeholder="ใส่ชื่อของรายวิชา">
                     <template v-if="$v.register_subject.$error">
                         <p id="error-message" v-if="!$v.register_subject.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p id="error-message" v-if="!$v.register_subject.minLength">*ชื่อรายวิชาต้องไม่ต่ำกว่า 5 ตัวอักษร</p>
-                        <p id="error-message" v-if="!$v.register_subject.maxLength">*ชื่อรายวิชาต้องมีความยาวไม่เกิน 255 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.register_subject.numeric">*กรุณาใส่เป็นตัวเลขเท่านั้น</p>
+                        <p id="error-message" v-if="!($v.register_subject.minLength && $v.register_subject.maxLength)">*รหัสวิชาต้องเป็นตัวเลข 8 หลักเท่านั้น</p>
                     </template>
                 </div>
                 <div class="form-group" v-if="type == 'สภาพแวดล้อม'">
@@ -113,7 +113,7 @@
                         <p id="error-message" v-if="!$v.send_status.not_in">*ท่านเลือกได้แค่ด่วน/ไม่ด่วนเท่านั้น</p>
                     </template>
                 </div>
-                <button id="btn_submit" type="submit" class="btn btn-primary" @click="submit(type)">Submit</button>
+                <button id="btn_submit" type="submit" class="btn btn-primary" @click="submit()">Submit</button>
             </div>
         </div>
     </div>
@@ -207,23 +207,73 @@ const checkScholarshipType = (value) => {
                 console.log('Log out!')
                 this.$router.push({ name: "Home" });
             },
-            submit(type) {
+            submit() {
                 this.$v.$touch();
                 const basicinput = (!this.$v.topic.$error && !this.$v.description.$error && !this.$v.send_status.$error)
                 if(!this.$v.sociality_location.$error && basicinput) {
-                    console.log(type);
+                    let data = {
+                        reporttype: this.type,
+                        topic: this.topic,
+                        description: this.description,
+                        send_status: this.send_status,
+                        sociality_location: this.sociality_location,
+                        acc_id: this.acc_id
+                    }
+                    axios.post("http://localhost:5000/createreport/sociality", data)
+                    .then(() => {}).catch((err) => {alert(err)})
+                    this.$router.push({name: 'Reportform'})
                 }
                 else if(!this.$v.education_subject_id.$error && basicinput) {
-                    console.log(type);
+                    let data = {
+                        reporttype: this.type,
+                        topic: this.topic,
+                        description: this.description,
+                        send_status: this.send_status,
+                        education_subject_id: this.education_subject_id,
+                        acc_id: this.acc_id
+                    }
+                    axios.post("http://localhost:5000/createreport/education", data)
+                    .then(() => {}).catch((err) => {alert(err)})
+                    this.$router.push({name: 'Reportform'})
                 }
                 else if(!this.$v.scholarship_type.$error && basicinput) {
-                    console.log(type);
+                    let data = {
+                        reporttype: this.type,
+                        topic: this.topic,
+                        description: this.description,
+                        send_status: this.send_status,
+                        scholarship_type: this.scholarship_type,
+                        acc_id: this.acc_id
+                    }
+                    axios.post("http://localhost:5000/createreport/scholarship", data)
+                    .then(() => {}).catch((err) => {alert(err)})
+                    this.$router.push({name: 'Reportform'})
                 }
                 else if(!this.$v.register_subject.$error && basicinput) {
-                    console.log(type);
+                    let data = {
+                        reporttype: this.type,
+                        topic: this.topic,
+                        description: this.description,
+                        send_status: this.send_status,
+                        register_subject: this.register_subject,
+                        acc_id: this.acc_id
+                    }
+                    axios.post("http://localhost:5000/createreport/register", data)
+                    .then(() => {}).catch((err) => {alert(err)})
+                    this.$router.push({name: 'Reportform'})
                 }
                 else if(!this.$v.environment_location.$error && basicinput) {
-                    console.log(type);
+                    let data = {
+                        reporttype: this.type,
+                        topic: this.topic,
+                        description: this.description,
+                        send_status: this.send_status,
+                        environment_location: this.environment_location,
+                        acc_id: this.acc_id
+                    }
+                    axios.post("http://localhost:5000/createreport/environment", data)
+                    .then(() => {}).catch((err) => {alert(err)})
+                    this.$router.push({name: 'Reportform'})
                 }
                 else{
                     this.$v.$touch();
@@ -266,8 +316,9 @@ const checkScholarshipType = (value) => {
     },
     register_subject: {
         required,
-        minLength: minLength(5),
-        maxLength: maxLength(255)
+        numeric,
+        minLength: minLength(8),
+        maxLength: maxLength(8)
     },
     environment_location: {
         required,

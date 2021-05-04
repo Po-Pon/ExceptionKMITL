@@ -43,11 +43,22 @@ router.get('/forum/:id', async (req, res, next) => {
     }
 })
 
+const acc_idValidate = async (value, helper) => {
+    const [rows, so] = await pool.query(
+      "SELECT acc_id FROM account WHERE acc_id=?"
+      , [value]
+    )
+    if(rows.length != 0){
+        return value;
+    }
+    throw new joi.ValidationError('ไม่มีผู้ใช้รายนี้อยู่ในระบบ')
+}
+
 const createforumschema = joi.object({
     forum_topic: joi.string().required().min(10).max(255),
     forum_description: joi.string().required().min(50),
     forum_type: joi.string().required().valid('การศึกษา', 'งานพาร์ทไทน์', 'สภาพแวดล้อม', 'การลงทะเบียน', 'ทุนการศึกษา'),
-    acc_id: joi.number().integer().required(),
+    acc_id: joi.number().integer().required().external(acc_idValidate),
     image_address: joi.string().uri().required()
 })
 

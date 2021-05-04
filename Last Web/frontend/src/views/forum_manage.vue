@@ -19,7 +19,7 @@
               </ul>
           </div>
       </div>
-        <div class="container_fluid" id="all_forum_manage">
+        <div class="container" id="all_forum_manage">
             <p id="forum_manage_title">Manage forum</p>
             <div class="row">
                 <div class="col-9">
