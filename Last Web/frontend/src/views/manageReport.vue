@@ -54,19 +54,19 @@
                             <thead class="thead-dark" style="text-align:center;">
                                 <th scope="col" class="col-md-1">ID</th>
                                 <th scope="col" class="col-md-2">Date</th>
-                                <th scope="col" class="col-md-3">ประเภทเรื่องร้องเรียน</th>
-                                <th scope="col" class="col-md-2">Title</th>
-                                <th scope="col" class="col-md-2">Username</th>
+                                <th scope="col" class="col-md-2">ประเภทเรื่องร้องเรียน</th>
+                                <th scope="col" class="col-md-4">Title</th>
+                                <th scope="col" class="col-md-2">User Student ID</th>
                                 <th scope="col" class="col-md-1">Action</th>
                             </thead>
                             <tbody>
                                 <tr v-for='report in report_form_all' :key="report.report_form_id" :class="{'table-primary': report.status == 0, 'table-warning': report.status == 1, 'table-info': report.status == 2, 'table-success': report.status == 3, 'table-danger': report.status == 4}">
-                                    <td class="col-md-1">{{report.report_form_id}}</td>
-                                    <td class="col-md-3">{{report.report_form_date_time}}</td>
-                                    <td class="col-md-3">{{report.type}}</td>
-                                    <td class="col-md-2">{{report.report_form_topic}}</td>
-                                    <td class="col-md-2">{{report.user_studentid}}</td>
-                                    <td id="td_action" class="col-md-1">
+                                    <td style="height: 70px; padding: 20px 0px 20px 30px;" scope="col" class="col-md-1">{{report.report_form_id}}</td>
+                                    <td style="height: 70px; padding: 10px 0px 20px 10px;" scope="col" class="col-md-2">{{report.report_form_date_time}}</td>
+                                    <td style="height: 70px; padding: 10px 0px 20px 10px;" scope="col" class="col-md-2">{{report.type}}</td>
+                                    <td style="height: 70px; padding: 10px 0px 20px 10px;" scope="col" class="col-md-4" v-html="report.report_form_topic"></td>
+                                    <td style="height: 70px; padding: 20px 0px 20px 30px;" scope="col" class="col-md-2">{{report.user_studentid}}</td>
+                                    <td style="height: 70px; padding: 20px 0px 20px 10px;" scope="col" id="td_action" class="col-md-1">
                                         <a v-show="report.status != 3 && report.status != 4" @click="check_nextStatus(report.report_form_id, report.status)"><i class="fas fa-caret-square-right" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
                                         <a v-show="report.status != 3 && report.status != 4" @click="check_Notpass(report.report_form_id, report.status)"><i class="fas fa-ban" style="color:red; font-size:20px;"></i></a>
                                         <a v-show="report.status == 3" @click="show_detail(report.report_form_id, report.type)"><i class="fas fa-search" style="color:blue; font-size:20px; margin: 0px 15px 0px 5px"></i></a>
