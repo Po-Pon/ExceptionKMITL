@@ -33,33 +33,35 @@
                     <label for="report_topic">หัวข้อเรื่องร้องเรียน</label>
                     <input type="text" v-model="$v.topic.$model"  class="form-control" :class="{'is-invalid' : $v.topic.$error}" id="report_topic" aria-describedby="reporttopichelp" placeholder="ใส่หัวข้อเรื่องร้องเรียน">
                     <template v-if="$v.topic.$error">
-                        <p v-if="!$v.topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.topic.minLength">*ความยาวหัวข้อที่ตั้งต้องไม่ต่ำกว่า 10 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.topic.minLength">*ความยาวหัวข้อที่ตั้งต้องไม่ต่ำกว่า 10 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.topic.maxLength">*ความยาวหัวข้อต้องมีความยาวไม่เกิน 255 ตัวอักษร</p>
                     </template>
                 </div>
                 <div class="form-group">
                     <label for="report_topic">คำอธิบาย</label>
                     <textarea class="form-control" v-model="$v.description.$model" :class="{'is-invalid' : $v.description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่คำอธิบาย"></textarea>
                     <template v-if="$v.description.$error">
-                        <p v-if="!$v.description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.description.minLength">*คำอธิบายควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.description.minLength">*คำอธิบายควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
                     </template>
                 </div>
                  <div class="form-group" v-if="type == 'สภาพสังคม'">
                     <label for="report_topic">สถานที่ซึ่งต้องการร้องเรียน</label>
                     <input v-model="$v.sociality_location.$model" type="text" class="form-control" :class="{'is-invalid' : $v.sociality_location.$error}" id="report_topic" placeholder="ใส่สถานที่">
                     <template v-if="$v.sociality_location.$error">
-                        <p v-if="!$v.sociality_location.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.sociality_location.minLength">ชื่อสถานที่ควรมีความยาวไม่ต่ำกว่า 5 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.sociality_location.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.sociality_location.minLength">ชื่อสถานที่ควรมีความยาวไม่ต่ำกว่า 5 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.sociality_location.maxLength">*ชื่อสถานที่ต้องมีความยาวไม่เกิน 255 ตัวอักษร</p>
                     </template>
                 </div>
                 <div class="form-group" v-if="type == 'การศึกษา'">
                     <label for="report_topic">รหัสวิชาที่ต้องการร้องเรียน</label>
                     <input v-model="$v.education_subject_id.$model" type="text" class="form-control" :class="{'is-invalid' : $v.education_subject_id.$error}" id="report_topic" aria-describedby="reporttopichelp" placeholder="ใส่รหัสวิชา">
                     <template v-if="$v.education_subject_id.$error">
-                        <p v-if="!$v.education_subject_id.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.education_subject_id.numeric">*กรุณาใส่เป็นตัวเลขเท่านั้น</p>
-                        <p v-if="!($v.education_subject_id.minLength && $v.education_subject_id.maxLength)">*คุณใส่ข้อมูลไม่ตรงกับความยาวที่กำหนด</p>
+                        <p id="error-message" v-if="!$v.education_subject_id.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.education_subject_id.numeric">*กรุณาใส่เป็นตัวเลขเท่านั้น</p>
+                        <p id="error-message" v-if="!($v.education_subject_id.minLength && $v.education_subject_id.maxLength)">*คุณใส่ข้อมูลไม่ตรงกับความยาวที่กำหนด</p>
                     </template>
                 </div>
                 <div class="form-group" aria-describedby="reporthelp" v-if="type == 'ทุนการศึกษา'">
@@ -78,24 +80,26 @@
                         <option>อื่นๆ</option>
                     </select>
                     <template v-if="$v.scholarship_type.$error">
-                        <p v-if="!$v.scholarship_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.scholarship_type.not_in">*คุณไม่สามารถใส่ข้อมูลนอกเหนือจากในข้อมูลที่เรามีให้ได้</p>
+                        <p id="error-message" v-if="!$v.scholarship_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.scholarship_type.not_in">*คุณไม่สามารถใส่ข้อมูลนอกเหนือจากในข้อมูลที่เรามีให้ได้</p>
                     </template>
                 </div>
                 <div class="form-group" v-if="type == 'การลงทะเบียนเรียน'">
                     <label for="report_topic">ชื่อของรายวิชา</label>
                     <input v-model="$v.register_subject.$model" type="text" class="form-control" :class="{'is-invalid' : $v.register_subject.$error}" id="report_topic" aria-describedby="reporttopichelp" placeholder="ใส่ชื่อของรายวิชา">
                     <template v-if="$v.register_subject.$error">
-                        <p v-if="!$v.register_subject.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.register_subject.minLength">*ชื่อรายวิชาต้องไม่ต่ำกว่า 5 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.register_subject.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.register_subject.minLength">*ชื่อรายวิชาต้องไม่ต่ำกว่า 5 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.register_subject.maxLength">*ชื่อรายวิชาต้องมีความยาวไม่เกิน 255 ตัวอักษร</p>
                     </template>
                 </div>
                 <div class="form-group" v-if="type == 'สภาพแวดล้อม'">
                     <label for="report_topic">สถานที่ซึ่งต้องการร้องเรียน</label>
                     <input v-model="$v.environment_location.$model" type="text" class="form-control" :class="{'is-invalid' : $v.environment_location.$error}" id="report_topic" aria-describedby="reporttopichelp" placeholder="ใส่สถานที่">
                     <template v-if="$v.environment_location.$error">
-                        <p v-if="!$v.environment_location.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.environment_location.minLength">*ชื่อสถานที่ควรมีความยาวไม่ต่ำกว่า 5 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.environment_location.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.environment_location.minLength">*ชื่อสถานที่ควรมีความยาวไม่ต่ำกว่า 5 ตัวอักษร</p>
+                        <p id="error-message" v-if="!$v.environment_location.maxLength">*ชื่อสถานที่ต้องมีความยาวไม่เกิน 255 ตัวอักษร</p>
                     </template>
                 </div>
                 <div class="form-group">
@@ -105,8 +109,8 @@
                         <option>ด่วน</option>
                     </select>
                     <template v-if="$v.send_status.$error">
-                        <p v-if="!$v.send_status.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                        <p v-if="!$v.send_status.not_in">*ท่านเลือกได้แค่ด่วน/ไม่ด่วนเท่านั้น</p>
+                        <p id="error-message" v-if="!$v.send_status.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.send_status.not_in">*ท่านเลือกได้แค่ด่วน/ไม่ด่วนเท่านั้น</p>
                     </template>
                 </div>
                 <button id="btn_submit" type="submit" class="btn btn-primary" @click="submit(type)">Submit</button>
@@ -146,6 +150,7 @@ const checkScholarshipType = (value) => {
                 tokenAdmin: null,
                 role: null,
                 id: '',
+                acc_id: 0,
                 manage_acc: null,
                 manage_standand: null,
                 permissionPath: null,
@@ -176,12 +181,14 @@ const checkScholarshipType = (value) => {
                     if(response.data.message == 'You can pass! (User)'){
                         this.id = response.data.id
                         this.permissionPath = '/user'
+                        this.acc_id = response.data.acc_id;
                     }
                     if(response.data.message == 'You can pass! (Admin)'){
                         this.id = response.data.id
                         this.manage_acc = response.data.rule_manage_acc
                         this.manage_standand = response.data.rule_standand_admin
                         this.permissionPath = '/admin'
+                        this.acc_id = response.data.acc_id;
                     }
                 })).catch((err) => {
                     console.log(err)
@@ -226,7 +233,8 @@ const checkScholarshipType = (value) => {
    validations: {
      topic: {
           required,
-          minLength: minLength(10)
+          minLength: minLength(10),
+          maxLength: maxLength(255)
      },
      description: {
          required,
@@ -243,7 +251,8 @@ const checkScholarshipType = (value) => {
      },
      sociality_location: {
          required,
-         minLength: minLength(5)
+         minLength: minLength(5),
+         maxLength: maxLength(255)
      },
     education_subject_id: {
         required,
@@ -257,11 +266,13 @@ const checkScholarshipType = (value) => {
     },
     register_subject: {
         required,
-        minLength: minLength(5)
+        minLength: minLength(5),
+        maxLength: maxLength(255)
     },
     environment_location: {
         required,
-        minLength: minLength(5)
+        minLength: minLength(5),
+        maxLength: maxLength(255)
     }
    }
     }
@@ -316,6 +327,13 @@ const checkScholarshipType = (value) => {
         margin-top: 16px;
         margin-right: 30px;
         color:  #1a1819;
+    }
+    #error-message{
+        color: #1a1819;
+        font-family: 'Kanit', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        padding-top: 1%;
     }
 
     /* topnav_createreport */

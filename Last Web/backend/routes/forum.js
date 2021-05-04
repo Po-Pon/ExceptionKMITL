@@ -138,8 +138,7 @@ router.delete('/forum/:id', async (req, res, next) => {
             'DELETE FROM forum WHERE forum_id=?', [req.params.id]
         );
         conn.commit()
-        return res.json(rows);
-    }catch{
+    }catch(err){
         await conn.rollback();
         console.log(err);
     }finally{

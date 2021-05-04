@@ -90,9 +90,9 @@
                         <div class="col-sm-11">
                             <input v-model="$v.forum_topic.$model" type="text" class="form-control" :class="{'is-invalid' : $v.forum_topic.$error}" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
                             <template v-if="$v.forum_topic.$error">
-                                <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                                <p v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
-                                <p v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
+                                <p id="error-message" v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                                <p id="error-message" v-if="!$v.forum_topic.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                                <p id="error-message" v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
                             </template>
                         </div>
                     </div>
@@ -101,8 +101,8 @@
                         <label for="report_topic">เนื้อหา</label>
                         <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
                         <template v-if="$v.forum_description.$error">
-                            <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                            <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
+                            <p id="error-message" v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p id="error-message" v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
                         </template>
                     </div>
                     <br>
@@ -115,18 +115,18 @@
                         <button @click="forum_type = 'ทุนการศึกษา'" class="btn" :class="{'btn-primary' : forum_type == 'ทุนการศึกษา', 'btn-secondary' : forum_type != 'ทุนการศึกษา'}" id="type_button">ทุนการศึกษา</button>
                     </div>
                     <template v-if="$v.forum_type.$error">
-                        <p v-if="!$v.forum_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                        <p id="error-message" v-if="!$v.forum_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                     </template>
                     <br>
                     <div class="form-group row">
                         <label for="inputtopic" class="col-sm-3 col-form-label">Link รูปภาพประกอบ</label>
                         <div class="col-sm-9">
                             <input v-model="$v.image_address.$model" type="text" class="form-control" :class="{'is-invalid' : $v.image_address.$error}" id="inputtopic" placeholder="ใส่ลิ้งค์ที่นี่">
+                            <template v-if="$v.image_address.$error">
+                                <p id="error-message" v-if="!$v.image_address.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                                <p id="error-message" v-if="!$v.image_address.url">*ต้องใส่เป็น url เท่านั้น</p>
+                            </template>
                         </div>
-                        <template v-if="$v.image_address.$error">
-                            <p v-if="!$v.image_address.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                            <p v-if="!$v.image_address.url">*ต้องใส่เป็น url เท่านั้น</p>
-                        </template>
                     </div>
                     <br>
                     <div class="form-group">
@@ -148,9 +148,9 @@
                             <input v-model="$v.forum_topic.$model" type="text" class="form-control" :class="{'is-invalid' : $v.forum_topic.$error}" id="inputtopic" placeholder="ใส่หัวข้อที่นี่">
                         </div>
                         <template v-if="$v.forum_topic.$error">
-                            <p v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                            <p v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
-                            <p v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
+                            <p id="error-message" v-if="!$v.forum_topic.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p id="error-message" v-if="!$v.forum_topic.minLength">*หัวข้อควรมีความยาวไม่ต่ำกว่า 10 ตัวอักษร</p>
+                            <p id="error-message" v-if="!$v.forum_topic.maxLength">*เนื้อหาควรมีความยาวไม่เกิน 255 ตัวอักษร</p>
                         </template>
                     </div>
                     <br>
@@ -158,8 +158,8 @@
                         <label for="report_topic">เนื้อหา</label>
                         <textarea v-model="$v.forum_description.$model" class="form-control" :class="{'is-invalid' : $v.forum_description.$error}" id="report_description" rows="5" aria-describedby="reporttopichelp" placeholder="ใส่เนื้อหาที่นี่"></textarea>
                         <template v-if="$v.forum_description.$error">
-                            <p v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                            <p v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
+                            <p id="error-message" v-if="!$v.forum_description.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p id="error-message" v-if="!$v.forum_description.minLength">*เนื้อหาควรมีความยาวไม่ต่ำกว่า 50 ตัวอักษร</p>
                         </template>
                     </div>
                     <br>
@@ -172,7 +172,7 @@
                         <button @click="forum_type = 'ทุนการศึกษา'" class="btn" :class="{'btn-primary' : forum_type == 'ทุนการศึกษา', 'btn-secondary' : forum_type != 'ทุนการศึกษา'}" id="type_button">ทุนการศึกษา</button>
                     </div>
                     <template v-if="$v.forum_type.$error">
-                            <p v-if="!$v.forum_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p id="error-message" v-if="!$v.forum_type.required">*กรุณาเติมข้อมูลในช่องนี้</p>
                     </template>
 
                     <br>
@@ -182,8 +182,8 @@
                             <input v-model="$v.image_address.$model" type="text" class="form-control" :class="{'is-invalid' : $v.image_address.$error}" id="inputtopic" placeholder="ใส่ลิ้งค์ที่นี่">
                         </div>
                         <template v-if="$v.image_address.$error">
-                            <p v-if="!$v.image_address.required">*กรุณาเติมข้อมูลในช่องนี้</p>
-                            <p v-if="!$v.image_address.url">*ต้องใส่เป็น url เท่านั้น</p>
+                            <p id="error-message" v-if="!$v.image_address.required">*กรุณาเติมข้อมูลในช่องนี้</p>
+                            <p id="error-message" v-if="!$v.image_address.url">*ต้องใส่เป็น url เท่านั้น</p>
                         </template>
                     </div>
                     <br>
@@ -227,6 +227,7 @@ export default {
             permission: null,
             tokenAdmin: null,
             id: '',
+            acc_id: '',
             manage_acc: null,
             manage_standand: null,
             allforum: [],
@@ -272,6 +273,7 @@ export default {
                         this.id = response.data.id
                         this.manage_acc = response.data.rule_manage_acc
                         this.manage_standand = response.data.rule_standand_admin
+                        this.acc_id = response.data.acc_id
                     }
                     else{
                         alert("You can't access the admin, you are the user.! hahaha.")
@@ -336,12 +338,11 @@ export default {
             this.valiaftersubmit();
 
             if(!this.$v.$invalid){
-            let acc_id = 2;
             let newdata = {
                 forum_topic: this.forum_topic,
                 forum_description: this.forum_description,
                 forum_type: this.forum_type,
-                acc_id: acc_id,
+                acc_id: this.acc_id,
                 image_address: this.image_address
             }
             axios
@@ -614,6 +615,13 @@ export default {
     padding-right: 5%;
     padding-left: 5%;
     background-color: #ffffff;
+}
+#error-message{
+    color: #1a1819;
+    font-family: 'Kanit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 1%;
 }
 /* topnav_manage only login && reg */
 
