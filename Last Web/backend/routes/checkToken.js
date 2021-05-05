@@ -31,7 +31,7 @@ router.post("/checkTokenLogin", async function(req, res, next){
             else if(role == 'User' && dataAdmin[0].rule_manage_acc != true && dataAdmin[0].rule_standand_admin != true){
                 res.status(200).json({message: "You can pass! (User)", id: data[0].user_studentid, acc_id : data[0].acc_id})
             }
-            else{res.json({message: "You can't pass!"})}
+            else{res.status(401).json({message: "You can't pass!"})}
 
         }
         else{

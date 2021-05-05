@@ -113,31 +113,31 @@ router.delete("/actionReport/delete/:id", async function (req, res, next){
         if(sociality.length != 0){
             await conn.query("DELETE FROM sociality_report_form WHERE report_form_id = ?", [req.params.id])
             await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
-            res.send('delete report id: '+ sociality[0].report_form_id +'success!')
+            res.json({message :'delete report id: '+ sociality[0].report_form_id +' success!'})
             await conn.commit()
         }
         if(studying.length != 0){
             await conn.query("DELETE FROM studying_report_form WHERE report_form_id = ?", [req.params.id])
             await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
-            res.send('delete report id: '+ studying[0].report_form_id +'success!')
+            res.json({message :'delete report id: '+ studying[0].report_form_id +' success!'})
             await conn.commit()
         }
         if(scholarship.length != 0){
             await conn.query("DELETE FROM scholarship_report_form WHERE report_form_id = ?", [req.params.id])
             await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
-            res.send('delete report id: '+ scholarship[0].report_form_id +'success!')
+            res.json({message :'delete report id: '+ scholarship[0].report_form_id +' success!'})
             await conn.commit()
         }
         if(register.length != 0){
             await conn.query("DELETE FROM register_system_report_form WHERE report_form_id = ?", [req.params.id])
             await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
-            res.send('delete report id: '+ register[0].report_form_id +'success!')
+            res.json({message :'delete report id: '+ register[0].report_form_id +' success!'})
             await conn.commit()
         }
         if(environment.length != 0){
             await conn.query("DELETE FROM environment_report_form WHERE report_form_id = ?", [req.params.id])
             await conn.query("DELETE FROM report_form WHERE report_form_id = ?", [req.params.id])
-            res.send('delete report id: '+ environment[0].report_form_id +'success!')
+            res.json({message :'delete report id: '+ environment[0].report_form_id +' success!'})
             await conn.commit()
         }
         console.log('delete report id: '+ req.params.id +' success' )

@@ -1,13 +1,30 @@
 <template>
     <div>
-        <nav class="navbar" id="navbar_homepage">
-        <a class="navbar-brand" href="/"><img id="logo_navbar" src=""></a>
-        <form class="form-inline">
-            <a id="navbar_register" href="#">Log In</a>
-            <div id=line_register></div>
-            <a id="navbar_register" href="#" style="margin-right: 30px">Register</a>
-        </form>
-        </nav>
+        <div class="banner" >
+        <div class="topnav_forum">
+            <a :href="`${permissionPath}`"><img src="/image/navbar/newlogo.png" width="110px" height="auto" style="padding-left: 20px;" alt=""></a>
+            <ul>
+                <div id="MyClockDisplay" class="clock"></div>
+                <li id="comp1" v-if="manage_acc == 1"><a href="/manageUser">Manage User</a></li>
+                <li id="comp1" v-if="manage_standand == 1"><a href="/manageforum">Manage Forum</a></li>
+                <li id="comp1" v-if="manage_standand == 1"><a href="/manageReport">Manage Report</a></li>
+                <template v-if="id ==''">
+                <li id="comp2"><a href="/login">Log In</a></li>
+                <div class="line"></div>
+                <li id="comp2"><a href="/register">Register</a></li>
+                </template>
+                <div class="dropdown" v-if="id !=''">
+                <a :href="`${permissionPath}`" style="text-decoration: none;" v-show="role == 'User'"><button type="button" class="home btn btn-outline-light">Home</button></a>
+                <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i :class="{'fa fa-user-plus': role == 'Admin', 'fa fa-user': role == 'User'}"></i> {{id}}
+                </button>
+                <p class="dropdown-menu" >
+                    <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
+                </p>
+                </div>
+            </ul>
+        </div>
+        </div>
         <div class="container-fluid" id="all_arc">
             <div class="row">
                 <div class="col-12">
@@ -21,7 +38,7 @@
         </div>
         <footer>
         <div id="footer_homepage">
-            <a id="footer_button" class="btn" href="#">HELP</a>
+            <a id="footer_button" class="btn" href="/help" v-show="id != ''">HELP</a>
             <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
             <p id="address">1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520</p>
             <p id="address">02 723 4900</p>
@@ -36,10 +53,44 @@ import axios from "axios";
     export default {
     data() {
         return{
+            tokenUser: null,
+            tokenAdmin: null,
+            role: null,
+            id: '',
+            manage_acc: null,
+            manage_standand: null,
+            permissionPath: null,
             arc: null
         }
     },
     created() {
+        this.tokenUser = JSON.parse(localStorage.getItem('tokenUser'))
+        this.tokenAdmin = JSON.parse(localStorage.getItem('tokenAdmin'))
+        if(this.tokenUser != null){this.role = 'User'}
+        if(this.tokenAdmin != null){this.role = 'Admin'}
+        if(this.tokenUser != null || this.tokenAdmin != null){
+            axios.post("http://localhost:5000/checkTokenLogin", {
+                role: this.role,
+                tokenUser: this.tokenUser,
+                tokenAdmin: this.tokenAdmin,
+            }).then((response => {
+                if(response.data.message == 'You can pass! (User)'){
+                    this.id = response.data.id
+                    this.permissionPath = '/user'
+                }
+                if(response.data.message == 'You can pass! (Admin)'){
+                    this.id = response.data.id
+                    this.manage_acc = response.data.rule_manage_acc
+                    this.manage_standand = response.data.rule_standand_admin
+                    this.permissionPath = '/admin'
+                }
+            })).catch((err) => {
+                console.log(err)
+            })  
+        }
+        else{
+            this.permissionPath = '/'
+        }
         axios.get("http://localhost:5000/forum/" + localStorage.getItem("forum_id"))
         .then((response) => {
             this.arc = response.data[0];

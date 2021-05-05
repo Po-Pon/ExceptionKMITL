@@ -374,20 +374,17 @@
     </div>
     <footer>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="copyright text-white" style="font-weight: 200;"> 
                         King Mongkut's Institute of technology Ladkrabang<br>
                         1Chalong Krung 1 Alley, Lat Krabang Bangkok 10520<br>
                         02 723 4900
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <div class="copyright" style="padding-top: 20px; color: #aaa;">
+                <div class="col-md-6">
+                    <div class="copyright" style="padding: 20px; color: #aaa; float:right;">
                         Copyright &copy; 2021 ExptionKMITL
                     </div>
-                </div>
-                <div class="col-md-2" id="help">
-                    <a href="/">HELP</a>
                 </div>
             </div>
         </footer>
@@ -439,21 +436,6 @@ export default {
       emailError: "",
     };
   },
-  created() {
-    axios
-      .get("http://localhost:5000/")
-      .then((response) => {
-        this.dataReg = response.data;
-        for (let i = 0; i < this.dataReg.length; i++) {
-          this.repeatEmail[i] = this.dataReg[i].acc_email;
-        }
-        console.log("dataReg", this.dataReg);
-        console.log("repeatEmailAll", this.repeatEmail);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
   validations:{
     firstname: {
       required,
@@ -496,6 +478,13 @@ export default {
     },
   },
   methods: {
+    alert(){
+      this.$swal({
+        icon: 'warning',
+        title: 'กรุณาล็อกอินก่อนเข้าใช้งาน',
+        showConfirmButton: true,
+      })
+    },
     togglePassReg() {
       var x = document.getElementById("InputPasswordReg");
       if (x.type === "password") {
@@ -575,7 +564,7 @@ export default {
 }
 
 #loginRight,#registerRight{
-    background-color: #130d0d;
+    background-color: #130e0d; 
 }
 
 input[type="email"],input[type="password"],input[type="text"],#SelectStatusReg, textarea{

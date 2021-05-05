@@ -8,7 +8,7 @@ router = express.Router();
 
 // coding here !!
 
-const passwordValidator = (value, helpers) => {
+const passwordValidator = (value) => {
     if (value.length < 8) {
         throw new Joi.ValidationError('Password must contain at least 8 characters')
     }
@@ -18,7 +18,7 @@ const passwordValidator = (value, helpers) => {
     return value
 }
 
-const StudentIDValidator = (value, helpers) => {
+const StudentIDValidator = (value) => {
     if (value.toString().length != 8) {
         throw new Joi.ValidationError('StudentID Must be equal to 8 integers')
     }
@@ -97,6 +97,9 @@ router.post("/register/submit", async function (req, res, next){
     } catch (error) {
         await conn.rollback();
         next(error);
+    }
+    finally{
+        conn.release()
     }
 })
 

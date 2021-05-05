@@ -2,7 +2,8 @@ const express = require("express");
 const pool = require("../config");
 const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer");
-const { getMaxListeners } = require("process");
+const Joi = require('joi');
+// const { getMaxListeners } = require("process");
 
 router = express.Router();
 
@@ -61,12 +62,33 @@ router.post("/forgotpassword/sendmail", async function(req, res, next){
 
 })
 
+const passwordValidator = (value) => {
+    if (value.length < 8) {
+        throw new Joi.ValidationError('Password must contain at least 8 characters')
+    }
+    if (!(value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/))) {
+        throw new Joi.ValidationError('Password must be harder')
+    }
+    return value
+}
+
+const forgotpasswordSchema = Joi.object({
+    emailSend: Joi.string().required().email(),
+    Newpassword: Joi.string().required().custom(passwordValidator),
+    RepeatNewpassword: Joi.string().required().valid(Joi.ref('Newpassword'))
+})
+
 router.put("/forgotpassword/checking", async function(req, res, next){
-    console.log(req.body.email)
-    const emailSend = req.body.email.emailSend
-    const Newpassword = req.body.email.Newpassword
-    const code = req.body.email.code
-    const codeCheck = req.body.email.codeCheck
+    try {
+        forgotpasswordSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+    console.log(req.body)
+    const emailSend = req.body.emailSend
+    const Newpassword = req.body.Newpassword
+    const code = req.body.code
+    const codeCheck = req.body.codeCheck
     // compare code access
     const match = await bcrypt.compare(code, codeCheck);
     // bcrypt NewPassword
@@ -88,6 +110,9 @@ router.put("/forgotpassword/checking", async function(req, res, next){
     } catch (error) {
         await conn.rollback();
         return next(error)
+    }
+    finally{
+        conn.release()
     }
 })
 

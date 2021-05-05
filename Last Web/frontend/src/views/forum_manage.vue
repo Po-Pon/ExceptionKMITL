@@ -287,23 +287,39 @@ export default {
                         this.acc_id = response.data.acc_id
                     }
                     else{
-                        alert("You can't access the admin, you are the user.! hahaha.")
+                        this.$swal({
+                            icon: 'warning',
+                            title: 'Only Admin.',
+                            showConfirmButton: true,
+                        })
                         this.$router.push({ name: "Home" });
                     }
                     console.log(response)
             })).catch((err) => {
-                alert("Error Your token! hahahaha.")
+                this.$swal({
+                    icon: 'warning',
+                    title: 'Oops! Error Your token hahahaha.',
+                    showConfirmButton: true,
+                })
                 this.$router.push({ name: "Home" });
                 console.log(err)
             })
         }
         else{
             if(this.tokenUserError != null){
-                alert("คุณไม่ใช่ Admin eiei")
+                this.$swal({
+                    icon: 'warning',
+                    title: 'Only Admin.',
+                    showConfirmButton: true,
+                })
                 this.$router.push({ name: "Home" });
             }
             else{
-                alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+                this.$swal({
+                    icon: 'warning',
+                    title: 'กรุณาล็อกอินก่อนเข้าใช้งาน (Only Admin)',
+                    showConfirmButton: true,
+                })
                 this.$router.push({ name: "Home" });
             }
         }

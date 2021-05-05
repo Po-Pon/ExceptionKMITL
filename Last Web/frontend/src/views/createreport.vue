@@ -14,7 +14,7 @@
               <li id="comp2"><a href="/register">Register</a></li>
             </template>
             <div class="dropdown" v-if="id !=''">
-                <a :href="`${permissionPath}`" style="text-decoration: none;" v-show="role == 'User'"><button type="button" class="home btn btn-outline-light">Home</button></a>
+                <a href="/reportform" style="text-decoration: none;" v-show="role == 'User'"><button type="button" class="home btn btn-outline-light">Back Reportform</button></a>
                 <button class="btn btn-danger  dropdown-toggle" id="comp3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i :class="{'fa fa-user-plus': role == 'Admin', 'fa fa-user': role == 'User'}"></i> {{id}}
                 </button>
@@ -119,7 +119,7 @@
     </div>
     <footer>
         <div id="footer_homepage">
-            <a id="footer_button" class="btn" href="#">HELP</a>
+            <a id="footer_button" class="btn" href="/help">HELP</a>
             <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
             <p id="address">1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520</p>
             <p id="address">02 723 4900</p>
@@ -191,11 +191,22 @@ const checkScholarshipType = (value) => {
                         this.acc_id = response.data.acc_id;
                     }
                 })).catch((err) => {
+                    this.$swal({
+                        icon: 'warning',
+                        title: 'Oops! Error Your token hahahaha.',
+                        showConfirmButton: true,
+                    })
+                    this.$router.push({ name: "Home" });
                     console.log(err)
                 })  
             }
             else{
-                this.permissionPath = '/'
+                this.$swal({
+                    icon: 'warning',
+                    title: 'กรุณาล็อกอินก่อนเข้าใช้งาน',
+                    showConfirmButton: true,
+                })
+                this.$router.push({ name: "Home" });
             }
             this.backcolor = localStorage.getItem("color");
             this.type = localStorage.getItem("type");

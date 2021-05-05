@@ -5,12 +5,13 @@ import pathUser from '../views/User.vue'
 import pathAdmin from '../views/Admin.vue'
 import pathLogin from '../views/login.vue'
 import pathRegister from '../views/register.vue'
+import pathForgot from '../views/forgotPassword.vue'
 import pathForum from '../views/forum.vue'
 import pathForumPage from '../views/forumpage.vue'
 import pathReportform from '../views/reportform.vue'
 import pathCreateReport from '../views/createreport.vue'
 import pathTrackingstatus from '../views/trackingstatus.vue'
-import pathForgot from '../views/forgotPassword.vue'
+import pathHelp from '../views/help.vue'
 import pathmanageacc from '../views/manage_acc.vue'
 import pathmanageReport from '../views/manageReport.vue'
 import pathForumManage from '../views/forum_manage.vue'
@@ -42,6 +43,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: pathRegister 
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component: pathHelp 
   },
   {
     path: '/forum',

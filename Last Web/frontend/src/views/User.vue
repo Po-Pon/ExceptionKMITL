@@ -12,6 +12,7 @@
                             <i class="fas fa-user"></i> {{id}}
                         </button>
                         <p class="dropdown-menu" >
+                            <button class="dropdown-item text-danger" type="button" @click="modal_changepassword = true;">เปลี่ยนรหัสผ่าน</button>
                             <button class="dropdown-item text-danger" type="button" @click="logout()">ออกจากระบบ</button>
                         </p>
                     </div>
@@ -230,9 +231,60 @@
                 </div>
             </div>
 
+        <!-- modal change password -->
+        <div class="modal" :class="{'is-active': modal_changepassword}">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head" style="background-color:#F2F4F4;">
+                    <p class="modal-card-title mt-2">Change Password</p>
+                    <button class="delete" aria-label="close" @click="resetmodal()"></button>
+                </header>
+                <section class="modal-card-body mx-2" style="background-color: #1C2833; color:white;">
+                    <form v-on:submit.prevent="changepassword">
+                        <div class="form-group">
+                            <label for="Newpassword">Your New Password</label>
+                            <input type="password" id="Newpassword" class="form-control" v-model.trim.lazy="$v.Newpassword.$model" :class="{'is-invalid': validationStatusError($v.Newpassword), 'is-valid': !$v.Newpassword.$invalid }">
+                            <a @click="togglePassword1()"><span class="fa fa-fw fa-eye field-icon toggle-password"></span></a>
+                            <div class="invalid-feedback" style="margin-top:5px">
+                                <span v-if="!$v.Newpassword.required">กรุณากรอกรหัสผ่าน</span>
+                                <span v-else-if="!$v.Newpassword.minLength">Password ต้องไม่ต่ำกว่า 8 ตัว</span>
+                                <span v-else-if="!$v.Newpassword.maxLength">Password ต้องไม่เกิน 255 ตัว</span>
+                                <span v-else-if="!$v.Newpassword.complex">Password ง่ายเกินไป ควรมี A-Z หรือ a-z หรือ อักขระพิเศษ อย่างน้อย 1 ตัว</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="repeatNewpassword">Your Repeat New Password</label>
+                            <input type="password" id="repeatNewpassword" class="form-control" v-model.trim.lazy="$v.RepeatNewpassword.$model" :class="{'is-invalid': validationStatusError($v.RepeatNewpassword), 'is-valid': (Newpassword != '') ? !$v.RepeatNewpassword.$invalid : '' }">
+                            <a @click="togglePassword2()"><span class="fa fa-fw fa-eye field-icon toggle-password"></span></a>
+                            <div class="invalid-feedback" style="margin-top:5px">
+                                <span v-if="!$v.RepeatNewpassword.required">กรุณากรอกรหัสผ่านอีกครั้ง</span>
+                                <span v-else-if="!$v.RepeatNewpassword.sameAspassword">Password ไม่ตรงกัน</span>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label for="currentPassword">Confirm Current Password</label>
+                            <input type="password" id="currentPassword" class="form-control" v-model.trim.lazy="$v.currentPassword.$model" :class="{'is-invalid': validationStatusError($v.currentPassword), 'is-valid': !$v.currentPassword.$invalid }">
+                            <a @click="togglePassword3()"><span class="fa fa-fw fa-eye field-icon toggle-password"></span></a>
+                            <div class="invalid-feedback" style="margin-top:5px">
+                                <span v-if="!$v.currentPassword.required">กรุณากรอกยืนยันรหัสผ่านปัจจุบัน</span>
+                                <span v-else-if="!$v.currentPassword.minLength">Password ต้องไม่ต่ำกว่า 8 ตัว</span>
+                            </div> 
+                        </div>
+                        <div class="form-group" style="float:right; margin-top:5px; padding-right:20px;">
+                            <button type="submit" class="btn btn-danger mr-3" >Save Change</button>
+                            <button type="button" class="button" @click="resetmodal()">Cancel</button>
+                        </div>
+                    </form>
+                </section>
+                <footer class="modal-card-foot" style="background-color:#F2F4F4;">
+                    <!-- babababa -->
+                </footer>
+            </div>
+        </div>
+
         <!-- footer -->
 
-        <footer>
+        <footer id="footer">
             <div class="row">
                 <div class="col-md-5">
                     <div class="copyright text-white" style="font-weight: 200;"> 
@@ -247,14 +299,23 @@
                     </div>
                 </div>
                 <div class="col-md-2" id="help">
-                    <a href="/">HELP</a>
+                    <a href="/help">HELP</a>
                 </div>
             </div>
         </footer>
     </div>
 </template>
 <script>
-import axios from "axios";
+import { required,  maxLength, minLength, sameAs } from 'vuelidate/lib/validators';
+import axios from 'axios';
+
+function complexPassword(value) {
+  if (!(value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/))) {
+    return false;
+  }
+  return true;
+}
+
 export default {
     data(){
         return{
@@ -262,6 +323,28 @@ export default {
             tokenUser: null,
             tokenAdminError: null,
             id: '',
+            acc_id: null,
+            // change password
+            modal_changepassword: false,
+            Newpassword: '',
+            RepeatNewpassword: '',
+            currentPassword: '',
+        }
+    },
+    validations:{
+        Newpassword:{
+            required,
+            complex: complexPassword,
+            minLength: minLength(8),
+            maxLength: maxLength(255)
+        },
+        RepeatNewpassword:{
+            required,
+            sameAspassword: sameAs('Newpassword')
+        },
+        currentPassword:{
+            required,
+            minLength: minLength(8),
         }
     },
     created(){
@@ -275,24 +358,42 @@ export default {
             }).then((response => {
                     if(response.data.message == 'You can pass! (User)'){
                         this.id = response.data.id
+                        this.acc_id = response.data.acc_id
                     }
                     else{
-                        alert("You can't access the user, you are the admin.! hahaha.")
+                        this.$swal({
+                            icon: 'warning',
+                            title: "You can't access the user, you are the admin.! hahaha.",
+                            showConfirmButton: true,
+                        })
                         this.$router.push({ name: "Home" });
                     }
                     console.log(response)
-            })).catch((err) => {
-                alert("Error Your token! hahahaha.")
+            })).catch((err) => {                
+                this.$swal({
+                    icon: 'warning',
+                    title: "Oops! Error Your token hahahaha.",
+                    showConfirmButton: true,
+                })
                 this.$router.push({ name: "Home" });
                 console.log(err)
             })
         }
         else{
             if(this.tokenAdminError != null){
-                alert('คุณไม่ใช่ user eiei')
+                this.$swal({
+                    icon: 'warning',
+                    title: "You can't access the user, you are the admin.! hahaha.",
+                    showConfirmButton: true,
+                })
+                this.$router.push({ name: "Home" });
             }
             else{
-                alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+                this.$swal({
+                    icon: 'warning',
+                    title: 'กรุณาล็อกอินก่อนเข้าใช้งาน',
+                    showConfirmButton: true,
+                })
                 this.$router.push({ name: "Home" });
             }
         }
@@ -300,8 +401,75 @@ export default {
     methods:{
         logout(){
             this.id = ''
-            console.log('Log out!')
             this.$router.push({ name: "Home" });
+        },
+        validationStatusError(validation){
+            return typeof validation != "undefined" ? validation.$error : false;
+        },
+        togglePassword1(){
+          var x = document.getElementById("Newpassword");
+            if (x.type === "password") {
+                x.type = "text";
+            }
+            else{
+                x.type = "password";
+            }
+        },
+        togglePassword2(){
+          var x = document.getElementById("repeatNewpassword");
+            if (x.type === "password") {
+                x.type = "text";
+            }
+            else{
+                x.type = "password";
+            }
+        },
+        togglePassword3(){
+          var x = document.getElementById("currentPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            }
+            else{
+                x.type = "password";
+            }
+        },
+        resetmodal(){
+            this.modal_changepassword = false;
+            this.$v.$reset();
+            this.Newpassword = ''
+            this.RepeatNewpassword = ''
+            this.currentPassword = ''
+        },
+        changepassword(){
+            this.$v.$touch();
+            if( this.$v.$pendding || this.$v.$error ) return;
+            axios.put("http://localhost:5000/changepassword", {
+                Newpassword: this.Newpassword,
+                RepeatNewpassword: this.RepeatNewpassword,
+                currentPassword: this.currentPassword,
+                acc_id: this.acc_id
+            }).then((response) => {
+                if(response.data.message == 'เปลี่ยนรหัสผ่านสำเร็จ'){
+                    this.resetmodal()
+                    this.$swal({
+                        icon: 'success',
+                        title: 'เปลี่ยนรหัสผ่านสำเร็จ',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+                else{
+                    this.resetmodal()
+                    this.$swal({
+                        icon: 'warning',
+                        title: 'รหัสผ่านปัจจุบันไม่ถูกต้อง',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
         },
     }
 }
@@ -310,119 +478,130 @@ export default {
 <style scoped>
     /* card Home */
 
-.container{
-    margin-top: 30px;
-}
-#article a{
-    color:red;
-    font-size: 25px;
-    font-weight: 700;
-    text-decoration: none;
-}
+    .container{
+        margin-top: 30px;
+    }
+    #article a{
+        color:red;
+        font-size: 25px;
+        font-weight: 700;
+        text-decoration: none;
+    }
 
-#article a:hover{
-    color: orange;
-    text-decoration: none;
-}
+    #article a:hover{
+        color: orange;
+        text-decoration: none;
+    }
 
-#news a{
-    color:red;
-    font-size: 18px;
-    text-decoration: none;
-}
+    #news a{
+        color:red;
+        font-size: 18px;
+        text-decoration: none;
+    }
 
-#news a:hover{
-    color: orange;
-    text-decoration: none;
-}
-.card{
-    width: 100%;
-    height: 100%;
-    border-color: #302323;
-}
-.card-image{
-    overflow: hidden;
-}
+    #news a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .card{
+        width: 100%;
+        height: 100%;
+        border-color: #302323;
+    }
+    .card-image{
+        overflow: hidden;
+    }
 
-.card-image img{
-    transition: all 1.5s ease;
-}
+    .card-image img{
+        transition: all 1.5s ease;
+    }
 
-.card-image img:hover{
-    transform: scale(1.5);
-}
+    .card-image img:hover{
+        transform: scale(1.5);
+    }
 
-.card-header{
-    font-weight: 600;
-}
-.card-text{
-    color: #000000;
-}
+    .card-header{
+        font-weight: 600;
+    }
+    .card-text{
+        color: #000000;
+    }
 
-#card-row-2{
-    padding-top: 20px;
-}
+    #card-row-2{
+        padding-top: 20px;
+    }
 
-#card-row-1 a{
-    text-decoration: none;
-}
+    #card-row-1 a{
+        text-decoration: none;
+    }
 
-#card-row-2 a{
-    text-decoration: none;
-}
+    #card-row-2 a{
+        text-decoration: none;
+    }
 
-#problem a{
-    color:red;
-    font-size: 25px;
-    font-weight: 700;
-    text-decoration: none;
-}
+    #problem a{
+        color:red;
+        font-size: 25px;
+        font-weight: 700;
+        text-decoration: none;
+    }
 
-#problem a:hover{
-    color: orange;
-    text-decoration: none;
-}
-.col-md-4{
-    padding-left: 40px;
-}
-.col-md-4 a span{
-    color:white;
-    font-size: 30px;
-    font-weight: 900;
-    opacity: 0.64;
-}
-.home{
-    color: white;
-    font-size: 15px;
-    margin-top: 5px;
-    margin-right: 30px;
-}
-.home:hover{
-    color:black;
-}
-/* footer */
+    #problem a:hover{
+        color: orange;
+        text-decoration: none;
+    }
+    .col-md-4{
+        padding-left: 40px;
+    }
+    .col-md-4 a span{
+        color:white;
+        font-size: 30px;
+        font-weight: 900;
+        opacity: 0.64;
+    }
+    .home{
+        color: white;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-right: 30px;
+    }
+    .home:hover{
+        color:black;
+    }
+    /* footer */
 
-footer {
-    background-color: #963306;
-    padding: 10px 0px 10px 30px;
-}
+    #footer {
+        background-color: #963306;
+        padding: 10px 0px 10px 30px;
+    }
 
-#help{
-    padding: 10px 30px;
-}
+    #help{
+        padding: 10px 30px;
+    }
 
-#help a{
-    color: black;
-    float: right;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 500;
-    text-decoration: none;
-    width: 100px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    background: #ffffff;
-    opacity: 0.7;
-}
+    #help a{
+        color: black;
+        float: right;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        width: 100px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background: #ffffff;
+        opacity: 0.7;
+    }
+    .dropdown-menu a{
+        text-decoration: none;
+    }
+    .field-icon {
+        float: right;
+        margin-right: 30px;
+        margin-top: -26px;
+        position: relative;
+        z-index: 2;
+        color:black;
+    }
 
 </style>

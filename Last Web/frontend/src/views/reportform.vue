@@ -80,7 +80,7 @@
     </div>
     <footer>
         <div id="footer_homepage">
-            <a id="footer_button" class="btn" href="#">HELP</a>
+            <a id="footer_button" class="btn" href="/help">HELP</a>
             <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
             <p id="address">1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520</p>
             <p id="address">02 723 4900</p>
@@ -125,11 +125,21 @@ export default {
                     this.permissionPath = '/admin'
                 }
             })).catch((err) => {
+                this.$swal({
+                    icon: 'warning',
+                    title: 'Oops! Error Your token hahahaha.',
+                    showConfirmButton: true,
+                })
+                this.$router.push({ name: "Home" });
                 console.log(err)
             })  
         }
         else{
-            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+            this.$swal({
+                icon: 'warning',
+                title: 'กรุณาล็อกอินก่อนเข้าใช้งาน',
+                showConfirmButton: true,
+            })
             this.$router.push({ name: "Home" });
         }
     },

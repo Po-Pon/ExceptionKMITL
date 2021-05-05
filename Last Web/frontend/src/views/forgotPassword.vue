@@ -81,8 +81,9 @@
                     <a @click="togglePassword1()"><span class="fa fa-fw fa-eye field-icon2 toggle-password"></span></a>
                     <div class="invalid-feedback" style="text-align: left; margin-left:35px; margin-top:-5px">
                         <span v-if="!$v.Newpassword.required">กรุณากรอกรหัสผ่าน</span>
-                        <span v-if="!$v.Newpassword.minLength">Password ต้องไม่ต่ำกว่า 8 ตัว</span>
-                        <span v-if="!$v.Newpassword.maxLength">Password ต้องไม่เกิน 255 ตัว</span>
+                        <span v-else-if="!$v.Newpassword.minLength">Password ต้องไม่ต่ำกว่า 8 ตัว</span>
+                        <span v-else-if="!$v.Newpassword.maxLength">Password ต้องไม่เกิน 255 ตัว</span>
+                        <span v-else-if="!$v.Newpassword.complex">Password ง่ายเกินไป ควรมี A-Z หรือ a-z หรือ อักขระพิเศษ อย่างน้อย 1 ตัว</span>
                     </div>
                   </div>
                   <div class="form-group" style="margin-top:-15px">
@@ -128,20 +129,17 @@
         <!-- footer -->
         <footer>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="copyright text-white" style="font-weight: 200;"> 
                         King Mongkut's Institute of technology Ladkrabang<br>
                         1Chalong Krung 1 Alley, Lat Krabang Bangkok 10520<br>
                         02 723 4900
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <div class="copyright" style="padding-top: 20px; color: #aaa;">
+                <div class="col-md-6">
+                    <div class="copyright" style="padding: 20px; color: #aaa; float:right;">
                         Copyright &copy; 2021 ExptionKMITL
                     </div>
-                </div>
-                <div class="col-md-2" id="help">
-                    <a href="/">HELP</a>
                 </div>
             </div>
         </footer>
@@ -151,6 +149,14 @@
 <script>
 import { required,maxLength, minLength, sameAs, email, numeric } from 'vuelidate/lib/validators';
 import axios from 'axios';
+
+function complexPassword(value) {
+  if (!(value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/))) {
+    return false;
+  }
+  return true;
+}
+
 export default {
     data(){
         return{
@@ -180,6 +186,7 @@ export default {
       },
       Newpassword:{
           required,
+          complex: complexPassword,
           minLength: minLength(8),
           maxLength: maxLength(255)
       },
@@ -277,7 +284,7 @@ export default {
                             console.log(err)
                         })
                     }, 1000);
-                }, 1000);
+                  }, 1000);
               }, 1000);
         },
         ChangePassword(){
@@ -288,12 +295,11 @@ export default {
             this.success = '',
             this.error = '';
           axios.put("http://localhost:5000/forgotpassword/checking", {
-            email:{
               emailSend: this.emailSend,
               Newpassword: this.Newpassword,
+              RepeatNewpassword: this.RepeatNewpassword,
               code: this.code,
               codeCheck: this.data.code
-            }
           }).then((response) => {
             const data = response.data
             console.log(data)

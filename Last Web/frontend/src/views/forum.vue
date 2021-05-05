@@ -41,7 +41,7 @@
     </div>
     <footer>
         <div id="footer_homepage">
-            <a id="footer_button" class="btn" href="#">HELP</a>
+            <a id="footer_button" class="btn" href="/help" v-show="id != ''">HELP</a>
             <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
             <p id="address">1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520</p>
             <p id="address">02 723 4900</p>
@@ -112,6 +112,13 @@ export default {
       localStorage.removeItem("forum_id");
   },
   methods: {
+    alert(){
+      this.$swal({
+        icon: 'warning',
+        title: 'กรุณาล็อกอินก่อนเข้าใช้งาน',
+        showConfirmButton: true,
+      })
+    },
     forumcolor: function (type) {
       if (type == "การศึกษา") {
         return this.typecolor.education;

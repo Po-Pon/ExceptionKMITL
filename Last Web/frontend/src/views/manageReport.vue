@@ -440,23 +440,39 @@ export default {
                     this.manage_standand = response.data.rule_standand_admin
                 }
                 else{
-                    alert("You can't access the admin, you are the user.! hahaha.")
+                    this.$swal({
+                        icon: 'warning',
+                        title: 'Only Admin.',
+                        showConfirmButton: true,
+                    })
                     this.$router.push({ name: "Home" });
                 }
                 console.log(response)
         })).catch((err) => {
-            alert("Error Your token! hahahaha.")
+            this.$swal({
+                icon: 'warning',
+                title: 'Oops! Error Your token hahahaha.',
+                showConfirmButton: true,
+            })
             this.$router.push({ name: "Home" });
             console.log(err)
         })
     }
     else{
         if(this.tokenUserError != null){
-            alert("คุณไม่ใช่ Admin eiei")
+            this.$swal({
+                icon: 'warning',
+                title: 'Only Admin.',
+                showConfirmButton: true,
+            })
             this.$router.push({ name: "Home" });
         }
         else{
-            alert("กรุณาล็อกอินก่อนเข้าใช้งาน")
+            this.$swal({
+                icon: 'warning',
+                title: 'กรุณาล็อกอินก่อนเข้าใช้งาน (Only Admin)',
+                showConfirmButton: true,
+            })
             this.$router.push({ name: "Home" });
         }
     }
@@ -649,18 +665,23 @@ export default {
         deleteReport(report_id){
             this.modal_delete = false;
             axios.delete("http://localhost:5000/actionReport/delete/"+report_id)
-            .then(() =>{
+            .then((response) =>{
                 for(let j = 0 ; j < this.report_form_all.length ; j++){
                     if(this.report_form_all[j].report_form_id == report_id){
                         this.report_form_all.splice(j, 1);
                     }
                 }
+                this.$swal({
+                    icon: 'success',
+                    title: response.data.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
             }).catch((err) => {
                 console.log(err);
             })
         },
         show_detail(report_id, type){
-            alert(report_id+ type)
             if(type == 'ปัญหาด้านสังคม'){
                 this.modal_sociality = true;
                 for(let j = 0; j < this.report_form_sociality.length ; j++){

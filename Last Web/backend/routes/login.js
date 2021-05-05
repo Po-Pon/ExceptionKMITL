@@ -8,14 +8,14 @@ router = express.Router();
 
 // coding here !!
 
-const signupSchema = Joi.object({
+const loginSchema = Joi.object({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
 })
 
 router.post("/checkingLogin", async function(req, res, next){
     try {
-        signupSchema.validateAsync(req.body,  { abortEarly: false })
+        loginSchema.validateAsync(req.body,  { abortEarly: false })
     } catch (err) {
         res.status(400).json(err)
     }

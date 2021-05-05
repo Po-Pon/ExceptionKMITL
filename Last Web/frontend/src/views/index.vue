@@ -203,23 +203,19 @@
             </div>
 
         <!-- footer -->
-
         <footer>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="copyright text-white" style="font-weight: 200;"> 
                         King Mongkut's Institute of technology Ladkrabang<br>
                         1Chalong Krung 1 Alley, Lat Krabang Bangkok 10520<br>
                         02 723 4900
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <div class="copyright" style="padding-top: 20px; color: #aaa;">
+                <div class="col-md-6">
+                    <div class="copyright" style="padding: 20px; color: #aaa; float:right;">
                         Copyright &copy; 2021 ExptionKMITL
                     </div>
-                </div>
-                <div class="col-md-2" id="help">
-                    <a href="/">HELP</a>
                 </div>
             </div>
         </footer>
@@ -242,7 +238,7 @@ export default {
     created(){
         localStorage.removeItem('tokenAdmin')
         localStorage.removeItem('tokenUser')
-    }
+    },
 }
 </script>
 
@@ -252,24 +248,6 @@ export default {
 footer {
     background-color: #963306;
     padding: 10px 0px 10px 30px;
-}
-
-#help{
-    padding: 10px 30px;
-}
-
-#help a{
-    color: black;
-    float: right;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 500;
-    text-decoration: none;
-    width: 100px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    background: #ffffff;
-    opacity: 0.7;
 }
 
 </style>

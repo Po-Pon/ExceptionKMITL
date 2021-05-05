@@ -1,6 +1,5 @@
 const express = require("express")
 var cors = require('cors')
-const path = require("path")
 
 const app = express();
 app.use(cors())
@@ -17,10 +16,12 @@ const loginRouter = require('./routes/login');
 const forum = require("./routes/forum")
 const getreportform = require("./routes/getreportform")
 const forgotpassword = require('./routes/forgotpassword')
+const changepassword = require('./routes/changepassword')
 const checkadmin = require('./routes/checkadmin')
 const dataReport = require('./routes/dataReport')
 const actionReport = require('./routes/actionReport')
 const checkToken = require('./routes/checkToken')
+const userReport = require('./routes/userReport')
 // use routers
 app.use(dataRouter.router)
 app.use(registerRouter.router)
@@ -32,6 +33,8 @@ app.use(checkadmin.router)
 app.use(dataReport.router)
 app.use(actionReport.router)
 app.use(checkToken.router)
+app.use(changepassword.router)
+app.use(userReport.router)
 
 app.listen(5000, () => {
   console.log(`database running at http://localhost:5000`)
