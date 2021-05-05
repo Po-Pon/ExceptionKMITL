@@ -66,7 +66,7 @@ const educationschema = joi.object({
   topic: joi.string().required().min(10).max(255),
   description: joi.string().required().min(50),
   send_status: joi.string().required().valid('ด่วน', 'ไม่ด่วน'),
-  education_subject_id: joi.number().integer().required().max(99999999).min(10000000),
+  education_subject_id: joi.string().length(8).regex(/^\d+$/).required(),
   acc_id: joi.number().integer().required().external(acc_idValidate),
   
 })
@@ -92,7 +92,7 @@ const registerschema = joi.object({
   topic: joi.string().required().min(10).max(255),
   description: joi.string().required().min(50),
   send_status: joi.string().required().valid('ด่วน', 'ไม่ด่วน'),
-  register_subject: joi.number().integer().required().max(99999999).min(10000000),
+  register_subject: joi.string().length(8).regex(/^\d+$/).required(),
   acc_id: joi.number().integer().required().external(acc_idValidate),
   
 })
@@ -127,17 +127,19 @@ router.post("/createreport/sociality", async function(req, res, next) {
   
   try{
     const [rows, fields] = await conn.query(
-      "SELECT max(report_form_id) 'max' FROM report_form"
+      "SELECT max(report_form_id) 'max', count(report_form_id) 'count' FROM report_form"
     )
-
-    const id = rows[0].max + 1;
+    
+    let id_sociality = 0;
+    if(rows[0].count == 0){id_sociality = 1}
+    else{id_sociality = rows[0].max + 1}
 
     await conn.query(
-      "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id, topic, type, acc_id]
+      "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id_sociality, topic, type, acc_id]
     )
 
     await conn.query(
-      "INSERT INTO sociality_report_form VALUES (?, ?, ?, ?, 0)", [id, sociality_location, description, send_status]
+      "INSERT INTO sociality_report_form VALUES (?, ?, ?, ?, 0)", [id_sociality, sociality_location, description, send_status]
     )
 
     conn.commit()
@@ -172,17 +174,19 @@ router.post("/createreport/education", async function(req, res, next) {
   
   try{
     const [rows, fields] = await conn.query(
-      "SELECT max(report_form_id) 'max' FROM report_form"
+      "SELECT max(report_form_id) 'max', count(report_form_id) 'count' FROM report_form"
     )
-
-    const id = rows[0].max + 1;
+      
+    let id_education = 0;
+    if(rows[0].count == 0){id_education = 1}
+    else{id_education = rows[0].max + 1}
 
     await conn.query(
-      "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id, topic, type, acc_id]
+      "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id_education, topic, type, acc_id]
     )
 
     await conn.query(
-      "INSERT INTO studying_report_form VALUES (?, ?, ?, ?, 0)", [id, education_subject_id, description, send_status]
+      "INSERT INTO studying_report_form VALUES (?, ?, ?, ?, 0)", [id_education, education_subject_id, description, send_status]
     )
 
     conn.commit()
@@ -217,10 +221,12 @@ router.post("/createreport/scholarship", async function(req, res, next) {
   
   try{
     const [rows, fields] = await conn.query(
-      "SELECT max(report_form_id) 'max' FROM report_form"
+      "SELECT max(report_form_id) 'max', count(report_form_id) 'count' FROM report_form"
     )
 
-    const id = rows[0].max + 1;
+    let id = 0;
+    if(rows[0].count == 0){id = 1}
+    else{id = rows[0].max + 1}
 
     await conn.query(
       "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id, topic, type, acc_id]
@@ -262,10 +268,12 @@ router.post("/createreport/register", async function(req, res, next) {
   
   try{
     const [rows, fields] = await conn.query(
-      "SELECT max(report_form_id) 'max' FROM report_form"
+      "SELECT max(report_form_id) 'max', count(report_form_id) 'count' FROM report_form"
     )
 
-    const id = rows[0].max + 1;
+    let id = 0;
+    if(rows[0].count == 0){id = 1}
+    else{id = rows[0].max + 1}
 
     await conn.query(
       "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id, topic, type, acc_id]
@@ -307,10 +315,12 @@ router.post("/createreport/environment", async function(req, res, next) {
   
   try{
     const [rows, fields] = await conn.query(
-      "SELECT max(report_form_id) 'max' FROM report_form"
+      "SELECT max(report_form_id) 'max', count(report_form_id) 'count' FROM report_form"
     )
 
-    const id = rows[0].max + 1;
+    let id = 0;
+    if(rows[0].count == 0){id = 1}
+    else{id = rows[0].max + 1}
 
     await conn.query(
       "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id, topic, type, acc_id]
@@ -332,55 +342,5 @@ router.post("/createreport/environment", async function(req, res, next) {
   
 
 })
-
-/*try{
-  const [rows, fields] = await conn.query(
-    "SELECT max(report_form_id) 'max' FROM report_form"
-  )
-  const id = rows[0].max + 1;
-
-  await conn.query(
-    "INSERT INTO report_form VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?)", [id, topic, type, acc_id]
-  )
-
-  if(type == "สภาพสังคม"){
-      await conn.query(
-        "INSERT INTO sociality_report_form VALUES (?, ?, ?, ?, 0)", [id, sociality_location, description, send_status]
-      )
-  }
-  else if(type == "การศึกษา"){
-    await conn.query(
-      "INSERT INTO studying_report_form VALUES (?, ?, ?, ?, 0)", [id, education_subject_id, description, send_status]
-    )
-  }
-  else if(type == "ทุนการศึกษา"){
-    await conn.query(
-      "INSERT INTO scholarship_report_form VALUES (?, ?, ?, ?, 0)", [id, scholarship_type, description, send_status]
-    )
-  }
-  else if(type == "การลงทะเบียนเรียน"){
-    await conn.query(
-      "INSERT INTO register_system_report_form VALUES (?, ?, ?, ?, 0)", [id, register_subject, description, send_status]
-    )
-  }
-  else if(type == "สภาพแวดล้อม"){
-    await conn.query(
-      "INSERT INTO environment_report_form VALUES (?, ?, ?, ?, 0)", [id, environment_location, description, send_status]
-    )
-  }
-
-  conn.commit();
-}catch(err){
-  conn.rollback;
-  return err;
-}finally{
-  conn.release();
-}*/
-
-
-/*  const  education_subject_id = req.body.education_subject_id
-  const  scholarship_type = req.body.scholarship_type
-  const  register_subject = req.body.register_subject
-  const  environment_location = req.body.environment_location*/
 
 exports.router = router;

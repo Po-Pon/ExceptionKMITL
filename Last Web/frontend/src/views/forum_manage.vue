@@ -417,7 +417,17 @@ export default {
             this.valiaftersubmit();
 
             if(!this.$v.$invalid){
-            let forum_edit = this.allforum.map((x) => {
+            let newdata = {
+                forum_topic: this.forum_topic,
+                forum_description: this.forum_description,
+                forum_type: this.forum_type,
+                image_address: this.image_address
+            }
+
+            axios
+            .put("http://localhost:5000/forum/" + this.forum_id, newdata)
+            .then(() => {
+                let forum_edit = this.allforum.map((x) => {
                 if(x.forum_id == this.forum_id){
                     return {
                         forum_id: this.forum_id,
@@ -432,17 +442,7 @@ export default {
                 }
             })
             this.allforum = forum_edit;
-            
-            let newdata = {
-                forum_topic: this.forum_topic,
-                forum_description: this.forum_description,
-                forum_type: this.forum_type,
-                image_address: this.image_address
-            }
-
-            axios
-            .put("http://localhost:5000/forum/" + this.forum_id, newdata)
-            .then().catch((err) => {alert(err);})
+            }).catch((err) => {alert(err);})
             this.close_modal_button;
             }
         },
@@ -454,12 +454,13 @@ export default {
             this.forum_id = id;
         },
         realdelete: function(){
-            let forum = this.allforum.filter((x) => {
-                return x.forum_id != this.forum_id;
-            })
-            this.allforum = forum;
             axios.delete("http://localhost:5000/forum/" + this.forum_id)
-            .then().catch((err) => {alert(err);})
+            .then(() => {
+                let forum = this.allforum.filter((x) => {
+                    return x.forum_id != this.forum_id;
+                })
+                this.allforum = forum;
+            }).catch((err) => {alert(err);})
             this.close_modal_button;
         },
         close_modal_button() {

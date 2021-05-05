@@ -80,10 +80,12 @@ router.post('/forum/createforum', async (req, res, next) => {
 
     try{
         let [rows, fields] = await conn.query(
-            "SELECT max(forum_id) 'max_id' FROM forum"
+            "SELECT max(forum_id) 'max', count(forum_id) 'count' FROM forum"
         );
 
-        const forum_id = rows[0].max_id + 1
+        let forum_id = 0;
+        if(rows[0].count == 0){forum_id = 1}
+        else{forum_id = rows[0].max + 1;}
         
         await conn.query(
             "INSERT INTO forum VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)"
@@ -149,6 +151,7 @@ router.delete('/forum/:id', async (req, res, next) => {
             'DELETE FROM forum WHERE forum_id=?', [req.params.id]
         );
         conn.commit()
+        res.status(201).send()
     }catch(err){
         await conn.rollback();
         console.log(err);
