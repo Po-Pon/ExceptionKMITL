@@ -72,10 +72,19 @@ const passwordValidator = (value) => {
     return value
 }
 
+const codeValidator = (value) => {
+    if (value.toString().length != 6) {
+        throw new Joi.ValidationError('code Must be equal to 6 integers')
+    }
+    return value
+}
+
 const forgotpasswordSchema = Joi.object({
     emailSend: Joi.string().required().email(),
     Newpassword: Joi.string().required().custom(passwordValidator),
-    RepeatNewpassword: Joi.string().required().valid(Joi.ref('Newpassword'))
+    RepeatNewpassword: Joi.string().required().valid(Joi.ref('Newpassword')),
+    code: Joi.number().integer().required().custom(codeValidator),
+    codeCheck: Joi.string().required()
 })
 
 router.put("/forgotpassword/checking", async function(req, res, next){
