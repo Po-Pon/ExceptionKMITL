@@ -264,7 +264,7 @@ export default {
         axios.post("http://localhost:5000/checkTokenLogin", {
             role: 'Admin',
             tokenAdmin: this.tokenAdmin
-        }).then((response => {
+        }).then((response) => {
                 if(response.data.message == 'You can pass! (Admin)'){
                     this.id = response.data.id
                     this.manage_acc = response.data.rule_manage_acc
@@ -279,7 +279,7 @@ export default {
                     this.$router.push({ name: "Home" });
                 }
                 console.log(response)
-        })).catch((err) => {
+        }).catch(() => {
             this.$swal({
                 icon: 'warning',
                 title: 'Oops! Error Your token hahahaha.',
@@ -287,8 +287,6 @@ export default {
             })
 
             this.$router.push({ name: "Home" });
-          }
-          console.log(response);
         })
     }
     else{
