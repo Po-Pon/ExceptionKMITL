@@ -231,8 +231,18 @@ const checkScholarshipType = (value) => {
                         acc_id: this.acc_id
                     }
                     axios.post("http://localhost:5000/createreport/sociality", data)
-                    .then(() => {}).catch((err) => {alert(err)})
-                    this.$router.push({name: 'Reportform'})
+                    .then((res) => {
+                        this.$router.push({name: 'Reportform'})
+                        this.$swal({
+                            title: res.data,
+                            icon: 'success'
+                        });
+                    }).catch((err) => {
+                        this.$swal({
+                            title: err.data,
+                            icon: 'error'
+                        });
+                    })
                 }
                 else if(!this.$v.education_subject_id.$error && basicinput) {
                     let data = {
@@ -244,8 +254,18 @@ const checkScholarshipType = (value) => {
                         acc_id: this.acc_id
                     }
                     axios.post("http://localhost:5000/createreport/education", data)
-                    .then(() => {}).catch((err) => {alert(err)})
-                    this.$router.push({name: 'Reportform'})
+                    .then((res) => {
+                        this.$router.push({name: 'Reportform'})
+                        this.$swal({
+                            title: res.data,
+                            icon: 'success'
+                        });
+                    }).catch((err) => {
+                        this.$swal({
+                            title: err.data,
+                            icon: 'error'
+                        });
+                    })
                 }
                 else if(!this.$v.scholarship_type.$error && basicinput) {
                     let data = {
@@ -257,8 +277,18 @@ const checkScholarshipType = (value) => {
                         acc_id: this.acc_id
                     }
                     axios.post("http://localhost:5000/createreport/scholarship", data)
-                    .then(() => {}).catch((err) => {alert(err)})
-                    this.$router.push({name: 'Reportform'})
+                    .then((res) => {
+                        this.$router.push({name: 'Reportform'})
+                        this.$swal({
+                            title: res.data,
+                            icon: 'success'
+                        });
+                    }).catch((err) => {
+                        this.$swal({
+                            title: err.data,
+                            icon: 'error'
+                        });
+                    })
                 }
                 else if(!this.$v.register_subject.$error && basicinput) {
                     let data = {
@@ -270,8 +300,18 @@ const checkScholarshipType = (value) => {
                         acc_id: this.acc_id
                     }
                     axios.post("http://localhost:5000/createreport/register", data)
-                    .then(() => {}).catch((err) => {alert(err)})
-                    this.$router.push({name: 'Reportform'})
+                    .then((res) => {
+                        this.$router.push({name: 'Reportform'})
+                        this.$swal({
+                            title: res.data,
+                            icon: 'success'
+                        });
+                    }).catch((err) => {
+                        this.$swal({
+                            title: err.data,
+                            icon: 'error'
+                        });
+                    })
                 }
                 else if(!this.$v.environment_location.$error && basicinput) {
                     let data = {
@@ -283,8 +323,18 @@ const checkScholarshipType = (value) => {
                         acc_id: this.acc_id
                     }
                     axios.post("http://localhost:5000/createreport/environment", data)
-                    .then(() => {}).catch((err) => {alert(err)})
-                    this.$router.push({name: 'Reportform'})
+                    .then((res) => {
+                        this.$router.push({name: 'Reportform'})
+                        this.$swal({
+                            title: res.data,
+                            icon: 'success'
+                        });
+                    }).catch((err) => {
+                        this.$swal({
+                            title: err.data,
+                            icon: 'error'
+                        });
+                    })
                 }
                 else{
                     this.$v.$touch();

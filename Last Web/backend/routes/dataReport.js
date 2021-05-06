@@ -143,10 +143,11 @@ router.post("/createreport/sociality", async function(req, res, next) {
     )
 
     conn.commit()
+    return res.send("ส่งคำร้องเรียนเรียบร้อยแล้ว");
 
   }catch(err){
-    conn.rollback;
-    return err;
+    conn.rollback();
+    return res.send("ไม่สามารถส่งคำร้องเรียนได้");
   }finally{
     console.log("เสร็จ")
     conn.release();
@@ -190,10 +191,11 @@ router.post("/createreport/education", async function(req, res, next) {
     )
 
     conn.commit()
+    return res.send("ส่งคำร้องเรียนเรียบร้อยแล้ว");
 
   }catch(err){
-    conn.rollback;
-    return err;
+    conn.rollback();
+    return res.send("ไม่สามารถส่งคำร้องเรียนได้");
   }finally{
     console.log("เสร็จ")
     conn.release();
@@ -237,10 +239,11 @@ router.post("/createreport/scholarship", async function(req, res, next) {
     )
 
     conn.commit()
+    return res.send("ส่งคำร้องเรียนเรียบร้อยแล้ว");
 
   }catch(err){
-    conn.rollback;
-    return err;
+    conn.rollback();
+    return res.send("ไม่สามารถส่งคำร้องเรียนได้");
   }finally{
     console.log("เสร็จ")
     conn.release();
@@ -284,10 +287,11 @@ router.post("/createreport/register", async function(req, res, next) {
     )
 
     conn.commit()
+    return res.send("ส่งคำร้องเรียนเรียบร้อยแล้ว");
 
   }catch(err){
-    conn.rollback;
-    return err;
+    conn.rollback();
+    return res.send("ไม่สามารถส่งคำร้องเรียนได้");
   }finally{
     console.log("เสร็จ")
     conn.release();
@@ -331,10 +335,11 @@ router.post("/createreport/environment", async function(req, res, next) {
     )
 
     conn.commit()
+    return res.send("ส่งคำร้องเรียนเรียบร้อยแล้ว");
 
   }catch(err){
-    conn.rollback;
-    return err;
+    conn.rollback();
+    return res.send("ไม่สามารถส่งคำร้องเรียนได้");
   }finally{
     console.log("เสร็จ")
     conn.release();
