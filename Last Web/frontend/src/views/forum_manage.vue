@@ -367,7 +367,12 @@ export default {
             }
 
             if(this.$v.$error){
-                alert("ไม่สามารถสร้าง/แก้ไขข่าวประชาสัมพันธ์" + "\n" + special);
+                this.$swal({
+                    title: 'ไม่สามารถสร้าง/แก้ไขข่าวประชาสัมพันธ์',
+                    text: special,
+                    icon: 'error',
+                    confirmButtonText: 'ดำเนินการต่อ'
+                });
             }
         },
         realcreate(){
@@ -396,6 +401,10 @@ export default {
                     image_address: this.image_address
                 }
             )
+                this.$swal({
+                    title: 'เพิ่มข่าวประชาสัมพันธ์สำเร็จ',
+                    icon: 'success'
+                });
             }).catch((err) => {alert(err);})
             this.close_modal_button;
             }
@@ -440,8 +449,13 @@ export default {
                 else{
                     return x;
                 }
+                
             })
             this.allforum = forum_edit;
+            this.$swal({
+                    title: 'อัปเดตข่าวประชาสัมพันธ์สำเร็จ',
+                    icon: 'success'
+                });
             }).catch((err) => {alert(err);})
             this.close_modal_button;
             }
@@ -461,6 +475,10 @@ export default {
                 })
                 this.allforum = forum;
             }).catch((err) => {alert(err);})
+            this.$swal({
+                    title: "ลบข่าวประชาสัมพันธ์สำเร็จ",
+                    icon: 'success'
+                });
             this.close_modal_button;
         },
         close_modal_button() {
