@@ -112,13 +112,6 @@ export default {
       localStorage.removeItem("forum_id");
   },
   methods: {
-    alert(){
-      this.$swal({
-        icon: 'warning',
-        title: 'กรุณาล็อกอินก่อนเข้าใช้งาน',
-        showConfirmButton: true,
-      })
-    },
     forumcolor: function (type) {
       if (type == "การศึกษา") {
         return this.typecolor.education;

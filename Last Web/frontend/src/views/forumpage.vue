@@ -99,6 +99,12 @@ import axios from "axios";
         }).catch((err) => {
             this.arc = err;
         })
+    },
+    methods:{
+        logout(){
+            this.id = ''
+            this.$router.push({ name: "Home" });
+        },
     }
 }
 </script>

@@ -12,6 +12,7 @@
             alt=""
         /></a>
         <ul>
+          <div id="MyClockDisplay" class="clock"></div>
           <li id="comp2"><a href="/login">Log In</a></li>
           <div class="line"></div>
           <li id="comp2"><a href="/register">Register</a></li>

@@ -12,6 +12,7 @@
             alt=""
         /></a>
         <ul>
+          <div id="MyClockDisplay" class="clock"></div>
           <li id="comp2"><a href="/login">Log In</a></li>
           <div class="line"></div>
           <li id="comp2"><a href="/register">Register</a></li>
@@ -279,14 +280,13 @@ export default {
       this.br = "";
       this.$v.$touch();
       if (this.$v.$pendding || this.$v.$error) return;
-      axios
-        .post("http://localhost:5000/checkingLogin", {
+      axios.post("http://localhost:5000/checkingLogin", {
             email: this.email,
             password: this.password,
         })
         .then((response) => {
 
-          const data = response.data;
+          var data = response.data;
           this.emailError = data.errorEmail;
           this.passwordError = data.errorPassword;
 
@@ -306,12 +306,39 @@ export default {
               localStorage.removeItem('rememberMe')
             }
             if (data.role == 'Admin'){
-              let token = JSON.stringify(data.token);
-              localStorage.setItem("tokenAdmin", token);
-              this.$router.push({ name: "Admin" });
+              this.$swal({
+                title: 'Your Access Key!',
+                input: 'password',
+                showConfirmButton: true,
+                showCancelButton: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  axios.get("http://localhost:5000/accesskey/"+ result.value +"/"+ data.acc_id)
+                  .then((response) => {
+                    if(response.data.message == "pass"){
+                      // set locatstorage
+                      const token = JSON.stringify(data.token);
+                      localStorage.setItem("tokenAdmin", token);
+                      this.$router.push({ name: "Admin" });
+                    }
+                    else{
+                      this.$swal({
+                        icon: 'warning',
+                        title: 'Your access key is not correct!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                      })
+                    }
+                    console.log(response)
+                  }).catch((err) => {
+                    console.log(err)
+                  })
+                }
+              })
             }
             if (data.role == 'User'){
-              let token = JSON.stringify(data.token);
+              // set locatstorage
+              const token = JSON.stringify(data.token);
               localStorage.setItem("tokenUser", token);
               this.$router.push({ name: "User" });
             }

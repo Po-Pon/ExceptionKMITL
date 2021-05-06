@@ -22,6 +22,7 @@ const dataReport = require('./routes/dataReport')
 const actionReport = require('./routes/actionReport')
 const checkToken = require('./routes/checkToken')
 const userReport = require('./routes/userReport')
+const accesskey = require('./routes/accesskey')
 // use routers
 app.use(dataRouter.router)
 app.use(registerRouter.router)
@@ -35,6 +36,7 @@ app.use(actionReport.router)
 app.use(checkToken.router)
 app.use(changepassword.router)
 app.use(userReport.router)
+app.use(accesskey.router)
 
 app.listen(5000, () => {
   console.log(`database running at http://localhost:5000`)
