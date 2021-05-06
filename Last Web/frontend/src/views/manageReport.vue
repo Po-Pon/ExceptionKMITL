@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="box">
-            <div class="page-header text-primary" style="text-align:center;">
+            <div class="page-header text-white" style="text-align:center;">
                 <h1>Manage Report</h1>      
             </div>
             <hr>
@@ -781,7 +781,7 @@ export default {
     .box{
         margin: 40px 20px 0px 20px; 
         margin-bottom: -100px;
-        background-color: rgb(72, 72, 72);
+        background-color: rgb(20, 30, 120);
     }
     /* scrolling vertical tbody res */
     .table-fixed{

@@ -142,6 +142,7 @@ router.delete("/actionReport/delete/:id", async function (req, res, next){
         }
         console.log('delete report id: '+ req.params.id +' success' )
     } catch (error) {
+        await conn.rollback();
         return next(error)
     }finally{
         conn.release()
