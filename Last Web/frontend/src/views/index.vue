@@ -180,24 +180,24 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-4">
-                        <p><a href=""><br><span>01</span><br><br></a></p>
+                        <p><a href=""><br><span>01<br>การแจ้งขอทุนการศึกษาล่าช้า</span><br><br></a></p>
                     </div>
                     <div class="col-md-4">
-                        <p><a href=""><br><span>02</span><br><br></a></p>
+                        <p><a href=""><br><span>02<br>ติดโปร (Probation) ต้องทำยังไง</span><br><br></a></p>
                     </div>
                     <div class="col-md-4">
-                        <p><a href=""><br><span>03</span><br><br></a></p>
+                        <p><a href=""><br><span>03<br>วิชาเลือกที่แนะนำมีอะไรบ้าง</span><br><br></a></p>
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-4">
-                        <p><a href=""><br><span>04</span><br><br></a></p>
+                        <p><a href=""><br><span>04<br>ห้องน้ำ IT สะอาดเกินไป</span><br><br></a></p>
                     </div>
                     <div class="col-md-4">
-                        <p><a href=""><br><span>05</span><br><br></a></p>
+                        <p><a href=""><br><span>05<br>เสียงก่อสร้างรบกวนการเรียนครับ</span><br><br></a></p>
                     </div>
                     <div class="col-md-4">
-                        <p><a href=""><br><span>06</span><br><br></a></p>
+                        <p><a href=""><br><span>06<br>ผมขอ <span id="A">A</span> Webpro เถอะครับ</span><br><br></a></p>
                     </div>
                 </div>
             </div>
@@ -244,6 +244,11 @@ export default {
 
 <style scoped>
 /* footer */
+
+#A{
+    color : red;
+    opacity: 1 !important;
+}
 
 footer {
     background-color: #963306;
