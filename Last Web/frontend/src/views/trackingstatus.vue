@@ -114,13 +114,15 @@
                 </div>
             </div></section>
         </div>
-        <footer>
-        <div id="footer_homepage">
-            <a id="footer_button" class="btn" href="/help">HELP</a>
-            <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
-            <p id="address">1 Chalong Krung 1 Alley, Lat Krabang, Bangkok 10520</p>
-            <p id="address">02 723 4900</p>
+        <footer id="footer">
+      <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-5">
+          <div class="copyright" style="padding-top: 20px; color: #aaa">
+            Copyright &copy; 2021 ExptionKMITL
+          </div>
         </div>
+      </div>
     </footer>
     </body>
 </template>
@@ -424,11 +426,6 @@ export default {
         padding-bottom: 1%;
         padding-left: 5%;
     }
-    #footer_homepage{
-        width: 100%;
-        height: 78px;
-        background-color: #E35205;
-    }
 
     #address{
         font-family: 'Kanit', sans-serif;
@@ -438,20 +435,14 @@ export default {
         margin-left: 30px;
         margin-bottom: 0em;
     }
-
-    #footer_button{
-        width: 119px;
-        height: 46px;
-        border-radius: 10px;
-        background-color: #ffffff;
-        font-family: 'Kanit', sans-serif;
-        font-size: 24px;
-        font-weight: 500;
-        float: right;
-        text-align: center;
-        margin-top: 16px;
-        margin-right: 30px;
-        color:  #1a1819;
+    #footer {
+        height: 60px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #d86a03;
+        color: white;
     }
 
     /* topnav_trackingstatus only login && reg */
