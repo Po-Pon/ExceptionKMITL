@@ -4,11 +4,16 @@ const pool = require("../config");
 router = express.Router();
 
 router.get("/", async function (req, res, next) {
+  const conn = await pool.getConnection()
+  await conn.beginTransaction();
   try {
-    const [rows, fields] = await pool.query('SELECT acc_id, acc_fname, acc_lname, acc_email, create_date FROM account');
+    const [rows, fields] = await conn.query('SELECT * FROM account JOIN admin USING (acc_id)');
     return res.json(rows);
   } catch (err) {
-    return next(err)
+    await conn.rollback();
+    console.log(err)
+  } finally {
+    conn.release();
   }
 });
 
