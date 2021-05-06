@@ -56,7 +56,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-1.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-1.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-danger">การศึกษา</div>
@@ -74,7 +74,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-2.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-2.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-secondary">งานพาร์ทไทม์</div>
@@ -92,7 +92,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-3.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-3.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-warning">สภาพแวดล้อม</div>
@@ -110,7 +110,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-4.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-4.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-danger">การศึกษา</div>
@@ -133,7 +133,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-5.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-5.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-primary">การลงทะเบียน</div>    
@@ -151,7 +151,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-6.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-6.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-warning">สภาพแวดล้อม</div>
@@ -169,7 +169,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-7.jpg" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-7.jpg" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-info">ทุนการศึกษา</div>
@@ -187,7 +187,7 @@
                             <div class="card">
                                 <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="/image/card/cardimg-8.png" style="height:210px" alt="Placeholder image">
+                                    <img src="/image/card/cardimg-8.png" style="height:250px" alt="Placeholder image">
                                 </figure>
                                 </div>
                                 <div class="card-header text-white bg-info">ทุนการศึกษา</div>
