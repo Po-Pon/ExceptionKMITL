@@ -117,7 +117,7 @@
             </div>
         </div>
     </div>
-    <footer>
+    <footer style="margin-top:140px">
         <div id="footer_homepage">
             <a id="footer_button" class="btn" href="/help">HELP</a>
             <p id="address">King Mongkut's Institute of Technology Ladkrabang</p>
@@ -411,7 +411,9 @@ const checkScholarshipType = (value) => {
     #btn_submit{
         margin-bottom: 3%;
     }
+    
     #footer_homepage{
+        position: relative;
         width: 100%;
         height: 78px;
         background-color: #E35205;

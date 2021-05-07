@@ -747,8 +747,8 @@ export default {
     }
     #footer {
         height: 60px;
-        position: absolute;
-        left: 0;
+        position: relative;
+        right: 0;
         bottom: 0;
         width: 100%;
         background-color: #d86a03;

@@ -284,7 +284,7 @@
 
         <!-- footer -->
 
-        <footer id="footer">
+        <footer>
             <div class="row">
                 <div class="col-md-5">
                     <div class="copyright text-white" style="font-weight: 200;"> 
@@ -575,7 +575,8 @@ export default {
     }
     /* footer */
 
-    #footer {
+    footer {
+        position: relative;
         background-color: #963306;
         padding: 10px 0px 10px 30px;
     }
