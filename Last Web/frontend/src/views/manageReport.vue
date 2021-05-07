@@ -565,42 +565,42 @@ export default {
         },
         problem_1(){
             if(this.filterStatus != null){
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านการเรียน' && types.status === this.filterStatus);
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'การศึกษา' && types.status === this.filterStatus);
             }
             else{
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านการเรียน');
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'การศึกษา');
             }
         },
         problem_2(){
             if(this.filterStatus != null){
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านทุนการศึกษา' && types.status === this.filterStatus);
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ทุนการศึกษา' && types.status === this.filterStatus);
             }
             else{
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านทุนการศึกษา');
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ทุนการศึกษา');
             }
         },
         problem_3(){
             if(this.filterStatus != null){
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสังคม' && types.status === this.filterStatus);
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'สภาพสังคม' && types.status === this.filterStatus);
             }
             else{
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสังคม');
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'สภาพสังคม');
             }
         },
         problem_4(){
             if(this.filterStatus != null){
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านระบบการลงทะเบียน' && types.status === this.filterStatus);
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'การลงทะเบียนเรียน' && types.status === this.filterStatus);
             }
             else{
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านระบบการลงทะเบียน');
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'การลงทะเบียนเรียน');
             }
         },
         problem_5(){
             if(this.filterStatus != null){
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสภาพสิ่งแวดล้อม' && types.status === this.filterStatus);
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'สภาพแวดล้อม' && types.status === this.filterStatus);
             }
             else{
-                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'ปัญหาด้านสภาพสิ่งแวดล้อม');
+                this.report_form_all = this.report_form_all_copy.filter(types => types.type == 'สภาพแวดล้อม');
             }
         },
         check_nextStatus(report_form_id, status){
@@ -682,7 +682,7 @@ export default {
             })
         },
         show_detail(report_id, type){
-            if(type == 'ปัญหาด้านสังคม'){
+            if(type == 'สภาพสังคม'){
                 this.modal_sociality = true;
                 for(let j = 0; j < this.report_form_sociality.length ; j++){
                     if(this.report_form_sociality[j].report_form_id == report_id){
@@ -698,7 +698,7 @@ export default {
                     }
                 }
             }
-            if(type == 'ปัญหาด้านการเรียน'){
+            if(type == 'การศึกษา'){
                 this.modal_studying = true;
                 for(let j = 0; j < this.report_form_studying.length ; j++){
                     if(this.report_form_studying[j].report_form_id == report_id){
@@ -714,7 +714,7 @@ export default {
                     }
                 }
             }
-            if(type == 'ปัญหาด้านทุนการศึกษา'){
+            if(type == 'ทุนการศึกษา'){
                 this.modal_scholarship = true;
                 for(let j = 0; j < this.report_form_scholarship.length ; j++){
                     if(this.report_form_scholarship[j].report_form_id == report_id){
@@ -730,7 +730,7 @@ export default {
                     }
                 }
             }
-            if(type == 'ปัญหาด้านระบบการลงทะเบียน'){
+            if(type == 'การลงทะเบียนเรียน'){
                 this.modal_register = true;
                 for(let j = 0; j < this.report_form_register.length ; j++){
                     if(this.report_form_register[j].report_form_id == report_id){
@@ -746,7 +746,7 @@ export default {
                     }
                 }
             }
-            if(type == 'ปัญหาด้านสภาพสิ่งแวดล้อม'){
+            if(type == 'สภาพแวดล้อม'){
                 this.modal_environment = true;
                 for(let j = 0; j < this.report_form_environment.length ; j++){
                     if(this.report_form_environment[j].report_form_id == report_id){
